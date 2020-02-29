@@ -1,0 +1,94 @@
+$small-breakpoint:   400px;
+$medium-breakpoint:  760px;
+$wide-breakpoint:    960px;
+
+$sf-font: 'SF Pro Display' !default;
+
+$primary-color: #000000 !default;
+
+$placeholder-color: #949494 !default;
+
+// Pixel to rem
+$ptr: 0.0625rem;
+
+@font-face{
+    font-family: $sf-font;
+    src: url('fonts/sfprodisplaylight.otf') format('opentype'),
+         url('fonts/sfprodisplaylight.ttf') format('truetype');  /* Safari, Android, iOS */
+}
+
+@mixin respond-to($breakpoint) {
+    @media screen and (min-width: $breakpoint), print {
+        @content;
+    }
+}
+
+html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+html,
+body {
+    // This line makes the possibility to avoid event.preventDefault(); on on_mouse_wheel
+    // Keep studying if this is a better solution
+
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    // position: fixed;
+    margin: 0;
+    color: $primary-color;
+    // font-family: $sf-font;
+    font-family: 'Arial';
+    font-weight: bold;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+canvas {
+    position: relative;
+    z-index: 1;
+    width: 100vw;
+    height: 590 * $ptr;
+    pointer-events: none;
+}
+
+a {
+    color: $primary-color;
+    text-decoration: none;
+}
+
+.canvas-container {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    justify-content: center;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+}
+
+::placeholder { /* Firefox, Chrome, Opera */
+    color: $placeholder-color;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: $placeholder-color;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: $placeholder-color;
+}

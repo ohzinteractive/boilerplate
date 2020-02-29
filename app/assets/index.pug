@@ -1,0 +1,42 @@
+// Developed by OHZI Interactive | https://ohzi.io
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=Edge")
+    meta(name="viewport",content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no")
+
+    include views/common/meta
+
+    title OHZI Interactive
+
+    link(rel="icon", type="image/png", href="images/common/favicon.png")
+    link(href="app.css", rel="stylesheet")
+
+    script(src="js/three/three.js")
+    script(src="js/three/BufferGeometryUtils.js")
+    script(src="js/three/ColladaLoader.js")
+    script(src="js/three/SVGLoader.js")
+    script(src="js/three/GLTFLoader.js")
+    script(src="js/three/dat.gui.min.js")
+
+    script(src="js/jquery-3.2.1.min.js")
+    script(src="js/jquery.mousewheel.min.js")
+    script(src="js/zingtouch.js")
+
+    include views/common/conversions
+
+  body#body
+
+    include views/common/author
+
+    .canvas-container
+      canvas#main-canvas
+
+    include views/app/example
+
+    script(src="api.js")
+    script(src="main.js")
+
+    script(src='js/index.js')
+    //- script(src = "js/ui_datgui.js")

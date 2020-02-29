@@ -1,0 +1,90 @@
+[
+  {
+    "name" : "ACCESS CONTROL",
+    "elements": [
+      {
+        "id": "doors",
+        "name": "Doors",
+        "image": "/images/menu/door.svg",
+        "url": "../../views/doors/doors.html"
+
+      },
+      {
+        "id": "buildings",
+        "name": "Buildings",
+        "image": "/images/menu/building.svg",
+        "url": "../../views/buildings/buildings.html"
+      },
+      {
+        "id": "persons",
+        "name": "Persons",
+        "image": "/images/menu/person.svg",
+        "url": "../../views/persons/persons.html"
+      },
+      {
+        "id": "groups",
+        "name": "Groups",
+        "image": "/images/menu/groups.svg",
+        "url": "../../views/groups/groups.html"
+      },
+      {
+        "id": "holiday_groups",
+        "name": "Holiday Groups",
+        "image": "/images/menu/sun.svg",
+        "url": "../../views/holiday_groups/new.html"
+      },
+      {
+        "id": "schedules",
+        "name": "Schedules",
+        "image": "/images/menu/calendar.svg",
+        "url": "../../views/schedules/new.html"
+      },
+      {
+        "id": "templates",
+        "name": "Templates",
+        "image": "/images/menu/template.svg",
+        "url": "../../views/templates/templates.html"
+      }
+    ]
+  },
+  {
+    "name": "SUMMARY",
+    "elements": [
+      {
+        "id": "check_data",
+        "name": "Check Data",
+        "image": "/images/menu/check.svg",
+        "url": "../../views/check_data/check_data.html"
+      },
+      {
+        "id": "access_log",
+        "name": "Access Log",
+        "image": "/images/menu/log.svg",
+        "url": "../../views/access_log/access_log.html"
+      },
+      {
+        "id": "monitor",
+        "name": "Monitor",
+        "image": "/images/menu/monitor.svg",
+        "url": "../../views/monitor/monitor.html"
+      },
+      {
+        "id": "visits",
+        "name": "Visits",
+        "image": "/images/menu/id_card.svg",
+        "url": "../../views/visits/visits.html"
+      }
+    ]
+  },
+  {
+    "name": "SETTINGS",
+    "elements": [
+      {
+        "id": "configuration",
+        "name": "Configuration",
+        "image": "/images/menu/settings.svg",
+        "url": "../../views/configuration/configuration.html"
+      }
+    ]
+  }
+]
