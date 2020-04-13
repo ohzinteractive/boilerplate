@@ -5,6 +5,9 @@ import { Screen } from 'ohzi-core';
 import { NormalRender } from 'ohzi-core';
 import { Graphics } from 'ohzi-core';
 import { ResourceContainer } from 'ohzi-core';
+import { Debug } from 'ohzi-core';
+import { Components } from 'ohzi-core';
+import { SceneManager } from 'ohzi-core';
 
 import CameraController from '/js/components/CameraController/CameraController';
 
@@ -26,10 +29,14 @@ export default class MainApplication extends BaseApplication {
 		this.on_resize(); // force resize update before the first frame
 
 		this.config = ResourceContainer.get_resource("config");
+    Debug.draw_axis();
+    SceneManager.current.add(new Components.Grid());
+
 
 	}
 
 	update() {
+    this.camera_controller.update();
 	}
 
 	on_resize() {
@@ -48,10 +55,12 @@ export default class MainApplication extends BaseApplication {
 
 	__init_camera_controller() {
 		this.camera_controller.set_camera(CameraManager.current);
-		this.camera_controller.set_idle();
-		this.camera_controller.min_zoom = 0.001;
-		this.camera_controller.max_zoom = 0.002;
-		this.camera_controller.reference_zoom = 0.0015;
+		// this.camera_controller.set_idle();
+    this.camera_controller.set_debug_mode();
+
+		this.camera_controller.min_zoom = 1;
+		this.camera_controller.max_zoom = 40;
+		this.camera_controller.reference_zoom = 30;
 		this.camera_controller.reference_position.set(0, 0, 0);
 	}
 
