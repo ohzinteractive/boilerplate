@@ -33,4 +33,4 @@ bower_components/
 *.zip
 *.msi
 *.apk
-dist
+dist/
