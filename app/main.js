@@ -29,12 +29,7 @@ let on_api_ready = () => {
     ViewApi.canvas_view.on_orientation_change();
   });
 
-  window.menu_view = ViewApi.menu_view;
-  window.cesium_handler = ViewApi.cesium_handler;
-  window.camera_settings_view = ViewApi.camera_settings_view;
-  window.calendar_view = ViewApi.calendar_view;
-  window.canvas_view = ViewApi.canvas_view;
-  window.player_view = ViewApi.player_view;
+
 }
 
 let on_config_ready = () => {
