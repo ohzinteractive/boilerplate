@@ -1,6 +1,4 @@
 import CameraViewState from '../states/CameraViewState'
-import CameraMovementMode from '../movement_mode/CameraMovementMode'
-import RotateAndZoomAroundPoint from '../movement_mode/RotateAndZoomAroundPoint'
 
 import {Input}  from 'ohzi-core';
 import {CameraUtilities} from 'ohzi-core';
