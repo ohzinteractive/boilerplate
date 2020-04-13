@@ -1,103 +1,70 @@
-import Graphics from 'js/core/Graphics';
-import RenderLoop from 'js/core/RenderLoop';
-import Configuration from 'js/singletons/Configuration';
-
-import EventManager from 'js/core/EventManager';
-import Debug from 'js/core/Debug';
-import Input from 'js/core/Input';
-
-import CameraManager from 'js/core/CameraManager';
-import SceneManager from 'js/core/SceneManager';
-
-import Test from 'js/core/Test';
+import { Graphics } from 'ohzi-core';
+import { RenderLoop } from 'ohzi-core';
+import { Configuration } from 'ohzi-core';
+import { EventManager } from 'ohzi-core';
+import { Debug } from 'ohzi-core';
+import { Input } from 'ohzi-core';
+import { ResourceContainer } from 'ohzi-core';
 
 //APP
-import OHZIExampleApplication from './OHZIExampleApplication';
+import MainApplication from './MainApplication';
 
-//SERVICES
-import ModelUtilities from 'js/core/utilities/ModelUtilities';
-//
-import ResourceContainer from 'js/core/ResourceContainer';
-import HTMLManager from './js/html_components/common/HTMLManager';
+const application = new MainApplication(Graphics);
+const render_loop = new RenderLoop(application, Graphics);
 
-module.exports = (parameters) => {
+window.ViewApi = {
+  init: (parameters) => {
+    let body = document.querySelector('body');
+    let canvas = document.getElementById('main-canvas');
 
-  let body = document.querySelector('body');
-  let canvas = document.getElementById('main-canvas');
+    Configuration.is_mobile = parameters.is_mobile;
+    Configuration.is_ios = parameters.is_ios;
+    Configuration.is_ipad = parameters.is_ipad;
 
-  Configuration.is_mobile = parameters.is_mobile;
-  Configuration.is_ios = parameters.is_ios;
-  Configuration.is_ipad = parameters.is_ipad;
+    Graphics.init(canvas)
 
-  Graphics.init(canvas)
+    Input.init(body, canvas);
+    Debug.init(Graphics);
 
-  Input.init(body);
-  Debug.init(Graphics);
-  const application = new OHZIExampleApplication(Graphics);
+    Graphics.on_resize();
 
-  const render_loop = new RenderLoop(application, Graphics);
+  },
 
-  Graphics.on_resize();
+  dispose: () => {
+    render_loop.stop();
+    Graphics._renderer.dispose();
+    map.dispose();
+  },
 
+  draw_debug_axis: () => {
+    Debug.draw_axis();
+  },
 
-  function ViewApi() {
-    return {
+  register_event: (name, callback) => {
+    EventManager.on(name, callback);
+  },
 
-      scene: SceneManager.current,
-      camera: CameraManager.current,
+  resize_canvas: () => {
+    application.on_resize();
+  },
 
-      model_utilities: ModelUtilities,
+  resource_loading_completed: () => {
+    application.resources_fully_loaded()
+  },
 
-      take_screenshot: () => {
-        Graphics.take_screenshot(Graphics.download_screenshot)
-      },
+  set_resource: (name, resource) => {
+    ResourceContainer.set_resource(name, resource);
+  },
 
-      test_core: () => {
-        Test.test_core()
-      },
+  start: () => {
+    render_loop.start();
+  },
 
-      //#######################################
-      //#######################################
+  stop: () => {
+    render_loop.stop();
+  },
 
-      register_event: (name, callback) =>{
-        EventManager.on(name, callback);
-      },
-
-      config: Configuration,
-
-      draw_debug_axis: () =>{
-        Debug.draw_axis();
-      },
-      update: (val) => {
-        application.update_texture(val);
-      },
-
-      set_resource: (name, resource)=>{
-        ResourceContainer.set_resource(name, resource);
-      },
-
-      resize_canvas: ()=>{
-        application.on_resize();
-      },
-
-      start: ()=>{
-        render_loop.start();
-      },
-
-      dispose: () =>{
-        render_loop.stop();
-        Graphics._renderer.dispose();
-        map.dispose();
-      },
-
-      resource_loading_completed : () => {
-        application.resources_fully_loaded()
-      },
-      version: "0.0.0",
-    };
-  }
-
-  module.exports = ViewApi;
-
-  return ViewApi();
-};
+  application: application,
+  config: Configuration,
+  resource_container: ResourceContainer,
+}
