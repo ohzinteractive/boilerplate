@@ -26,10 +26,10 @@ export default class MainApplication extends BaseApplication {
 
 		this.__init_camera();
 		this.__init_camera_controller();
-		this.on_resize(); // force resize update before the first frame
 
 		this.config = ResourceContainer.get_resource("config");
     Debug.draw_axis();
+
     SceneManager.current.add(new Components.Grid());
 
 
@@ -42,6 +42,10 @@ export default class MainApplication extends BaseApplication {
 	on_resize() {
 		Graphics.on_resize();
 	}
+
+  post_start(){
+    Graphics.on_resize();
+  }
 
 	__init_camera() {
 		let camera = new PerspectiveCamera(60, Screen.aspect_ratio, 0.1, 200);
@@ -61,7 +65,8 @@ export default class MainApplication extends BaseApplication {
 		this.camera_controller.min_zoom = 1;
 		this.camera_controller.max_zoom = 40;
 		this.camera_controller.reference_zoom = 30;
-		this.camera_controller.reference_position.set(0, 0, 0);
+    this.camera_controller.reference_position.set(0, 0, 0);
+		this.camera_controller.set_rotation(45,0);
 	}
 
 }

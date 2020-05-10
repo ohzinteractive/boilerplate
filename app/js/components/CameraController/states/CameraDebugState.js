@@ -29,6 +29,9 @@ export default class CameraDebugState extends CameraViewState
 
     this.last_point = new THREE.Vector3();
 
+    this.last_NDC = new THREE.Vector2();
+
+
   }
 
   
@@ -41,10 +44,10 @@ export default class CameraDebugState extends CameraViewState
   }
 
   update (camera_controller) {
-  	if(!camera_controller.input_enabled)
-  	{
-  		return;
-  	}
+    if(!camera_controller.input_enabled)
+    {
+      return;
+    }
 
     if(camera_controller.camera.isOrthographicCamera)
     {
@@ -56,8 +59,10 @@ export default class CameraDebugState extends CameraViewState
     if(Input.left_mouse_button_down)
     {
 
-      camera_controller.set_rotation_delta(Input.mouse_dir.x * -0.5, 
-                                          Input.mouse_dir.y * 0.8);
+      let mouse_delta_dir = Input.NDC.clone().sub(this.last_NDC);
+
+      camera_controller.set_rotation_delta(mouse_delta_dir.x * -200, 
+                                          mouse_delta_dir.y * -200);
     }
 
 
@@ -77,29 +82,8 @@ export default class CameraDebugState extends CameraViewState
       
       this.last_point.copy(Input.NDC);
     }
+
+    this.last_NDC.copy(Input.NDC);
   }
-
-
-  clamp(a,b,c)
-  {
-    return Math.max(b,Math.min(c,a));
-  }
-  step(a,b)
-  {
-    if(b > a)
-      return 1;
-    return 0;
-  }
-
-  linear_map(value,
-             from_range_start_value,
-             from_range_end_value,
-             to_range_start_value,
-             to_range_end_value)
-    {
-        return ((value - from_range_start_value)/ (from_range_end_value - from_range_start_value)) * (to_range_end_value - to_range_start_value) + to_range_start_value;
-    }
-
-  
 
 }

@@ -20,7 +20,7 @@
     ]
   },
   "dependencies": {
-    "ohzi-core": "^2.5.6"
+    "ohzi-core": "*"
   },
   "devDependencies": {
     "glslify-bundle": "^5.1.1",
