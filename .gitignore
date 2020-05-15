@@ -22,15 +22,17 @@ Thumbs.db
 # NPM packages folder.
 node_modules/
 
-# Brunch folder for temporary files.
+# Temporary files.
 tmp/
 
-# Brunch output folder.
+# Parcel output folder.
 public/
+dist/
+
+package-lock.json
 
 # Bower stuff.
 bower_components/
 *.zip
 *.msi
 *.apk
-dist/

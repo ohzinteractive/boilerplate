@@ -30,7 +30,8 @@
     "parcel-plugin-html-externals": "^0.2.0",
     "parcel-plugin-static-files-copy": "^2.3.1",
     "pug": "^2.0.4",
-    "sass": "^1.26.3"
+    "sass": "^1.26.3",
+    "standardx": "^5.0.0"
   },
   "staticFiles": {
     "staticPath": [

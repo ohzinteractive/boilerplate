@@ -20,21 +20,21 @@ html
     script(src="libs/three/GLTFLoader.js")
 
     script(src="libs/jquery-3.2.1.min.js")
-    script(src="libs/jquery.mousewheel.min.js")
     script(src="libs/zingtouch.js")
 
     include views/common/conversions
 
   body#body
-    script(src="libs/three/dat.gui.min.js")
-  
-    script(src="libs/ui_datgui.js")
+    //- script(src="libs/three/dat.gui.min.js")
+    //- script(src="libs/ui_datgui.js")
 
     include views/common/author
 
     .canvas-container
       .app-canvas
         canvas#main-canvas
+
+    include views/home/home
 
     .reusable-elements
 
