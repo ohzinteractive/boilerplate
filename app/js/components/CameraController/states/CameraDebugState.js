@@ -51,11 +51,18 @@ export default class CameraDebugState extends CameraViewState
 
     if(camera_controller.camera.isOrthographicCamera)
     {
-      camera_controller.reference_zoom += Input.wheel_delta *2 ;
+      camera_controller.reference_zoom += Input.wheel_delta *0.5 ;
     }else
     {
-      camera_controller.reference_zoom += Input.wheel_delta *2 ;
+      camera_controller.reference_zoom += Input.wheel_delta *0.5 ;
     }
+
+    if(Input.left_mouse_button_pressed || Input.right_mouse_button_pressed)
+    {
+      this.last_point.copy(Input.NDC);
+      this.last_NDC.copy(Input.NDC)
+    }
+
     if(Input.left_mouse_button_down)
     {
 
@@ -66,10 +73,7 @@ export default class CameraDebugState extends CameraViewState
     }
 
 
-    if(Input.right_mouse_button_pressed)
-    {
-      this.last_point.copy(Input.NDC);
-    }
+
     if(Input.right_mouse_button_down)
     {
       let prev_point    = CameraUtilities.get_plane_intersection(camera_controller.reference_position, undefined, this.last_point).clone();
@@ -79,7 +83,6 @@ export default class CameraDebugState extends CameraViewState
       camera_controller.reference_position.x -= current_point.x;
       camera_controller.reference_position.y -= current_point.y;
       camera_controller.reference_position.z -= current_point.z;
-      
       this.last_point.copy(Input.NDC);
     }
 

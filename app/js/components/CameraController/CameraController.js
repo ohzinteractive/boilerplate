@@ -11,6 +11,10 @@ import CameraMovementMode from './movement_mode/CameraMovementMode'
 import {Input} from 'ohzi-core';
 import {CameraManager} from 'ohzi-core'
 import {Screen} from 'ohzi-core';
+import {Debug} from 'ohzi-core';
+import {MathUtilities} from 'ohzi-core';
+import {ArrayUtilities} from 'ohzi-core';
+import {SceneManager} from 'ohzi-core';
 
 export default class CameraController
 {
@@ -40,27 +44,12 @@ export default class CameraController
     this.orientation = 27; // degrees
     this.tilt = 70;
 
-    this.dx_movement = 0;
-    this.dy_movement = 0;
 
     this.reference_rotation = new THREE.Quaternion();
 		this.reference_position = new THREE.Vector3();
 		this.__last_reference_position = new THREE.Vector3();
 
 
-
-		this.translation_damping = 0;
-		this.translation_response = 3.3;
-
-		this.zoom_damping = 0.08;
-		this.zoom_response = 5;
-
-		//deprecated
-		this.zoom_speed_damping = 0.65;
-		this.zoom_speed = 5;
-
-		this.rotation_damping = 0;
-		this.rotation_response_time = 1;
 
 		this.tmp_size = new THREE.Vector3();
 		this.tmp_quat = new THREE.Quaternion();
@@ -74,6 +63,21 @@ export default class CameraController
   	this.input_enabled = true;
   	// this.debug_box = Debug.draw_cube(undefined,15);
   	// this.debug_zoom_box = Debug.draw_sphere(undefined,15, 0x00ff00);
+
+    this.projected_points = [];
+    for(let i=0; i< 30; i++)
+    {
+      this.projected_points.push(Debug.draw_sphere(undefined,0.5, 0x00ff00));
+    }
+    this.hide_projected_points();
+    this.projection_plane_helper = new THREE.PlaneHelper( new THREE.Plane(), 1, 0xff00 );
+    this.projection_plane_helper.visible = false;
+    SceneManager.current.add( this.projection_plane_helper );
+
+    this.projection_sphere_helper = Debug.draw_sphere_helper(new THREE.Sphere(), 0xff0000);
+    this.projection_sphere_helper.material.transparent = true;
+    this.projection_sphere_helper.material.opacity = 0.3;
+    this.projection_sphere_helper.visible = false;;
 	}
 
 	set_camera(camera)
@@ -108,7 +112,7 @@ export default class CameraController
 	update_normalized_zoom(min_zoom, max_zoom)
 	{
 		let zoom = this.camera.position.distanceTo(this.reference_position);
-		this.normalized_zoom = this.linear_map(zoom, min_zoom, max_zoom, 1, 0);
+		this.normalized_zoom = MathUtilities.linear_map(zoom, min_zoom, max_zoom, 1, 0);
 		this.normalized_zoom = THREE.Math.clamp(this.normalized_zoom, 0, 1);
 		
 		// EventManager.fire_zoom_changed(this.normalized_zoom);
@@ -217,16 +221,8 @@ export default class CameraController
   	this.reference_position.add(this.tmp_right.multiplyScalar(amount));
   }
 
-  linear_map(value,
-             from_range_start_value,
-             from_range_end_value,
-             to_range_start_value,
-             to_range_end_value)
-  {
-      return ((value - from_range_start_value)/ (from_range_end_value - from_range_start_value)) * (to_range_end_value - to_range_start_value) + to_range_start_value;
-  }
 
-  focus_camera_on_bounding_box(bb)
+  focus_on_bounding_box(bb, scale = 1)
   {
   	if(this.camera.isOrthographicCamera)
   	{
@@ -259,12 +255,12 @@ export default class CameraController
   		let p7 = bb.max.clone();
   		let p8 = p1.clone().add(new THREE.Vector3(dir.x, dir.y, 0));
 
-  		this.focus_camera_on_points([p1, p2, p3, p4, p5, p6, p7, p8], 1);
+  		this.focus_camera_on_points([p1, p2, p3, p4, p5, p6, p7, p8], scale);
 
 
   	}
   }
-	get_zoom_to_focus_camera_on_bounding_box(bb, tilt, orientation)
+	get_zoom_to_focus_on_bounding_box(bb, tilt, orientation)
 	{
 		if(tilt !== undefined && orientation !== undefined)
 		{
@@ -330,77 +326,141 @@ export default class CameraController
     let distH = sphere.radius / Math.tan(h_fov);
     return Math.max(Math.abs(distH), Math.abs(distV));
 	}
-	focus_camera_on_points(points, zoom_scale, debug)
-	{
-		let points_sphere = new THREE.Sphere().setFromPoints(points);
-		let world_space_center = points_sphere.center;
-		let camera_forward = new THREE.Vector3(0,0,1).applyQuaternion(this.reference_rotation)
-		let near_plane = points_sphere.center.clone().add(camera_forward.clone().multiplyScalar(points_sphere.radius));
-		let plane = new THREE.Plane().setFromNormalAndCoplanarPoint(camera_forward, near_plane);
-		let projected_point = new THREE.Vector3();
-		let points_on_plane = [];
-		for(let i=0; i< points.length; i++)
-		{
-			plane.projectPoint(points[i], projected_point);
-			points_on_plane.push(projected_point.clone());
-			// if(debug)
-			// {
-			// 	Debug.draw_cube(projected_point, 25, undefined, 0x0000ff);
-			// }
-		}
 
-		// if(debug)
-		// {
-		// 	var helper = new THREE.PlaneHelper( plane, 5000, 0x00ff00 );
-		// 	Debug.webgl.add( helper );
-		// }
+  hide_projected_points()
+  {
+    for(let i=0; i< this.projected_points.length; i++)
+    {
+      this.projected_points[i].visible = false; 
+    }
+  }
+  show_projected_points(points)
+  {
+    this.hide_projected_points();
+    for(let i=0; i< points.length; i++)
+    {
+      this.projected_points[i].visible = true; 
+      this.projected_points[i].position.copy(points[i]); 
+    }
+  }
 
-		let up = new THREE.Vector3(0,1,0).applyQuaternion(this.reference_rotation)
-	 	let right = up.clone().cross(camera_forward).normalize();
+  show_plane_projection(plane, size = 1)
+  {
+    this.projection_plane_helper.plane = plane;
+    this.projection_plane_helper.size = size;
+    this.projection_plane_helper.updateMatrixWorld()
+    this.projection_plane_helper.visible = true;
+  }
 
-		let mat = new THREE.Matrix4().set(  right.x, up.x, camera_forward.x, world_space_center.x,
+  show_sphere_projection(sphere)
+  {
+    this.projection_sphere_helper.scale.set(sphere.radius, sphere.radius,sphere.radius);
+    this.projection_sphere_helper.position.copy(sphere.center);
+    this.projection_sphere_helper.visible = true;;
+  }
+
+	focus_camera_on_points(points, zoom_scale = 1, debug)
+  {
+    let points_sphere = new THREE.Sphere().setFromPoints(points);
+    let world_space_center = points_sphere.center;
+    let camera_forward = new THREE.Vector3(0,0,1).applyQuaternion(this.reference_rotation)
+    // let near_plane = points_sphere.center.clone().add(camera_forward.clone().multiplyScalar(points_sphere.radius));
+
+    let far_pos =  this.camera.position.clone().add(camera_forward.clone().multiplyScalar(100));
+    let near_plane = ArrayUtilities.get_closest_point(points, far_pos).clone();
+
+    let plane = new THREE.Plane().setFromNormalAndCoplanarPoint(camera_forward, near_plane);
+    let points_on_plane = [];
+
+    // this.show_plane_projection(plane, points_sphere.radius*2);
+    // this.show_sphere_projection(points_sphere);
+    let _projected_points = [];
+
+    for(let i=0; i< points.length; i++)
+    {
+      let projected_point = new THREE.Vector3();
+
+      plane.projectPoint(points[i], projected_point);
+      projected_point.copy(points[i])
+      // let line = new THREE.Line3(points[i].clone(), this.camera.position.clone());
+      // plane.intersectLine(line, projected_point);
+
+      points_on_plane.push(projected_point.clone());
+      _projected_points.push(projected_point.clone())
+    }
+
+    this.show_projected_points(_projected_points);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    let up = new THREE.Vector3(0,1,0).applyQuaternion(this.reference_rotation)
+    let right = up.clone().cross(camera_forward).normalize();
+
+    let mat = new THREE.Matrix4().set(  right.x, up.x, camera_forward.x, world_space_center.x,
                                         right.y, up.y, camera_forward.y, world_space_center.y,
                                         right.z, up.z, camera_forward.z, world_space_center.z,
-                                        			0, 	  0,  							0,				1);
+                                              0,    0,                0,        1);
 
-		let inverse_mat = new THREE.Matrix4().getInverse(mat);
+    let inverse_mat = new THREE.Matrix4().getInverse(mat);
+    // let inverse_mat = this.camera.matrixWorldInverse.clone();
 
-		for(let i=0; i< points_on_plane.length; i++)
-		{
-			points_on_plane[i].applyMatrix4(inverse_mat);
-		}
+    for(let i=0; i< points_on_plane.length; i++)
+    {
+      points_on_plane[i].applyMatrix4(inverse_mat);
+    }
 
-		let size = new THREE.Vector3();
-		let box =  new THREE.Box3().setFromPoints(points_on_plane);
-		box.getSize(size);
-		size.multiplyScalar(zoom_scale);
-		
-		let projected_center = new THREE.Vector3();
-		box.getCenter(projected_center);
+    let size = new THREE.Vector3();
+    let box =  new THREE.Box3().setFromPoints(points_on_plane);
+    box.getSize(size);
+    // size.multiplyScalar(zoom_scale);
+    
+    let projected_center = new THREE.Vector3();
+    box.getCenter(projected_center);
 
-		if(debug)
-		{
-			// Debug.draw_axis()
-			let geo_plane = Debug.draw_plane(size.x, size.y);
-			geo_plane.position.add(projected_center);		
-			geo_plane.updateMatrixWorld();
-			geo_plane.applyMatrix(mat);	
-			// Debug.draw_cube(average_center, 50, undefined, 0x0000ff);
 
-			for(let i=0; i< points_on_plane.length; i++)
-			{
-				points_on_plane[i].applyMatrix4(mat);
-				// if(debug)
-				// 	Debug.draw_cube(points_on_plane[i], 25, undefined, 0xffff00);
-			}
-			// Debug.webgl.add( new THREE.PlaneHelper( plane, 5000, 0xffff00 ) );
-		}
 
-		this.reference_position.copy(projected_center.applyMatrix4(mat).sub(camera_forward.clone().multiplyScalar(points_sphere.radius)));
+    this.reference_position.copy(projected_center.applyMatrix4(mat).sub(camera_forward.clone().multiplyScalar(points_sphere.radius)));
 
-		this.reference_zoom = this.__get_zoom_to_show_rect(size.x/2, size.y/2) + points_sphere.radius;
-		       
-	}
+    // let zoom_scale_nofake = 1 + (zoom_scale-1)*2;
+    // this.reference_zoom = this.__get_zoom_to_show_rect((size.x/2)*zoom_scale_nofake, (size.y/2)*zoom_scale_nofake)+points_sphere.radius;
+    this.reference_zoom = this.__get_zoom_to_show_rect((size.x/2), (size.y/2), 1+(1-zoom_scale))+points_sphere.radius;
+  }
 
 	get_current_tilt()
 	{
@@ -411,15 +471,15 @@ export default class CameraController
 		return this.current_orientation;
 	}
 
-	__get_zoom_to_show_rect(width,height)
-	{
-		let v_fov = (this.camera.fov/2) * Math.PI/180;
-		let h_fov = (2 * Math.atan(Math.tan(v_fov) * this.camera.aspect))/2;
+  __get_zoom_to_show_rect(width,height, scale = 1)
+  {
+    // let v_fov = (this.camera.fov/2) * Math.PI/180;
+    let v_fov = THREE.Math.degToRad(this.camera.fov/2);
+    let h_fov = (2 * Math.atan(Math.tan(v_fov) * this.camera.aspect))/2;
 
 
-    let distV = height / Math.tan(v_fov);
-    let distH = width / Math.tan(h_fov);
+    let distV = height / Math.tan(v_fov*scale);
+    let distH = width / Math.tan(h_fov*scale);
     return Math.max(Math.abs(distH), Math.abs(distV));
-
-	}
+  }
 }
