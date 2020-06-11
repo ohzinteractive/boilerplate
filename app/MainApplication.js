@@ -47,12 +47,10 @@ export default class MainApplication extends BaseApplication
 
   on_resize()
   {
-    Graphics.on_resize();
   }
 
   post_start()
   {
-    Graphics.on_resize();
   }
 
   __init_camera()

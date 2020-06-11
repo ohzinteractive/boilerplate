@@ -6,14 +6,15 @@ import { Debug } from 'ohzi-core';
 import { Input } from 'ohzi-core';
 import { ResourceContainer } from 'ohzi-core';
 
-//APP
+// APP
 import MainApplication from './MainApplication';
 
 const application = new MainApplication(Graphics);
 const render_loop = new RenderLoop(application, Graphics);
 
 window.ViewApi = {
-  init: (parameters) => {
+  init: (parameters) =>
+  {
     let body = document.querySelector('body');
     let canvas = document.getElementById('main-canvas');
 
@@ -21,50 +22,54 @@ window.ViewApi = {
     Configuration.is_ios = parameters.is_ios;
     Configuration.is_ipad = parameters.is_ipad;
 
-    Graphics.init(canvas)
+    Graphics.init(canvas);
 
     Input.init(body, canvas);
     Debug.init(Graphics);
-
-    Graphics.on_resize();
-
   },
 
-  dispose: () => {
+  dispose: () =>
+  {
     render_loop.stop();
     Graphics._renderer.dispose();
-    map.dispose();
   },
 
-  draw_debug_axis: () => {
+  draw_debug_axis: () =>
+  {
     Debug.draw_axis();
   },
 
-  register_event: (name, callback) => {
+  register_event: (name, callback) =>
+  {
     EventManager.on(name, callback);
   },
 
-  resize_canvas: () => {
+  resize_canvas: () =>
+  {
     application.on_resize();
   },
 
-  resource_loading_completed: () => {
-    application.resources_fully_loaded()
+  resource_loading_completed: () =>
+  {
+    application.resources_fully_loaded();
   },
 
-  set_resource: (name, resource) => {
+  set_resource: (name, resource) =>
+  {
     ResourceContainer.set_resource(name, resource);
   },
 
-  start: () => {
+  start: () =>
+  {
     render_loop.start();
   },
 
-  stop: () => {
+  stop: () =>
+  {
     render_loop.stop();
   },
 
   application: application,
   config: Configuration,
-  resource_container: ResourceContainer,
-}
+  resource_container: ResourceContainer
+};
