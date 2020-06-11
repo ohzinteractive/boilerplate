@@ -1,0 +1,26 @@
+.loader {
+    z-index: 999;
+    background-color: $background-color;
+}
+
+    .loader__image {
+        margin-bottom: 30px;
+
+        img {
+            height: 70px;
+        }
+    }
+
+    .loader__progress-bar {
+        width: 150px;
+        background: #909090;
+        border-radius: 6px;
+    }
+
+        .loader__progress-bar-fill {
+            width: 0%;
+            height: 6px;
+            background-color: $primary-color;
+            border-radius: 20px;
+            transition: width 0.5s;
+        }
