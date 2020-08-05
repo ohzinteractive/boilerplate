@@ -26,8 +26,6 @@ window.ViewApi = {
     Input.init(body, canvas);
     Debug.init(Graphics);
 
-    Graphics.on_resize();
-
   },
 
   dispose: () => {
