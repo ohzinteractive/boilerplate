@@ -22,12 +22,6 @@ let on_api_ready = () =>
   ViewApi.resource_loading_completed();
   ViewApi.start();
 
-  let main_canvas = document.getElementById('main-canvas');
-
-  // set the size of the drawingBuffer
-  main_canvas.width = window.innerWidth;
-  main_canvas.height = window.innerHeight;
-
   window.addEventListener('resize', function()
   {
     ViewApi.resize_canvas();
