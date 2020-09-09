@@ -44,7 +44,12 @@ window.ViewApi = {
     EventManager.on(name, callback);
   },
 
-  resize_canvas: () =>
+  on_orientation_change: () =>
+  {
+
+  },
+
+  on_resize: () =>
   {
     application.on_resize();
   },

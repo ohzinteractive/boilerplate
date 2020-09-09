@@ -24,12 +24,12 @@ let on_api_ready = () =>
 
   window.addEventListener('resize', function()
   {
-    ViewApi.resize_canvas();
+    ViewApi.on_resize();
   });
 
   window.addEventListener('orientationchange', function()
   {
-    ViewApi.canvas_view.on_orientation_change();
+    ViewApi.on_orientation_change();
   });
 };
 
