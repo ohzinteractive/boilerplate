@@ -1,4 +1,4 @@
-import { Graphics } from 'ohzi-core';
+import { Graphics, ResourceBatch } from 'ohzi-core';
 import { RenderLoop } from 'ohzi-core';
 import { Configuration } from 'ohzi-core';
 import { EventManager } from 'ohzi-core';
@@ -76,5 +76,6 @@ window.ViewApi = {
 
   application: application,
   config: Configuration,
-  resource_container: ResourceContainer
+  ResourceContainer: ResourceContainer,
+  ResourceBatch: ResourceBatch
 };

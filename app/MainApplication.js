@@ -12,6 +12,8 @@ import { SceneManager } from 'ohzi-core';
 import CameraController from '/js/components/CameraController/CameraController';
 import HomeView from './js/html_components/HomeView';
 
+import { Color } from 'three';
+
 export default class MainApplication extends BaseApplication
 {
   constructor(renderer)
@@ -35,14 +37,14 @@ export default class MainApplication extends BaseApplication
     Debug.draw_axis();
     SceneManager.current.add(new Components.Grid());
 
-    this.home_vew = new HomeView();
-    this.home_vew.start();
+    this.home_view = new HomeView();
+    this.home_view.start();
   }
 
   update()
   {
     this.camera_controller.update();
-    this.home_vew.update();
+    this.home_view.update();
   }
 
   on_resize()
@@ -59,7 +61,7 @@ export default class MainApplication extends BaseApplication
     camera.updateProjectionMatrix();
     camera.position.z = 10;
 
-    camera.clear_color.copy(new THREE.Color('#000000'));
+    camera.clear_color.copy(new Color('#FFFFFF'));
     camera.clear_alpha = 1;
     CameraManager.current = camera;
   }

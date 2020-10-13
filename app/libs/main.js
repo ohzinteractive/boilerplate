@@ -1,5 +1,3 @@
-import { ResourceBatch } from 'ohzi-core';
-
 let is_mobile = navigator.userAgent.match(/(iPhone|iPod|iPad|Android|playbook|silk|BlackBerry|BB10|Windows Phone|Tizen|Bada|webOS|IEMobile|Opera Mini)/);
 let is_ios = navigator.userAgent.match(/(iPhone|iPod|iPad)/);
 let is_ipad = navigator.userAgent.match(/(iPad)/);
@@ -37,16 +35,16 @@ let on_config_ready = () =>
 {
   second_step = true;
 
-  let config = ViewApi.resource_container.get_resource('config');
+  let config = ViewApi.ResourceContainer.get_resource('config');
 
-  batch = new ResourceBatch();
+  batch = new ViewApi.ResourceBatch();
 
   // batch.add_texture("fisheye_tex", "textures/snapshot_250.jpg");
   // batch.add_texture("point", "textures/point.png");
 
   // batch.add_json('cameras_example', 'data/cameras.json')
 
-  batch.load(ViewApi.resource_container);
+  batch.load(ViewApi.ResourceContainer);
   check_resource_loading(batch, on_api_ready);
 };
 
@@ -77,8 +75,8 @@ let check_resource_loading = (batch, on_resources_loaded) =>
   }
 };
 
-let batch = new ResourceBatch();
+let batch = new ViewApi.ResourceBatch();
 batch.add_json('config', 'data/config.json');
-batch.load(ViewApi.resource_container);
+batch.load(ViewApi.ResourceContainer);
 
 check_resource_loading(batch, on_config_ready);
