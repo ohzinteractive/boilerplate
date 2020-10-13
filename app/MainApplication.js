@@ -61,7 +61,7 @@ export default class MainApplication extends BaseApplication
     camera.updateProjectionMatrix();
     camera.position.z = 10;
 
-    camera.clear_color.copy(new Color('#FFFFFF'));
+    camera.clear_color.copy(new Color('#181818'));
     camera.clear_alpha = 1;
     CameraManager.current = camera;
   }
