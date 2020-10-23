@@ -1,15 +1,10 @@
 import CameraViewState from './states/CameraViewState'
 import CameraDebugState from './states/CameraDebugState'
-// import CameraPanAndZoom from './states/CameraPanAndZoom'
-// import FreeMove from './states/FreeMove'
 import ImmediateMode from './movement_mode/ImmediateMode'
 
-// import EventManager from 'js/core/EventManager';
-// import RotateAndZoomAroundPoint from './movement_mode/RotateAndZoomAroundPoint'
 import CameraMovementMode from './movement_mode/CameraMovementMode'
 
 import {Input} from 'ohzi-core';
-import {CameraManager} from 'ohzi-core'
 import {Screen} from 'ohzi-core';
 
 export default class CameraController
@@ -330,7 +325,7 @@ export default class CameraController
     let distH = sphere.radius / Math.tan(h_fov);
     return Math.max(Math.abs(distH), Math.abs(distV));
 	}
-	focus_camera_on_points(points, zoom_scale, debug)
+	focus_camera_on_points(points, zoom_scale = 1, debug)
 	{
 		let points_sphere = new THREE.Sphere().setFromPoints(points);
 		let world_space_center = points_sphere.center;
@@ -396,10 +391,14 @@ export default class CameraController
 			// Debug.webgl.add( new THREE.PlaneHelper( plane, 5000, 0xffff00 ) );
 		}
 
-		this.reference_position.copy(projected_center.applyMatrix4(mat).sub(camera_forward.clone().multiplyScalar(points_sphere.radius)));
+		// this.reference_position.copy(projected_center.applyMatrix4(mat).sub(camera_forward.clone().multiplyScalar(points_sphere.radius)));
 
-		this.reference_zoom = this.__get_zoom_to_show_rect(size.x/2, size.y/2) + points_sphere.radius;
-		       
+		// this.reference_zoom = this.__get_zoom_to_show_rect(size.x/2, size.y/2) + points_sphere.radius;
+		      
+    return {
+      center: projected_center.applyMatrix4(mat).sub(camera_forward.clone().multiplyScalar(points_sphere.radius)),
+      distance: this.__get_zoom_to_show_rect(size.x/2, size.y/2) + points_sphere.radius
+    } 
 	}
 
 	get_current_tilt()
@@ -420,6 +419,5 @@ export default class CameraController
     let distV = height / Math.tan(v_fov);
     let distH = width / Math.tan(h_fov);
     return Math.max(Math.abs(distH), Math.abs(distV));
-
 	}
 }
