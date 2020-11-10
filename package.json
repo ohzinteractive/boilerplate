@@ -20,7 +20,7 @@
     ]
   },
   "dependencies": {
-    "ohzi-core": "^4.1.1",
+    "ohzi-core": "^4.7.2",
     "three": "^0.120.1"
   },
   "devDependencies": {

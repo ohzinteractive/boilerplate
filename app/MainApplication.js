@@ -6,7 +6,7 @@ import { NormalRender } from 'ohzi-core';
 import { Graphics } from 'ohzi-core';
 import { ResourceContainer } from 'ohzi-core';
 import { Debug } from 'ohzi-core';
-import { Components } from 'ohzi-core';
+import { Grid } from 'ohzi-core';
 import { SceneManager } from 'ohzi-core';
 
 import CameraController from '/js/components/CameraController/CameraController';
@@ -35,7 +35,7 @@ export default class MainApplication extends BaseApplication
     this.config = ResourceContainer.get_resource('config');
 
     Debug.draw_axis();
-    SceneManager.current.add(new Components.Grid());
+    SceneManager.current.add(new Grid());
 
     this.home_view = new HomeView();
     this.home_view.start();
