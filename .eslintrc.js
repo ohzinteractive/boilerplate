@@ -7,9 +7,7 @@ module.exports = {
     'globals': {
         'Atomics': 'readonly',
         'SharedArrayBuffer': 'readonly',
-        'ViewApi': 'readonly',
-        '$': 'readonly',
-        'Cesium': 'readonly'
+        'ViewApi': 'readonly'
     },
     'parserOptions': {
         'ecmaVersion': 2020,
