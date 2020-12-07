@@ -16,12 +16,10 @@ window.ViewApi = {
   init: (parameters) =>
   {
     let body = document.querySelector('body');
-    let canvas = document.getElementById('main-canvas');
+    let canvas_container = document.querySelector('.canvas-container');
+    let canvas = document.querySelector('.main-canvas');
 
-    Configuration.is_mobile = parameters.is_mobile;
-    Configuration.is_ios = parameters.is_ios;
-    Configuration.is_ipad = parameters.is_ipad;
-
+    Configuration.dpr = window.devicePixelRatio;
     Graphics.init(canvas);
 
     Input.init(body, canvas);
