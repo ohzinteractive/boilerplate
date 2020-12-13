@@ -20,8 +20,8 @@
     ]
   },
   "dependencies": {
-    "ohzi-core": "^4.7.4",
-    "three": "^0.120.1"
+    "ohzi-core": "^4.10.0",
+    "three": "^0.123.0"
   },
   "devDependencies": {
     "acorn": "^7.4.1",
