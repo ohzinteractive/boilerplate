@@ -1,4 +1,4 @@
-import CameraViewState from '../states/CameraViewState';
+import CameraViewState from './CameraViewState';
 
 import { Input }  from 'ohzi-core';
 import { CameraUtilities } from 'ohzi-core';

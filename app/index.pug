@@ -13,22 +13,20 @@ html
     link(rel="icon", type="image/png", href="assets/images/common/favicon.png")
     link(href='css/application.scss', rel="stylesheet")
 
-    //- script(src="libs/dat.gui.min.js")
-
     include views/common/conversions
 
   body#body
     include views/common/author
     include views/loader/loader
 
-    .canvas-container
-      .app-canvas
+    .container 
+      .canvas-container
         canvas.main-canvas
 
-    include views/home/home
+      include views/home/home
 
-    .reusable-elements
+      .reusable-elements
 
-    script(src='api.js')
+    script(src='js/api.js')
     script(src='libs/main.js')
     //- script(src="libs/ui_datgui.js")

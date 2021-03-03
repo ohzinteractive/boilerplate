@@ -1,12 +1,3 @@
-import CameraViewState from './states/CameraViewState';
-import CameraDebugState from './states/CameraDebugState';
-// import CameraPanAndZoom from './states/CameraPanAndZoom'
-// import FreeMove from './states/FreeMove'
-import ImmediateMode from './movement_mode/ImmediateMode';
-
-// import EventManager from 'js/core/EventManager';
-// import RotateAndZoomAroundPoint from './movement_mode/RotateAndZoomAroundPoint'
-// import CameraMovementMode from './movement_mode/CameraMovementMode';
 
 import { Screen } from 'ohzi-core';
 import { Debug } from 'ohzi-core';
@@ -22,6 +13,16 @@ import { Sphere } from 'three';
 import { Matrix4 } from 'three';
 import { Box3 } from 'three';
 import { Math as TMath } from 'three';
+import ImmediateMode from './movement_mode/ImmediateMode';
+import CameraDebugState from './states/CameraDebugState';
+import CameraViewState from './states/CameraViewState';
+
+// import CameraPanAndZoom from './states/CameraPanAndZoom'
+// import FreeMove from './states/FreeMove'
+
+// import EventManager from 'js/core/EventManager';
+// import RotateAndZoomAroundPoint from './movement_mode/RotateAndZoomAroundPoint'
+// import CameraMovementMode from './movement_mode/CameraMovementMode';
 
 export default class CameraController
 {

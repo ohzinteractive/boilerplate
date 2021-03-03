@@ -34,6 +34,7 @@ body {
     height: 100%;
 
     position: fixed;
+    touch-action: manipulation;
 }
 
 body {
@@ -48,30 +49,9 @@ body {
     overflow: hidden;
 }
 
-main {
-    flex: 1 0 auto;
-}
-
-canvas {
-    position: relative;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    // pointer-events: none;
-}
-
 a {
     color: $primary-color;
     text-decoration: none;
-}
-
-.canvas-container {
-    display: flex;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    touch-action: none;
 }
 
 div.hidden {

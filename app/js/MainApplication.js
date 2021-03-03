@@ -9,10 +9,9 @@ import { Debug } from 'ohzi-core';
 import { Grid } from 'ohzi-core';
 import { SceneManager } from 'ohzi-core';
 
-import CameraController from '/js/components/CameraController/CameraController';
-import HomeView from './js/html_components/HomeView';
-
 import { Color } from 'three';
+import CameraController from './camera_controller/CameraController';
+import HomeView from './views/HomeView';
 
 export default class MainApplication extends BaseApplication
 {
