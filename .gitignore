@@ -29,8 +29,6 @@ tmp/
 public/
 dist/
 
-package-lock.json
-
 # Bower stuff.
 bower_components/
 *.zip
