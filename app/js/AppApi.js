@@ -5,7 +5,7 @@ import { EventManager } from 'ohzi-core';
 import { Debug } from 'ohzi-core';
 import { Initializer } from 'ohzi-core';
 import { ResourceContainer } from 'ohzi-core';
-import Loader from './loader';
+import Loader from './Loader';
 
 // APP
 import MainApplication from './MainApplication';
