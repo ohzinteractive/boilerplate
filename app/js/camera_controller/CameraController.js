@@ -1,28 +1,23 @@
+import CameraViewState from './states/CameraViewState';
+import ImmediateMode from './movement_mode/ImmediateMode';
 
 import { Screen } from 'ohzi-core';
 import { Debug } from 'ohzi-core';
 import { MathUtilities } from 'ohzi-core';
-import { ArrayUtilities } from 'ohzi-core';
 import { SceneManager } from 'ohzi-core';
+import { PerspectiveFrustumPointFitter } from 'ohzi-core';
+import { OrthographicFrustumPointFitter } from 'ohzi-core';
 
 import { Vector3 } from 'three';
 import { Quaternion } from 'three';
 import { PlaneHelper } from 'three';
 import { Plane } from 'three';
 import { Sphere } from 'three';
-import { Matrix4 } from 'three';
 import { Box3 } from 'three';
+import { Ray } from 'three';
 import { Math as TMath } from 'three';
-import ImmediateMode from './movement_mode/ImmediateMode';
-import CameraDebugState from './states/CameraDebugState';
-import CameraViewState from './states/CameraViewState';
 
-// import CameraPanAndZoom from './states/CameraPanAndZoom'
-// import FreeMove from './states/FreeMove'
-
-// import EventManager from 'js/core/EventManager';
-// import RotateAndZoomAroundPoint from './movement_mode/RotateAndZoomAroundPoint'
-// import CameraMovementMode from './movement_mode/CameraMovementMode';
+import CameraStandardState from './states/CameraStandardState';
 
 export default class CameraController
 {
@@ -148,9 +143,9 @@ export default class CameraController
     return this.normalized_zoom < 0.2;
   }
 
-  set_debug_mode()
+  set_standard_mode()
   {
-    this.set_state(new CameraDebugState());
+    this.set_state(new CameraStandardState());
   }
 
   set_rotation(tilt, orientation)
@@ -364,67 +359,42 @@ export default class CameraController
     this.projection_sphere_helper.visible = true;
   }
 
-  focus_camera_on_points(points, zoom_scale = 1, debug)
+  focus_camera_on_points(points, zoom_scale = 1)
   {
-    let points_sphere = new Sphere().setFromPoints(points);
-    let world_space_center = points_sphere.center;
-    let camera_forward = new Vector3(0, 0, 1).applyQuaternion(this.reference_rotation);
-    // let near_plane = points_sphere.center.clone().add(camera_forward.clone().multiplyScalar(points_sphere.radius));
-
-    let far_pos =  this.camera.position.clone().add(camera_forward.clone().multiplyScalar(100));
-    let near_plane = ArrayUtilities.get_closest_point(points, far_pos).clone();
-
-    let plane = new Plane().setFromNormalAndCoplanarPoint(camera_forward, near_plane);
-    let points_on_plane = [];
-
-    // this.show_plane_projection(plane, points_sphere.radius*2);
-    // this.show_sphere_projection(points_sphere);
-    let _projected_points = [];
-
-    for (let i = 0; i < points.length; i++)
+    if (this.camera.isPerspectiveCamera)
     {
-      let projected_point = new Vector3();
+      let camera_forward_dir = new Vector3(0, 0, -1).applyQuaternion(this.reference_rotation);
+      let camera_backward_dir = camera_forward_dir.clone().multiplyScalar(-1);
 
-      plane.projectPoint(points[i], projected_point);
-      projected_point.copy(points[i]);
-      // let line = new Line3(points[i].clone(), this.camera.position.clone());
-      // plane.intersectLine(line, projected_point);
+      let fitter = new PerspectiveFrustumPointFitter();
 
-      points_on_plane.push(projected_point.clone());
-      _projected_points.push(projected_point.clone());
+      let aspect_ratio = Screen.aspect_ratio;
+
+      let camera_pos = fitter.fit_points(points, this.reference_rotation, this.camera.fov * zoom_scale, aspect_ratio);
+      let box = new Box3().setFromPoints(points);
+      let center = new Vector3();
+      box.getCenter(center);
+
+      let reference_position_plane = new Plane().setFromNormalAndCoplanarPoint(camera_backward_dir, center);
+
+      let camera_ray = new Ray(camera_pos, camera_forward_dir);
+
+      let reference_position = new Vector3();
+      camera_ray.intersectPlane(reference_position_plane, reference_position);
+
+      let zoom = camera_pos.distanceTo(reference_position);
+
+      this.reference_zoom = zoom;
+      this.reference_position.copy(reference_position);
     }
-
-    this.show_projected_points(_projected_points);
-
-    let up = new Vector3(0, 1, 0).applyQuaternion(this.reference_rotation);
-    let right = up.clone().cross(camera_forward).normalize();
-
-    let mat = new Matrix4().set(right.x, up.x, camera_forward.x, world_space_center.x,
-      right.y, up.y, camera_forward.y, world_space_center.y,
-      right.z, up.z, camera_forward.z, world_space_center.z,
-      0,    0,                0,        1);
-
-    let inverse_mat = new Matrix4().getInverse(mat);
-    // let inverse_mat = this.camera.matrixWorldInverse.clone();
-
-    for (let i = 0; i < points_on_plane.length; i++)
+    else
     {
-      points_on_plane[i].applyMatrix4(inverse_mat);
+      let fitter = new OrthographicFrustumPointFitter();
+      let result = fitter.fit_points(points, this.reference_rotation, this.camera.fov * zoom_scale, Screen.aspect_ratio);
+
+      this.reference_position.copy(result.center);
+      this.reference_zoom = result.distance_to_center;
     }
-
-    let size = new Vector3();
-    let box =  new Box3().setFromPoints(points_on_plane);
-    box.getSize(size);
-    // size.multiplyScalar(zoom_scale);
-
-    let projected_center = new Vector3();
-    box.getCenter(projected_center);
-
-    this.reference_position.copy(projected_center.applyMatrix4(mat).sub(camera_forward.clone().multiplyScalar(points_sphere.radius)));
-
-    // let zoom_scale_nofake = 1 + (zoom_scale-1)*2;
-    // this.reference_zoom = this.__get_zoom_to_show_rect((size.x/2)*zoom_scale_nofake, (size.y/2)*zoom_scale_nofake)+points_sphere.radius;
-    this.reference_zoom = this.__get_zoom_to_show_rect((size.x / 2), (size.y / 2), 1 + (1 - zoom_scale)) + points_sphere.radius;
   }
 
   get_current_tilt()

@@ -48,15 +48,8 @@ export default class Loader
   {
     this.loader.classList.add('hidden');
 
-    this.api.init();
     this.api.resource_loading_completed();
     this.api.start();
-
-    // TODO: Move this
-    window.addEventListener('orientationchange', function()
-    {
-      this.api.on_orientation_change();
-    });
   }
 
   check_resource_loading(batch, on_resources_loaded)

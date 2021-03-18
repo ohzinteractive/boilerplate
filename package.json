@@ -2,7 +2,7 @@
   "name": "ohzi-boilerplate",
   "description": "OHZI Boilerplate.",
   "author": "OHZI Interactive",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "dat.gui": "^0.7.7",
-    "ohzi-core": "^4.17.0"
+    "ohzi-core": "^5.0.3"
   },
   "devDependencies": {
     "acorn": "^7.4.1",
@@ -35,7 +35,7 @@
     "parcel-plugin-static-files-copy": "^2.3.1",
     "pug": "^2.0.4",
     "sass": "^1.26.3",
-    "standardx": "^5.0.0"
+    "standardx": "^7.0.0"
   },
   "staticFiles": {
     "staticPath": [

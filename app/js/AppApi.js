@@ -3,7 +3,8 @@ import { RenderLoop } from 'ohzi-core';
 import { Configuration } from 'ohzi-core';
 import { EventManager } from 'ohzi-core';
 import { Debug } from 'ohzi-core';
-import { Input } from 'ohzi-core';
+import { Initializer } from 'ohzi-core';
+import { ResourceContainer } from 'ohzi-core';
 import Loader from './loader';
 
 // APP
@@ -11,26 +12,20 @@ import MainApplication from './MainApplication';
 
 class AppApi
 {
-  constructor()
+  init()
   {
-    this.application = new MainApplication(Graphics);
+    this.application = new MainApplication();
 
     this.render_loop = new RenderLoop(this.application, Graphics);
     this.config = Configuration;
 
-    window.ViewApi = this;
-  }
-
-  init()
-  {
     let app_container = document.querySelector('.container');
     let canvas = document.querySelector('.main-canvas');
 
-    Graphics.init(canvas, { antialias: true });
+    Initializer.init(canvas, app_container, { antialias: true });
     Configuration.dpr = window.devicePixelRatio;
 
-    Input.init(app_container, canvas);
-    Debug.init(Graphics);
+    this.application.init(Graphics);
   }
 
   load(settings)
@@ -39,24 +34,21 @@ class AppApi
     window.ViewApi = this;
     window.settings = settings;
 
+    this.init();
+
     let loader = new Loader(this);
     loader.load();
   }
 
   dispose()
   {
-    this.render_loop.stop();
-    Graphics._renderer.dispose();
+    this.application.dispose();
+    Initializer.dispose(this.render_loop);
   }
 
   draw_debug_axis()
   {
     Debug.draw_axis();
-  }
-
-  on_orientation_change()
-  {
-
   }
 
   register_event(name, callback)
@@ -71,7 +63,12 @@ class AppApi
 
   set_resource(name, resource)
   {
-    this.ResourceContainer.set_resource(name, resource);
+    ResourceContainer.set_resource(name, resource);
+  }
+
+  set_settings(settings)
+  {
+    window.settings = settings;
   }
 
   start()

@@ -15,9 +15,8 @@ import HomeView from './views/HomeView';
 
 export default class MainApplication extends BaseApplication
 {
-  constructor(renderer)
+  init(renderer)
   {
-    super();
     this.renderer = renderer;
 
     this.camera_controller = new CameraController();
@@ -69,7 +68,7 @@ export default class MainApplication extends BaseApplication
   {
     this.camera_controller.set_camera(CameraManager.current);
     // this.camera_controller.set_idle();
-    this.camera_controller.set_debug_mode();
+    this.camera_controller.set_standard_mode();
 
     this.camera_controller.min_zoom = 1;
     this.camera_controller.max_zoom = 40;
