@@ -1,6 +1,8 @@
 import { ResourceContainer } from 'ohzi-core';
 import { ResourceBatch } from 'ohzi-core';
 
+import config from 'url:/app/assets/data/config.json';
+
 export default class Loader
 {
   constructor(api)
@@ -19,7 +21,7 @@ export default class Loader
 
     let batch = new ResourceBatch();
 
-    batch.add_json('config', 'data/config.json');
+    batch.add_json('config', config);
 
     batch.load(ResourceContainer);
 
