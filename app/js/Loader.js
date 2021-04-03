@@ -1,7 +1,7 @@
 import { ResourceContainer } from 'ohzi-core';
 import { ResourceBatch } from 'ohzi-core';
 
-import config from 'url:/app/assets/data/config.json';
+import config from 'url:/public/data/config.json';
 
 export default class Loader
 {

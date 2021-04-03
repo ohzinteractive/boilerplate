@@ -27,7 +27,7 @@ node_modules/
 tmp/
 
 # Parcel output folder.
-public/
+build/
 dist/
 
 # Bower stuff.
