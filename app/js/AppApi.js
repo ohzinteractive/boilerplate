@@ -80,6 +80,16 @@ class AppApi
   {
     this.render_loop.stop();
   }
+
+  take_screenshot(callback)
+  {
+    Graphics.take_screenshot(callback);
+  }
+
+  download_blob(blob)
+  {
+    Graphics.download_screenshot(blob);
+  }
 }
 
 const Api = new AppApi();
