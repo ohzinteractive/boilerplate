@@ -34,10 +34,6 @@ export default class MainApplication extends BaseApplication
     this.home_view.update();
   }
 
-  on_resize()
-  {
-  }
-
   on_post_start()
   {
   }

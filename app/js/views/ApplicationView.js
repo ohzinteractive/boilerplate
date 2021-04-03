@@ -17,10 +17,6 @@ export default class ApplicationView
   {
   }
 
-  on_resize()
-  {
-  }
-
   show()
   {
   }
