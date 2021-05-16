@@ -6,3 +6,6 @@
 
 ## Usage
 - `yarn start`
+
+## Update submodule
+- `git submodule update --remote`
