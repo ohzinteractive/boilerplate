@@ -15,8 +15,9 @@ class AppApi
   init()
   {
     this.application = new MainApplication();
+    this.loader = new Loader(this);
 
-    this.render_loop = new RenderLoop(this.application, Graphics);
+    this.render_loop = new RenderLoop(this.loader, Graphics);
     this.config = Configuration;
 
     let app_container = document.querySelector('.container');
@@ -36,8 +37,7 @@ class AppApi
 
     this.init();
 
-    let loader = new Loader(this);
-    loader.load();
+    this.loader.load();
   }
 
   dispose()
@@ -56,11 +56,6 @@ class AppApi
     EventManager.on(name, callback);
   }
 
-  resource_loading_completed()
-  {
-    this.application.resources_fully_loaded();
-  }
-
   set_resource(name, resource)
   {
     ResourceContainer.set_resource(name, resource);
@@ -69,6 +64,11 @@ class AppApi
   set_settings(settings)
   {
     window.settings = settings;
+  }
+
+  start_main_app()
+  {
+    this.render_loop.set_state(this.application);
   }
 
   start()

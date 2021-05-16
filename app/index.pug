@@ -17,9 +17,8 @@ html
 
   body#body
     include views/common/author
-    include views/loader/loader
 
-    .container 
+    .container
       .canvas-container
         canvas.main-canvas
 
@@ -27,5 +26,6 @@ html
 
       .reusable-elements
 
+      include views/loader/loader
+
     script(src='init.js')
-    //- script(src="libs/ui_datgui.js")
