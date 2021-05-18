@@ -1,5 +1,8 @@
 # OHZI Boilerplate
 
+## Requirements
+- Node v15+
+
 ## Install
 - `yarn install`
 - `git submodule update --init`
