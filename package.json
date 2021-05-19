@@ -7,7 +7,9 @@
   "scripts": {
     "start_tracker": "node start_tracker.js",
     "start": "parcel ./app/index.pug --no-cache",
-    "build": "rm -f -R dist && parcel build ./app/index.pug && cp -R public/* dist"
+    "build": "rm -f -R dist && parcel build ./app/index.pug && cp -R public/* dist",
+    "build_textures": "basisu",
+    "create_view": "node ./tasks/create_view/create_view.mjs"
   },
   "dependencies": {
     "dat.gui": "^0.7.7",
