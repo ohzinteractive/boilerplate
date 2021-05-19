@@ -40,7 +40,8 @@ export default class MainApplication extends BaseApplication
 
     DatGui.start();
 
-    this.go_to(ViewManager.get_view_by_url(window.location.pathname).name);
+    const next_view = ViewManager.get_view_by_url(window.location.pathname) || this.home_view.name;
+    this.go_to(next_view);
   }
 
   go_to(section)
