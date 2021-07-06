@@ -1,7 +1,7 @@
 # OHZI Boilerplate
 
 ## Requirements
-- Node v15+
+- Node v14+
 
 ## Install
 - `yarn install`
