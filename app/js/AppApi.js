@@ -31,11 +31,11 @@ class AppApi
 
   load(settings)
   {
+    this.init();
+
     window.app = this.application;
     window.ViewApi = this;
     window.settings = settings;
-
-    this.init();
 
     this.loader.load();
   }

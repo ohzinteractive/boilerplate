@@ -22,6 +22,8 @@ export default class Loader extends BaseApplication
     let batch = new ResourceBatch();
 
     batch.add_json('config', 'data/config.json', 2000);
+    batch.add_json('initial_state_data', 'data/initial_state_data.json', 1919);
+    batch.add_text('loader_data', 'data/loader.xml', 4250);
 
     batch.load(ResourceContainer);
 
@@ -39,7 +41,7 @@ export default class Loader extends BaseApplication
 
     // let config = ResourceContainer.get_resource('config');
 
-    ViewManager.set_initial_state_data({});
+    ViewManager.set_initial_state_data(ResourceContainer.get('initial_state_data'));
 
     this.initial_view = new InitialView();
     this.loader_view = new LoaderView(this.api);
@@ -54,6 +56,9 @@ export default class Loader extends BaseApplication
 
     // batch.add_texture('wood', 'textures/wood.jpg');
 
+    // __SECTIONS_DATA__
+    batch.add_text('home_data', 'data/home.xml', 4027);
+
     batch.load(ResourceContainer);
 
     this.check_resource_loading(batch, this.on_assets_ready.bind(this), 10);
@@ -61,6 +66,7 @@ export default class Loader extends BaseApplication
 
   on_assets_ready()
   {
+    this.loader_view.set_progress(1);
     this.loader_view.on_assets_ready();
   }
 
