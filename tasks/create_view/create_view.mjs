@@ -97,10 +97,10 @@ class ViewCreator
 
   __update_loader_file(name)
   {
-    let new_data = `__SECTIONS_DATA__\n    batch.add_text('${name}_data', 'data/${name}.xml', 1639);`;
+    let new_data = `__SECTIONS_DATA__\n    this.batch.add_text('${name}_data', 'data/${name}.xml', 1639);`;
 
     const options = {
-      files: path.join('app', 'js', 'GeneralLoader.js'),
+      files: path.join('app', 'js', 'loaders', 'GeneralLoader.js'),
       from: '__SECTIONS_DATA__',
       to: new_data
     };
@@ -286,7 +286,7 @@ class ViewCreator
 
     const options_4 = {
       files: path,
-      from: 'template_opacity',
+      from: /template_opacity/g,
       to: `${name}_opacity`
     };
 
