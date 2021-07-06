@@ -2,14 +2,15 @@
   "name": "ohzi-boilerplate",
   "description": "OHZI Boilerplate.",
   "author": "OHZI Interactive",
-  "version": "1.0.0",
+  "version": "5.10.0",
   "license": "MIT",
   "scripts": {
-    "start_tracker": "node start_tracker.js",
     "start": "parcel ./app/index.pug --no-cache",
-    "build": "rm -f -R dist && parcel build ./app/index.pug && cp -R public/* dist",
-    "build_textures": "basisu",
-    "create_view": "node ./tasks/create_view/create_view.mjs"
+    "start-tracker": "node start_tracker.js",
+    "build": "rm -f -R dist && parcel build ./app/index.pug --no-source-maps && cp -R public/* dist",
+    "basisu": "basisu",
+    "create-view": "node ./tasks/create_view/create_view.mjs",
+    "create-tag": "cross-var git tag -a \"v$npm_package_version\" -m \"Release Version $npm_package_version\" && cross-var git push origin \"v$npm_package_version\""
   },
   "dependencies": {
     "dat.gui": "^0.7.7",
