@@ -46,7 +46,13 @@ export default class TemplateView extends ApplicationView
   }
 
   // This method is called in every frame when the site is transitioning to this section.
-  update_transition(global_view_data, transition_progress, action_sequencer)
+  update_enter_transition(global_view_data, transition_progress, action_sequencer)
+  {
+    this.set_opacity(global_view_data.template_opacity);
+  }
+
+  // This method is called in every frame when the site is transitioning from this section.
+  update_exit_transition(global_view_data, transition_progress, action_sequencer)
   {
     this.set_opacity(global_view_data.template_opacity);
   }

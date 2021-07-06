@@ -98,7 +98,6 @@ export default class LoaderView extends ApplicationView
     if (process.env.NODE_ENV === 'development')
     {
       this.api.start_main_app();
-      this.set_progress(1);
     }
   }
 
@@ -111,6 +110,7 @@ export default class LoaderView extends ApplicationView
     this.progress_bar.style.transform = `translate3d(${this.current_progress * 100}%,0,0)`;
   }
 
+  // This method is called in every frame right after on_enter is called.
   update()
   {
     this.update_progress();
@@ -119,16 +119,25 @@ export default class LoaderView extends ApplicationView
     if (this.is_api_ready)
     {
       this.api.start_main_app();
+      this.set_progress(1);
     }
   }
 
-  update_transition(global_view_data, transition_progress, action_sequencer)
+  // This method is called in every frame when the site is transitioning to this section.
+  update_enter_transition(global_view_data, transition_progress, action_sequencer)
   {
     this.set_opacity(global_view_data.loader_opacity);
 
     this.update_progress();
     this.__compile_objects();
     this.__check_performance();
+  }
+
+  // This method is called in every frame when the site is transitioning from this section.
+  update_exit_transition(global_view_data, transition_progress, action_sequencer)
+  {
+    this.set_opacity(global_view_data.loader_opacity);
+    this.update_progress();
   }
 
   __check_performance()

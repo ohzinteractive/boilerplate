@@ -50,7 +50,12 @@ export default class InitialView extends ApplicationView
   }
 
   // This method is called in every frame when the site is transitioning to this section.
-  update_transition(global_view_data, transition_progress, action_sequencer)
+  update_enter_transition(global_view_data, transition_progress, action_sequencer)
+  {
+  }
+
+  // This method is called in every frame when the site is transitioning from this section.
+  update_exit_transition(global_view_data, transition_progress, action_sequencer)
   {
   }
 }
