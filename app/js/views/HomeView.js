@@ -1,5 +1,4 @@
 import { ApplicationView } from 'ohzi-core';
-import SceneController from '../components/SceneController';
 
 import { Sections, SectionsURLs } from './Sections';
 
