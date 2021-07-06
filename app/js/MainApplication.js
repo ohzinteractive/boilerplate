@@ -44,17 +44,13 @@ export default class MainApplication extends BaseApplication
     this.go_to(next_view.name);
   }
 
-  go_to(section)
+  go_to(section, skip = false)
   {
-    ViewManager.go_to_view(section);
+    ViewManager.go_to_view(section, true, skip);
   }
 
   update()
   {
     this.scene_controller.update();
-  }
-
-  on_post_start()
-  {
   }
 }

@@ -19,16 +19,14 @@ class ViewCreator
     let scss_folder = path.join('app', 'css', name);
     let scss_path = path.join(scss_folder, `_${name}.scss`);
 
-    this.__copy_template_js(js_path);
-    this.__replace_js_words(js_path, name);
-
+    this.__copy_template_js(js_path, name);
     this.__copy_template_data(data_path, name);
     this.__copy_template_pug(pug_folder, pug_path, name);
     this.__copy_template_scss(scss_folder, scss_path, name);
 
     this.__update_initial_data_file(name);
-    this.__update_application_scss_file(name);
     this.__update_index_pug_file(name);
+    this.__update_application_scss_file(name);
     this.__update_loader_file(name);
     this.__update_sections_file(name);
     this.__update_mainapp_file(name);
@@ -36,11 +34,11 @@ class ViewCreator
 
   __update_initial_data_file(name)
   {
-    let new_data = `"loader_opacity":0,\n    "${name}_opacity":0,`;
+    let new_data = `"loader_opacity": 0,\n    "${name}_opacity": 0,`;
 
     const options = {
       files: path.join('public', 'data', 'initial_state_data.json'),
-      from: '"loader_opacity":0,',
+      from: '"loader_opacity": 0,',
       to: new_data
     };
 
@@ -102,7 +100,7 @@ class ViewCreator
     let new_data = `__SECTIONS_DATA__\n    batch.add_text('${name}_data', 'data/${name}.xml', 1639);`;
 
     const options = {
-      files: path.join('app', 'js', 'Loader.js'),
+      files: path.join('app', 'js', 'GeneralLoader.js'),
       from: '__SECTIONS_DATA__',
       to: new_data
     };
@@ -110,7 +108,7 @@ class ViewCreator
     try
     {
       replace.sync(options);
-      console.log('\x1b[33m%s\x1b[0m', 'Loader.js Modified');
+      console.log('\x1b[33m%s\x1b[0m', 'GeneralLoader.js Modified');
     }
     catch (error)
     {
@@ -160,7 +158,7 @@ class ViewCreator
   __update_sections_file(name)
   {
     let new_section = `'initial',\n  ${name.toUpperCase()}: '${name.toLowerCase()}',`;
-    let new_section_url = `'/initial',\n  ${name.toUpperCase()}: '/${name.replace('_', '-')}',`;
+    let new_section_url = `'/initial',\n  ${name.toUpperCase()}: '/${name.replace(/_/g, '-')}',`;
 
     const options_1 = {
       files: path.join('app', 'js', 'views', 'Sections.js'),
@@ -186,12 +184,14 @@ class ViewCreator
     }
   }
 
-  __copy_template_js(new_view_path)
+  __copy_template_js(view_path, name)
   {
     fs.copyFileSync(
       path.join('tasks', 'create_view', 'TemplateView.js'),
-      new_view_path
+      view_path
     );
+
+    this.__replace_js_words(view_path, name);
   }
 
   __copy_template_data(data_path, name)
@@ -280,8 +280,14 @@ class ViewCreator
 
     const options_3 = {
       files: path,
-      from: /template/g,
-      to: name.replace('_', '-')
+      from: 'template',
+      to: name.replace(/_/g, '-')
+    };
+
+    const options_4 = {
+      files: path,
+      from: 'template_opacity',
+      to: `${name}_opacity`
     };
 
     try
@@ -289,6 +295,7 @@ class ViewCreator
       replace.sync(options_1);
       replace.sync(options_2);
       replace.sync(options_3);
+      replace.sync(options_4);
 
       console.log('\x1b[32m', `${this.capitalize(name)}View.js Created`);
     }
@@ -303,7 +310,7 @@ class ViewCreator
     const options = {
       files: path,
       from: 'template',
-      to: `${name.replace('_', '-')}`
+      to: `${name.replace(/_/g, '-')}`
     };
 
     try
@@ -323,7 +330,7 @@ class ViewCreator
     const options = {
       files: path,
       from: 'template',
-      to: `${name.replace('_', '-')}`
+      to: `${name.replace(/_/g, '-')}`
     };
 
     try

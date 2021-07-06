@@ -2,6 +2,9 @@ import { BaseApplication } from 'ohzi-core';
 import { ResourceContainer } from 'ohzi-core';
 import { ResourceBatch } from 'ohzi-core';
 import { ViewManager } from 'ohzi-core';
+import { MathUtilities } from 'ohzi-core';
+
+import GeneralLoader from './loaders/GeneralLoader';
 
 import InitialView from './views/InitialView';
 import LoaderView from './views/LoaderView';
@@ -11,10 +14,15 @@ export default class Loader extends BaseApplication
   constructor(api)
   {
     super();
-    this.loader_view = undefined;
-    this.second_step = false;
 
     this.api = api;
+    this.loader_view = undefined;
+
+    this.loaders = [];
+    this.current_loader = undefined;
+    this.current_loader_index = 0;
+
+    this.second_step = false;
   }
 
   load()
@@ -27,12 +35,26 @@ export default class Loader extends BaseApplication
 
     batch.load(ResourceContainer);
 
-    this.check_resource_loading(batch, this.on_loader_ready.bind(this), 10);
+    this.check_resource_loading(batch, this.on_config_ready.bind(this), 10);
   }
 
   on_enter()
   {
     this.loader_view.start();
+  }
+
+  on_config_ready()
+  {
+    this.initial_view = new InitialView();
+    this.loader_view = new LoaderView(this.api);
+
+    ViewManager.set_initial_state_data(ResourceContainer.get('initial_state_data'));
+    ViewManager.set_view(this.initial_view.name);
+
+    // Start render loop
+    this.api.start();
+
+    this.on_loader_ready();
   }
 
   on_loader_ready()
@@ -41,42 +63,24 @@ export default class Loader extends BaseApplication
 
     // let config = ResourceContainer.get_resource('config');
 
-    ViewManager.set_initial_state_data(ResourceContainer.get('initial_state_data'));
-
-    this.initial_view = new InitialView();
-    this.loader_view = new LoaderView(this.api);
-
-    ViewManager.set_view(this.initial_view.name);
     ViewManager.go_to_view(this.loader_view.name, false);
 
-    // Start render loop
-    this.api.start();
+    this.loaders.push(new GeneralLoader(ResourceContainer));
 
-    let batch = new ResourceBatch();
-
-    // batch.add_texture('wood', 'textures/wood.jpg');
-
-    // __SECTIONS_DATA__
-    batch.add_text('home_data', 'data/home.xml', 4027);
-
-    batch.load(ResourceContainer);
-
-    this.check_resource_loading(batch, this.on_assets_ready.bind(this), 10);
+    this.current_loader = this.loaders[this.current_loader_index];
+    this.current_loader.load();
   }
 
   on_assets_ready()
   {
-    this.loader_view.set_progress(1);
+    this.second_step = false;
+    // this.loader_view.set_progress(1);
     this.loader_view.on_assets_ready();
   }
 
   check_resource_loading(batch, on_resources_loaded, timeout)
   {
     // console.log(batch.get_progress(), batch.get_loaded_bytes(), batch.get_total_bytes());
-    if (this.second_step)
-    {
-      this.loader_view.set_progress(batch.get_progress());
-    }
 
     if (batch.loading_finished)
     {
@@ -100,6 +104,56 @@ export default class Loader extends BaseApplication
 
   update()
   {
-    // SceneController.update();
+    if (this.second_step)
+    {
+      const progress = MathUtilities.linear_map(
+        this.__get_progress(),
+        0, 1,
+        0, 0.8
+      );
+
+      this.loader_view.set_progress(progress);
+
+      if (this.current_loader.batch.loading_finished)
+      {
+        if (this.current_loader.batch.has_errors)
+        {
+          this.current_loader.batch.print_errors();
+        }
+        else
+        {
+          this.__on_current_loader_finished();
+        }
+      }
+    }
+  }
+
+  __on_current_loader_finished()
+  {
+    this.current_loader_index++;
+
+    if (this.current_loader_index < this.loaders.length)
+    {
+      this.current_loader = this.loaders[this.current_loader_index];
+      this.current_loader.load();
+    }
+    else
+    {
+      this.on_assets_ready();
+    }
+  }
+
+  __get_progress()
+  {
+    let progress = 0;
+
+    for (let i = 0; i < this.loaders.length; i++)
+    {
+      const loader = this.loaders[i];
+
+      progress += loader.batch.get_progress();
+    }
+
+    return progress / this.loaders.length;
   }
 }

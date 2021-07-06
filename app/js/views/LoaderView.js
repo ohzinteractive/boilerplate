@@ -2,6 +2,7 @@ import { ApplicationView } from 'ohzi-core';
 import { Graphics } from 'ohzi-core';
 import { Time } from 'ohzi-core';
 import { Configuration } from 'ohzi-core';
+import { MathUtilities } from 'ohzi-core';
 
 import { Sections, SectionsURLs } from './Sections';
 
@@ -42,6 +43,7 @@ export default class LoaderView extends ApplicationView
     this.objects = [];
   }
 
+  // This method is called one time at the beginning of the app execution.
   start()
   {
     // SceneController.on_loader_loaded();
@@ -51,11 +53,24 @@ export default class LoaderView extends ApplicationView
     this.set_progress(0);
   }
 
+  // This method is called one time before the transition to this section is started.
+  before_enter()
+  {
+  }
+
+  // This method is called one time after the transition to this section is finished.
   on_enter()
   {
     super.on_enter();
   }
 
+  // This method is called one time before the transition to the next section is started.
+  before_exit()
+  {
+    super.before_exit();
+  }
+
+  // This method is called one time after this section is completely hidden.
   on_exit()
   {
     super.on_exit();
@@ -75,13 +90,15 @@ export default class LoaderView extends ApplicationView
   on_assets_ready()
   {
     // Optionally compile objects during loading
-    // this.objects = ?
+    // Field.set_textures();
+    // this.objects = Field.get_objects();
 
     this.is_assets_ready = true;
 
     if (process.env.NODE_ENV === 'development')
     {
       this.api.start_main_app();
+      this.set_progress(1);
     }
   }
 
@@ -89,6 +106,7 @@ export default class LoaderView extends ApplicationView
   {
     // this.progress = this.target_progress + this.round((transition_progress / 3) * 2, 2);
     this.current_progress += (this.target_progress - this.current_progress) * 0.05;
+    this.current_progress = TMath.clamp(this.current_progress, 0, 1);
 
     this.progress_bar.style.transform = `translate3d(${this.current_progress * 100}%,0,0)`;
   }
@@ -104,9 +122,9 @@ export default class LoaderView extends ApplicationView
     }
   }
 
-  update_transition(global_view_data, transition_progress)
+  update_transition(global_view_data, transition_progress, action_sequencer)
   {
-    // this.set_opacity(global_view_data.loader_opacity);
+    this.set_opacity(global_view_data.loader_opacity);
 
     this.update_progress();
     this.__compile_objects();
@@ -133,45 +151,56 @@ export default class LoaderView extends ApplicationView
       let scene = new Scene();
       this.compilation_t += Time.delta_time;
 
-      if (this.compilation_t >= 0 && this.compilation_index < this.objects.length)
+      if (this.compilation_index < this.objects.length)
       {
-        scene.add(new Mesh(this.objects[this.compilation_index].geometry, this.objects[this.compilation_index].material));
-        this.compilation_t = 0;
+        // console.log(this.compilation_index, this.objects.length);
+        const progress = MathUtilities.linear_map(
+          this.compilation_index,
+          0, 21,
+          0.8, 1
+        );
 
-        // 3: Shaders
-        if (!this.mesh_compiled && this.ao_initialized)
+        this.set_progress(progress);
+        if (this.compilation_t >= 0.025)
         {
-          Graphics._renderer.compile(scene, new OrthographicCamera(-1000, 1000, 1000, -1000, -1000, 1000));
-          this.mesh_compiled = true;
-        }
+          scene.add(new Mesh(this.objects[this.compilation_index].geometry, this.objects[this.compilation_index].material));
+          this.compilation_t = 0;
 
-        // 2: Ambient Occlusion
-        if (!this.ao_initialized && this.texture_initialized)
-        {
-          // Graphics._renderer.initTexture(this.objects[this.compilation_index].material.aoMap);
-          this.ao_initialized = true;
-        }
-
-        // 1: Emissive map
-        if (!this.texture_initialized)
-        {
-          if (this.objects[this.compilation_index].material.emissiveMap)
+          // 3: Shaders
+          if (!this.mesh_compiled && this.ao_initialized)
           {
-            Graphics._renderer.initTexture(this.objects[this.compilation_index].material.emissiveMap);
+            Graphics._renderer.compile(scene, new OrthographicCamera(-1000, 1000, 1000, -1000, -1000, 1000));
+            this.mesh_compiled = true;
           }
-          this.texture_initialized = true;
-        }
 
-        scene.remove(this.objects[this.compilation_index]);
+          // 2: Ambient Occlusion
+          if (!this.ao_initialized && this.texture_initialized)
+          {
+            // Graphics._renderer.initTexture(this.objects[this.compilation_index].material.aoMap);
+            this.ao_initialized = true;
+          }
+          // 1: map
+          if (!this.texture_initialized)
+          {
+            if (this.objects[this.compilation_index].material.map)
+            {
+              Graphics._renderer.initTexture(this.objects[this.compilation_index].material.map);
+            }
+            this.texture_initialized = true;
+          }
 
-        if (this.texture_initialized && this.ao_initialized && this.mesh_compiled)
-        {
-          this.compilation_index++;
-          this.texture_initialized = false;
-          this.ao_initialized = false;
-          this.mesh_compiled = false;
+          scene.remove(this.objects[this.compilation_index]);
+
+          if (this.texture_initialized && this.ao_initialized && this.mesh_compiled)
+          {
+            this.compilation_index++;
+            this.texture_initialized = false;
+            this.ao_initialized = false;
+            this.mesh_compiled = false;
+          }
         }
       }
+
       else
       {
         this.set_api_ready(true);

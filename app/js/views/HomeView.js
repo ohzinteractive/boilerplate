@@ -1,4 +1,5 @@
 import { ApplicationView } from 'ohzi-core';
+import SceneController from '../components/SceneController';
 
 import { Sections, SectionsURLs } from './Sections';
 
@@ -26,11 +27,13 @@ export default class HomeView extends ApplicationView
   // This method is called one time after the transition to this section is finished.
   on_enter()
   {
+    super.on_enter();
   }
 
   // This method is called one time before the transition to the next section is started.
   before_exit()
   {
+    super.before_exit();
   }
 
   // This method is called one time after this section is completely hidden.
@@ -44,7 +47,7 @@ export default class HomeView extends ApplicationView
   }
 
   // This method is called in every frame when the site is transitioning to this section.
-  update_transition(global_view_data, transition_progress)
+  update_transition(global_view_data, transition_progress, action_sequencer)
   {
   }
 }

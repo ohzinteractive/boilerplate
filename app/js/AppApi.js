@@ -7,6 +7,8 @@ import { Initializer } from 'ohzi-core';
 import { ResourceContainer } from 'ohzi-core';
 import Loader from './Loader';
 
+import package_json from '../../package.json';
+
 // APP
 import MainApplication from './MainApplication';
 
@@ -23,7 +25,8 @@ class AppApi
     let app_container = document.querySelector('.container');
     let canvas = document.querySelector('.main-canvas');
 
-    Initializer.init(canvas, app_container, { antialias: true });
+    Initializer.init(canvas, app_container, { antialias: true, force_webgl2: true });
+    // Configuration.dpr = 1;
     Configuration.dpr = window.devicePixelRatio;
 
     this.application.init(Graphics);
@@ -36,6 +39,8 @@ class AppApi
     window.app = this.application;
     window.ViewApi = this;
     window.settings = settings;
+    window.author = 'OHZI INTERACTIVE';
+    window.version = package_json.version;
 
     this.loader.load();
   }
