@@ -7,7 +7,7 @@ import { Initializer } from 'ohzi-core';
 import { ResourceContainer } from 'ohzi-core';
 import Loader from './Loader';
 
-import package_json from '../../package.json';
+import package_json from '../package.json';
 
 // APP
 import MainApplication from './MainApplication';
