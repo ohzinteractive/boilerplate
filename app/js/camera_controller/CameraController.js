@@ -2,17 +2,17 @@ import CameraViewState from './states/CameraViewState';
 import ImmediateMode from './movement_mode/ImmediateMode';
 
 import { Screen } from 'ohzi-core';
-import { Debug } from 'ohzi-core';
+// import { Debug } from 'ohzi-core';
 import { MathUtilities } from 'ohzi-core';
-import { SceneManager } from 'ohzi-core';
+// import { SceneManager } from 'ohzi-core';
 import { PerspectiveFrustumPointFitter } from 'ohzi-core';
 import { OrthographicFrustumPointFitter } from 'ohzi-core';
 
 import { Vector3 } from 'three';
 import { Quaternion } from 'three';
-import { PlaneHelper } from 'three';
+// import { PlaneHelper } from 'three';
 import { Plane } from 'three';
-import { Sphere } from 'three';
+// import { Sphere } from 'three';
 import { Box3 } from 'three';
 import { Ray } from 'three';
 import { Math as TMath } from 'three';
@@ -63,20 +63,18 @@ export default class CameraController
     // this.debug_box = Debug.draw_cube(undefined,15);
     // this.debug_zoom_box = Debug.draw_sphere(undefined,15, 0x00ff00);
 
-    this.projected_points = [];
-    for (let i = 0; i < 30; i++)
-    {
-      this.projected_points.push(Debug.draw_sphere(undefined, 0.5, 0x00ff00));
-    }
-    this.hide_projected_points();
-    this.projection_plane_helper = new PlaneHelper(new Plane(), 1, 0xff00);
-    this.projection_plane_helper.visible = false;
-    SceneManager.current.add(this.projection_plane_helper);
+    this.raised_look_at_position = new Vector3(-82.2986094900191, 0, 39.7538467209173);
+    this.use_raised_look_at_direction = 0;
+  }
 
-    this.projection_sphere_helper = Debug.draw_sphere_helper(new Sphere(), 0xff0000);
-    this.projection_sphere_helper.material.transparent = true;
-    this.projection_sphere_helper.material.opacity = 0.3;
-    this.projection_sphere_helper.visible = false;
+  enable()
+  {
+    this.input_enabled = true;
+  }
+
+  disable()
+  {
+    this.input_enabled = false;
   }
 
   set_camera(camera)
@@ -116,6 +114,11 @@ export default class CameraController
     this.normalized_zoom = TMath.clamp(this.normalized_zoom, 0, 1);
 
     // EventManager.fire_zoom_changed(this.normalized_zoom);
+  }
+
+  update_initial_rotation()
+  {
+    this.current_state.update_initial_rotation();
   }
 
   update()
@@ -169,7 +172,7 @@ export default class CameraController
 
   set_rotation_delta(delta_x, delta_y)
   {
-    this.current_orientation = (this.current_orientation + delta_x) % 360;
+    this.current_orientation = MathUtilities.mod(this.current_orientation + delta_x,  360);
     this.current_tilt += delta_y;
 
     this.set_rotation(this.current_tilt, this.current_orientation);
@@ -177,7 +180,6 @@ export default class CameraController
 
   lerp_rotation(from_tilt, to_tilt, from_orientation, to_orientation, t)
   {
-    let raw_orientation = TMath.lerp(from_orientation, to_orientation, t);
     if (Math.abs(to_orientation - from_orientation) > 180)
     {
       if (from_orientation > 180)
@@ -191,8 +193,13 @@ export default class CameraController
     }
 
     this.set_rotation(TMath.lerp(from_tilt, to_tilt, t), TMath.lerp(from_orientation, to_orientation, t));
+    // let from_quat = this.build_rotation(from_tilt, from_orientation)
+    // let to_quat   = this.build_rotation(to_tilt, to_orientation)
 
-    this.current_orientation = raw_orientation;
+    // this.reference_rotation.copy(from_quat).slerp(to_quat, t);
+
+    this.current_tilt = TMath.lerp(from_tilt, to_tilt, t);
+    this.current_orientation = TMath.lerp(from_orientation, to_orientation, t);
   }
 
   build_rotation(tilt, orientation)
@@ -207,8 +214,8 @@ export default class CameraController
   {
     this.tmp_forward.copy(this.vector_forward_axis);
     this.tmp_forward.applyQuaternion(this.camera.quaternion);
-    this.tmp_forward.y = 0;
-    this.tmp_forward.normalize();
+    // this.tmp_forward.y = 0;
+    // this.tmp_forward.normalize();
     this.reference_position.add(this.tmp_forward.multiplyScalar(amount));
   }
 
