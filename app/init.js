@@ -1,3 +1,3 @@
-import { Api } from './js/AppApi';
+import { Api } from './js/Api';
 
 Api.load();

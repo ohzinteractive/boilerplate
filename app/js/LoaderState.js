@@ -9,7 +9,7 @@ import GeneralLoader from './loaders/GeneralLoader';
 import InitialView from './views/InitialView';
 import LoaderView from './views/LoaderView';
 
-export default class Loader extends BaseApplication
+export default class LoaderState extends BaseApplication
 {
   constructor(api)
   {

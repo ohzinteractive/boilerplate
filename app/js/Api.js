@@ -5,19 +5,19 @@ import { EventManager } from 'ohzi-core';
 import { Debug } from 'ohzi-core';
 import { Initializer } from 'ohzi-core';
 import { ResourceContainer } from 'ohzi-core';
-import Loader from './Loader';
 
-import package_json from '../package.json';
+import package_json from '../../package.json';
+import LoaderState from './LoaderState';
 
 // APP
 import MainApplication from './MainApplication';
 
-class AppApi
+class Api
 {
   init()
   {
     this.application = new MainApplication();
-    this.loader = new Loader(this);
+    this.loader = new LoaderState(this);
 
     this.render_loop = new RenderLoop(this.loader, Graphics);
     this.config = Configuration;
@@ -97,5 +97,5 @@ class AppApi
   }
 }
 
-const Api = new AppApi();
-export { Api, ResourceBatch };
+const api = new Api();
+export { api as Api, ResourceBatch };

@@ -1,4 +1,9 @@
 {
+  "name": "ohzi-boilerplate",
+  "description": "OHZI Boilerplate.",
+  "author": "OHZI Interactive",
+  "version": "5.10.0",
+  "license": "MIT",
   "scripts": {
     "start": "parcel ./app/index.pug --no-cache",
     "start-tracker": "node start_tracker.js",
@@ -7,6 +12,21 @@
     "create-view": "node ./tasks/create_view/create_view.mjs",
     "create-tag": "cross-var git tag -a \"v$npm_package_version\" -m \"Release Version $npm_package_version\" && cross-var git push origin \"v$npm_package_version\""
   },
+  "dependencies": {
+    "dat.gui": "^0.7.7",
+    "ohzi-core": "^5.10.0"
+  },
+  "devDependencies": {
+    "@parcel/transformer-glsl": "2.0.0-beta.3.1",
+    "@parcel/transformer-image": "2.0.0-beta.3.1",
+    "@parcel/transformer-pug": "2.0.0-beta.3.1",
+    "@parcel/transformer-sass": "2.0.0-beta.3.1",
+    "basisu": "^1.2.1",
+    "parcel": "2.0.0-beta.3.1",
+    "replace-in-file": "^6.2.0",
+    "serve-static": "^1.14.1",
+    "standardx": "^7.0.0"
+  },
   "private": true,
-  "workspaces": ["app", "core"]
+  "workspaces": ["core"]
 }
