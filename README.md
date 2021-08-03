@@ -16,7 +16,7 @@
 10. `git add .`
 11. `git commit -m "first commit"`
 12. `git branch -M main`
-13. `git remote add origin git@github.com:ohzinteractive/legendary-parakeet.git`
+13. `git remote add origin git@github.com:ohzinteractive/...` 
 14. `git push -u origin main`
 
 ## Usage
