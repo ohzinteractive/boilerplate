@@ -6,11 +6,11 @@
 ## Install
 - `yarn install`
 
-## Install core submodule (optional but highly recommended)
+## Install core submodule
 - `git submodule add https://github.com/ohzinteractive/core core`
 - `git submodule update --init`
 
-## Set core hooks (optional)
+## Set core hooks
 - `cd core && git config core.hooksPath git_hooks`
 
 ## Usage
