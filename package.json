@@ -7,7 +7,7 @@
   "scripts": {
     "start": "parcel ./app/index.pug --no-cache",
     "start-tracker": "node start_tracker.js",
-    "build": "rm -f -R dist && parcel build ./app/index.pug --no-source-maps && cp -R public/* dist",
+    "build": "rm -f -R dist && parcel build ./app/index.pug --no-source-maps --no-cache && cp -R public/* dist",
     "basisu": "basisu",
     "create-view": "node ./tasks/create_view/create_view.mjs",
     "create-tag": "cross-var git tag -a \"v$npm_package_version\" -m \"Release Version $npm_package_version\" && cross-var git push origin \"v$npm_package_version\""
