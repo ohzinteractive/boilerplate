@@ -10,7 +10,7 @@
 3. Go to the new folder in a terminal and run the following commands:
 5. `yarn install`
 6. `git init` 
-7. `git submodule add https://github.com/ohzinteractive/core core`
+7. `git submodule add git@github.com:ohzinteractive/core.git core`
 8. `git submodule update --init`
 9. `cd core && git config core.hooksPath git_hooks && cd ..`
 10. `git add .`
