@@ -7,7 +7,7 @@ import { MathUtilities } from 'ohzi-core';
 import GeneralLoader from './loaders/GeneralLoader';
 
 import InitialView from './views/InitialView';
-import LoaderView from './views/LoaderView';
+import LoaderView from './views/loader/LoaderView';
 
 export default class LoaderState extends BaseApplication
 {

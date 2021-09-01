@@ -6,9 +6,4 @@ export default class HomeView extends HomeViewBase
   {
     super();
   }
-
-  custom_method()
-  {
-
-  }
 }
