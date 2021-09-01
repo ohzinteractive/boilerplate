@@ -6,7 +6,7 @@ import { ViewManager } from 'ohzi-core';
 
 import DatGui from './components/DatGui';
 import SceneController from './components/SceneController';
-import HomeView from './views/HomeView';
+import HomeView from './views/home/HomeView';
 
 import { sRGBEncoding } from 'three';
 
