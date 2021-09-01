@@ -53,7 +53,7 @@ class ViewCreator
     try
     {
       replace.sync(options);
-      console.log('\x1b[33m%s\x1b[0m', `${file_path} Modified`);
+      console.log('\x1b[33m', `${file_path} Modified`);
     }
     catch (error)
     {
@@ -75,7 +75,7 @@ class ViewCreator
     try
     {
       replace.sync(options);
-      console.log('\x1b[33m%s\x1b[0m', `${file_path} Modified`);
+      console.log('\x1b[33m', `${file_path} Modified`);
     }
     catch (error)
     {
@@ -97,7 +97,7 @@ class ViewCreator
     try
     {
       replace.sync(options);
-      console.log('\x1b[33m%s\x1b[0m', `${file_path} Modified`);
+      console.log('\x1b[33m', `${file_path} Modified`);
     }
     catch (error)
     {
@@ -119,7 +119,7 @@ class ViewCreator
     try
     {
       replace.sync(options);
-      console.log('\x1b[33m%s\x1b[0m', `${file_path} Modified`);
+      console.log('\x1b[33m', `${file_path} Modified`);
     }
     catch (error)
     {
@@ -159,7 +159,7 @@ class ViewCreator
       replace.sync(options_1);
       replace.sync(options_2);
       replace.sync(options_3);
-      console.log('\x1b[33m%s\x1b[0m', `${file_path} Modified`);
+      console.log('\x1b[33m', `${file_path} Modified`);
     }
     catch (error)
     {
@@ -189,7 +189,7 @@ class ViewCreator
     {
       replace.sync(options_1);
       replace.sync(options_2);
-      console.log('\x1b[33m%s\x1b[0m', `${file_path} Modified`);
+      console.log('\x1b[33m', `${file_path} Modified`);
     }
     catch (error)
     {
