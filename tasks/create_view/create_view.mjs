@@ -10,7 +10,11 @@ class ViewCreator
 
   create_view(name)
   {
-    let js_path = path.join('app', 'js', 'views', `${this.capitalize(name)}View.js`);
+    let js_folder = path.join('app', 'js', 'views', name);
+    let js_base_path = path.join(js_folder, `${this.capitalize(name)}ViewBase.js`);
+    let js_scene_path = path.join(js_folder, `${this.capitalize(name)}Scene.js`);
+    let js_view_path = path.join(js_folder, `${this.capitalize(name)}View.js`);
+
     let data_path = path.join('public', 'data', `${name}.xml`);
 
     let pug_folder = path.join('app', 'views', name);
@@ -19,7 +23,10 @@ class ViewCreator
     let scss_folder = path.join('app', 'css', name);
     let scss_path = path.join(scss_folder, `_${name}.scss`);
 
-    this.__copy_template_js(js_path, name);
+    this.__copy_template_js(js_folder, js_base_path, name, 'ViewBase');
+    this.__copy_template_js(js_folder, js_scene_path, name, 'Scene');
+    this.__copy_template_js(js_folder, js_view_path, name, 'View');
+
     this.__copy_template_data(data_path, name);
     this.__copy_template_pug(pug_folder, pug_path, name);
     this.__copy_template_scss(scss_folder, scss_path, name);
@@ -35,9 +42,10 @@ class ViewCreator
   __update_initial_data_file(name)
   {
     let new_data = `"loader_opacity": 0,\n    "${name}_opacity": 0,`;
+    let file_path = path.join('public', 'data', 'initial_state_data.json');
 
     const options = {
-      files: path.join('public', 'data', 'initial_state_data.json'),
+      files: file_path,
       from: '"loader_opacity": 0,',
       to: new_data
     };
@@ -45,7 +53,7 @@ class ViewCreator
     try
     {
       replace.sync(options);
-      console.log('\x1b[33m%s\x1b[0m', 'index.pug Modified');
+      console.log('\x1b[33m%s\x1b[0m', `${file_path} Modified`);
     }
     catch (error)
     {
@@ -56,9 +64,10 @@ class ViewCreator
   __update_application_scss_file(name)
   {
     let new_data = `__SECTIONS__\n@import '${name}/${name}';`;
+    let file_path = path.join('app', 'css', 'application.scss');
 
     const options = {
-      files: path.join('app', 'css', 'application.scss'),
+      files: file_path,
       from: '__SECTIONS__',
       to: new_data
     };
@@ -66,7 +75,7 @@ class ViewCreator
     try
     {
       replace.sync(options);
-      console.log('\x1b[33m%s\x1b[0m', 'application.scss Modified');
+      console.log('\x1b[33m%s\x1b[0m', `${file_path} Modified`);
     }
     catch (error)
     {
@@ -77,9 +86,10 @@ class ViewCreator
   __update_index_pug_file(name)
   {
     let new_data = `__SECTIONS__\n      include views/${name}/${name}`;
+    let file_path = path.join('app', 'index.pug');
 
     const options = {
-      files: path.join('app', 'index.pug'),
+      files: file_path,
       from: '__SECTIONS__',
       to: new_data
     };
@@ -87,7 +97,7 @@ class ViewCreator
     try
     {
       replace.sync(options);
-      console.log('\x1b[33m%s\x1b[0m', 'index.pug Modified');
+      console.log('\x1b[33m%s\x1b[0m', `${file_path} Modified`);
     }
     catch (error)
     {
@@ -98,9 +108,10 @@ class ViewCreator
   __update_loader_file(name)
   {
     let new_data = `__SECTIONS_DATA__\n    this.batch.add_text('${name}_data', 'data/${name}.xml', 1639);`;
+    let file_path = path.join('app', 'js', 'loaders', 'GeneralLoader.js');
 
     const options = {
-      files: path.join('app', 'js', 'loaders', 'GeneralLoader.js'),
+      files: file_path,
       from: '__SECTIONS_DATA__',
       to: new_data
     };
@@ -108,7 +119,7 @@ class ViewCreator
     try
     {
       replace.sync(options);
-      console.log('\x1b[33m%s\x1b[0m', 'GeneralLoader.js Modified');
+      console.log('\x1b[33m%s\x1b[0m', `${file_path} Modified`);
     }
     catch (error)
     {
@@ -118,10 +129,11 @@ class ViewCreator
 
   __update_mainapp_file(name)
   {
-    let new_import = `HomeView';\nimport ${this.capitalize(name)}View from './views/${this.capitalize(name)}View';`;
+    let new_import = `HomeView';\nimport ${this.capitalize(name)}View from './views/${name}/${this.capitalize(name)}View';`;
+    let file_path = path.join('app', 'js', 'MainApplication.js');
 
     const options_1 = {
-      files: path.join('app', 'js', 'MainApplication.js'),
+      files: file_path,
       from: 'HomeView\';',
       to: new_import
     };
@@ -129,7 +141,7 @@ class ViewCreator
     let new_section = `HomeView();\n    this.${name.toLowerCase()}_view = new ${this.capitalize(name)}View();`;
 
     const options_2 = {
-      files: path.join('app', 'js', 'MainApplication.js'),
+      files: file_path,
       from: 'HomeView();',
       to: new_section
     };
@@ -137,7 +149,7 @@ class ViewCreator
     let new_section_start = `home_view.start();\n    this.${name.toLowerCase()}_view.start();`;
 
     const options_3 = {
-      files: path.join('app', 'js', 'MainApplication.js'),
+      files: file_path,
       from: 'home_view.start();',
       to: new_section_start
     };
@@ -147,7 +159,7 @@ class ViewCreator
       replace.sync(options_1);
       replace.sync(options_2);
       replace.sync(options_3);
-      console.log('\x1b[33m%s\x1b[0m', 'MainApplication.js Modified');
+      console.log('\x1b[33m%s\x1b[0m', `${file_path} Modified`);
     }
     catch (error)
     {
@@ -159,15 +171,16 @@ class ViewCreator
   {
     let new_section = `'initial',\n  ${name.toUpperCase()}: '${name.toLowerCase()}',`;
     let new_section_url = `'/initial',\n  ${name.toUpperCase()}: '/${name.replace(/_/g, '-')}',`;
+    let file_path = path.join('app', 'js', 'views', 'Sections.js');
 
     const options_1 = {
-      files: path.join('app', 'js', 'views', 'Sections.js'),
+      files: file_path,
       from: '\'initial\',',
       to: new_section
     };
 
     const options_2 = {
-      files: path.join('app', 'js', 'views', 'Sections.js'),
+      files: file_path,
       from: '\'/initial\',',
       to: new_section_url
     };
@@ -176,7 +189,7 @@ class ViewCreator
     {
       replace.sync(options_1);
       replace.sync(options_2);
-      console.log('\x1b[33m%s\x1b[0m', 'Sections.js Modified');
+      console.log('\x1b[33m%s\x1b[0m', `${file_path} Modified`);
     }
     catch (error)
     {
@@ -184,14 +197,24 @@ class ViewCreator
     }
   }
 
-  __copy_template_js(view_path, name)
+  __copy_template_js(js_folder, view_path, name, file_type)
   {
-    fs.copyFileSync(
-      path.join('tasks', 'create_view', 'TemplateView.js'),
-      view_path
-    );
+    fs.mkdir(js_folder, { recursive: true }, (err) =>
+    {
+      if (err)
+      {
+        console.error(err);
+      }
+      else
+      {
+        fs.copyFileSync(
+          path.join('tasks', 'create_view', `Template${file_type}.js`),
+          view_path
+        );
 
-    this.__replace_js_words(view_path, name);
+        this.__replace_js_words(view_path, name);
+      }
+    });
   }
 
   __copy_template_data(data_path, name)
@@ -256,7 +279,7 @@ class ViewCreator
     {
       replace.sync(options);
 
-      console.log('\x1b[32m', `${name}.xml Created`);
+      console.log('\x1b[32m', `${path} Created`);
     }
     catch (error)
     {
@@ -297,7 +320,7 @@ class ViewCreator
       replace.sync(options_3);
       replace.sync(options_4);
 
-      console.log('\x1b[32m', `${this.capitalize(name)}View.js Created`);
+      console.log('\x1b[32m', `${path} Created`);
     }
     catch (error)
     {
@@ -317,7 +340,7 @@ class ViewCreator
     {
       replace.sync(options);
 
-      console.log('\x1b[32m', `${name}.scss Created`);
+      console.log('\x1b[32m', `${path} Created`);
     }
     catch (error)
     {
@@ -337,7 +360,7 @@ class ViewCreator
     {
       replace.sync(options);
 
-      console.log('\x1b[32m', `${name}.pug Created`);
+      console.log('\x1b[32m', `${path} Created`);
     }
     catch (error)
     {
