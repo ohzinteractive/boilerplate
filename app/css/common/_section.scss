@@ -1,12 +1,9 @@
 .section {
-    display: flex;
+    display: grid;
     position: absolute;
     z-index: 1;
     width: 100%;
     min-height: 100%;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 .section.hidden {
