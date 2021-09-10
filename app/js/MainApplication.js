@@ -3,6 +3,7 @@ import { NormalRender } from 'ohzi-core';
 import { Graphics } from 'ohzi-core';
 import { ResourceContainer } from 'ohzi-core';
 import { ViewManager } from 'ohzi-core';
+import { ViewContext } from 'ohzi-core';
 
 import DatGui from './components/DatGui';
 import SceneController from './components/SceneController';
@@ -33,14 +34,19 @@ export default class MainApplication extends BaseApplication
 
     this.sections = Sections;
 
+    ViewContext.set_app(this);
+
+    // __SECTIONS__
     this.home_view = new HomeView();
     this.home_view.start();
+
+    // __COMPONENTS__
 
     this.scene_controller.start();
 
     DatGui.start();
 
-    const next_view = ViewManager.get_view_by_url(window.location.pathname) || this.home_view;
+    const next_view = ViewManager.get_by_url(window.location.pathname) || this.home_view;
     this.go_to(next_view.name);
   }
 

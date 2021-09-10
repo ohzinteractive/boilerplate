@@ -2,7 +2,7 @@
   "name": "ohzi-boilerplate",
   "description": "OHZI Boilerplate.",
   "author": "OHZI Interactive",
-  "version": "5.10.0",
+  "version": "5.12.3",
   "license": "MIT",
   "scripts": {
     "start": "parcel ./app/index.pug --no-cache",
