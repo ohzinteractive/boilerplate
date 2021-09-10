@@ -10,11 +10,12 @@
     "build": "rm -f -R dist && parcel build ./app/index.pug --no-source-maps --no-cache && cp -R public/* dist",
     "basisu": "basisu",
     "create-view": "node ./tasks/create_view/create_view.mjs",
+    "create-component": "node ./tasks/create_component/create_component.mjs",
     "create-tag": "cross-var git tag -a \"v$npm_package_version\" -m \"Release Version $npm_package_version\" && cross-var git push origin \"v$npm_package_version\""
   },
   "dependencies": {
     "dat.gui": "^0.7.7",
-    "ohzi-core": "^5.10.0"
+    "ohzi-core": "^5.12.3"
   },
   "devDependencies": {
     "@parcel/transformer-glsl": "2.0.0-beta.3.1",

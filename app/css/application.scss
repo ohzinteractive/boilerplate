@@ -7,8 +7,11 @@
 @import 'common/section';
 @import 'common/container';
 
+@import 'common/component';
 
 @import 'loader/loader';
 
 // __SECTIONS__
 @import 'home/home';
+
+// __COMPONENTS__
