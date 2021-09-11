@@ -5,7 +5,7 @@ import { ResourceContainer } from 'ohzi-core';
 import { ViewManager } from 'ohzi-core';
 import { ViewContext } from 'ohzi-core';
 
-import DatGui from './components/DatGui';
+import DatGUI from './components/DatGUI';
 import SceneController from './components/SceneController';
 import HomeView from './views/home/HomeView';
 
@@ -25,7 +25,7 @@ export default class MainApplication extends BaseApplication
     Graphics.set_state(this.normal_render_mode);
     Graphics._renderer.outputEncoding = sRGBEncoding;
 
-    DatGui.init();
+    DatGUI.init();
   }
 
   on_enter()
@@ -44,7 +44,7 @@ export default class MainApplication extends BaseApplication
 
     this.scene_controller.start();
 
-    DatGui.start();
+    DatGUI.start();
 
     const next_view = ViewManager.get_by_url(window.location.pathname) || this.home_view;
     this.go_to(next_view.name);
