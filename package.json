@@ -11,7 +11,8 @@
     "basisu": "basisu",
     "create-view": "node ./tasks/create_view/create_view.mjs",
     "create-component": "node ./tasks/create_component/create_component.mjs",
-    "create-tag": "cross-var git tag -a \"v$npm_package_version\" -m \"Release Version $npm_package_version\" && cross-var git push origin \"v$npm_package_version\""
+    "create-tag": "cross-var git tag -a \"v$npm_package_version\" -m \"Release Version $npm_package_version\" && cross-var git push origin \"v$npm_package_version\"",
+    "fix-syntax": "standardx --fix || echo 'Done'"
   },
   "dependencies": {
     "dat.gui": "^0.7.7",
