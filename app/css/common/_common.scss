@@ -59,6 +59,14 @@ div.hidden {
     pointer-events: none;
 }
 
+div.before_enter {
+    pointer-events: none;
+}
+
+div.before_exit {
+    pointer-events: none;
+}
+
 .reusable-elements {
     display: none;
 }
