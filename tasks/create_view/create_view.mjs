@@ -12,7 +12,7 @@ class ViewCreator
   {
     let js_folder = path.join('app', 'js', 'views', name);
     let js_base_path = path.join(js_folder, `${this.capitalize(name)}ViewBase.js`);
-    let js_scene_path = path.join(js_folder, `${this.capitalize(name)}Scene.js`);
+    let js_scene_path = path.join(js_folder, `${this.capitalize(name)}SceneController.js`);
     let js_view_path = path.join(js_folder, `${this.capitalize(name)}View.js`);
 
     let data_path = path.join('public', 'data', `${name}.xml`);
@@ -24,7 +24,7 @@ class ViewCreator
     let scss_path = path.join(scss_folder, `_${name}.scss`);
 
     this.__copy_template_js(js_folder, js_base_path, name, 'ViewBase');
-    this.__copy_template_js(js_folder, js_scene_path, name, 'Scene');
+    this.__copy_template_js(js_folder, js_scene_path, name, 'SceneController');
     this.__copy_template_js(js_folder, js_view_path, name, 'View');
 
     this.__copy_template_data(data_path, name);

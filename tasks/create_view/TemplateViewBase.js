@@ -1,7 +1,7 @@
 import { ApplicationView } from 'ohzi-core';
 import { Sections, SectionsURLs } from '../Sections';
 
-import TemplateScene from './TemplateScene';
+import TemplateSceneController from './TemplateSceneController';
 
 export default class TemplateViewBase extends ApplicationView
 {
@@ -13,7 +13,7 @@ export default class TemplateViewBase extends ApplicationView
       container: document.querySelector('.template')
     });
 
-    this.scene = new TemplateScene();
+    this.scene = new TemplateSceneController();
   }
 
   // This method is called one time at the beginning of the app execution.
