@@ -1,7 +1,7 @@
 import { ViewComponent } from 'ohzi-core';
 import { Components } from '../Components';
 
-import TemplateScene from './TemplateScene';
+import TemplateSceneController from './TemplateSceneController';
 
 export default class TemplateComponentBase extends ViewComponent
 {
@@ -12,7 +12,7 @@ export default class TemplateComponentBase extends ViewComponent
       container: document.querySelector('.template')
     });
 
-    this.scene = new TemplateScene();
+    this.scene = new TemplateSceneController();
   }
 
   // This method is called one time at the beginning of the app execution.

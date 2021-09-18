@@ -12,7 +12,7 @@ class ComponentCreator
   {
     let js_folder = path.join('app', 'js', 'view_components', name);
     let js_base_path = path.join(js_folder, `${this.capitalize(name)}ComponentBase.js`);
-    let js_scene_path = path.join(js_folder, `${this.capitalize(name)}Scene.js`);
+    let js_scene_path = path.join(js_folder, `${this.capitalize(name)}SceneController.js`);
     let js_view_path = path.join(js_folder, `${this.capitalize(name)}Component.js`);
 
     let pug_folder = path.join('app', 'views', 'components', name);
@@ -22,7 +22,7 @@ class ComponentCreator
     let scss_path = path.join(scss_folder, `_${name}.scss`);
 
     this.__copy_template_js(js_folder, js_base_path, name, 'ComponentBase');
-    this.__copy_template_js(js_folder, js_scene_path, name, 'Scene');
+    this.__copy_template_js(js_folder, js_scene_path, name, 'SceneController');
     this.__copy_template_js(js_folder, js_view_path, name, 'Component');
 
     this.__copy_template_pug(pug_folder, pug_path, name);
