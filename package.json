@@ -7,8 +7,10 @@
   "scripts": {
     "start": "parcel ./app/index.pug --no-cache",
     "start-tracker": "node start_tracker.js",
-    "preinstall": "git config core.hooksPath git_hooks && cd core && git config core.hooksPath git_hooks && cd ..",
-    "postinstall": "git submodule update --remote",
+    "preinstall": "yarn update-submodule && yarn config-boilerplate-hooks && yarn config-core-hooks",
+    "update-submodule": "git submodule update --remote",
+    "config-boilerplate-hooks" : "git config core.hooksPath git_hooks",
+    "config-core-hooks" : "cd core && git config core.hooksPath git_hooks && cd ..",
     "build": "rm -f -R dist && parcel build ./app/index.pug --no-source-maps --no-cache && cp -R public/* dist",
     "basisu": "basisu",
     "create-view": "node ./tasks/create_view/create_view.mjs",
