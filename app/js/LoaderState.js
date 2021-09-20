@@ -25,7 +25,8 @@ export default class LoaderState extends BaseApplication
     this.second_step = false;
   }
 
-  load()
+  // Do not add any assets here. Use GeneralLoader or a specific loader.
+  init()
   {
     let batch = new ResourceBatch();
 

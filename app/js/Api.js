@@ -14,7 +14,7 @@ import MainApplication from './MainApplication';
 
 class Api
 {
-  init()
+  init(settings)
   {
     this.application = new MainApplication();
     this.loader = new LoaderState(this);
@@ -30,11 +30,6 @@ class Api
     Configuration.dpr = window.devicePixelRatio;
 
     this.application.init(Graphics);
-  }
-
-  load(settings)
-  {
-    this.init();
 
     window.app = this.application;
     window.ViewApi = this;
@@ -42,7 +37,7 @@ class Api
     window.author = 'OHZI INTERACTIVE';
     window.version = package_json.version;
 
-    this.loader.load();
+    this.loader.init();
   }
 
   dispose()
