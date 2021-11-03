@@ -1,17 +1,11 @@
-$small-breakpoint:   400px;
-$medium-breakpoint:  960px;
-$wide-breakpoint:    1366px;
-
-// $sf-font: 'SF Pro Display' !default;
+$small-breakpoint:      370px;
+$small-wide-breakpoint: 415px;
+$medium-breakpoint:     820px;
+$wide-breakpoint:       960px;
+$ultra-wide-breakpoint: 1366px;
 
 // Pixel to rem
 $ptr: 0.0625rem;
-
-// @font-face{
-//     font-family: $sf-font;
-//     src: url('/assets/fonts/sfprodisplaylight.otf') format('opentype'),
-//          url('/assets/fonts/sfprodisplaylight.ttf') format('truetype');  /* Safari, Android, iOS */
-// }
 
 @mixin respond-to($breakpoint) {
     @media screen and (min-width: $breakpoint), print {
@@ -26,15 +20,12 @@ html {
 
 html,
 body {
-    // This line makes the possibility to avoid event.preventDefault(); on on_mouse_wheel
-    // Keep studying if this is a better solution
-
     margin: 0;
     width: 100%;
     height: 100%;
 
     position: fixed;
-    touch-action: manipulation;
+    touch-action: pan-x pan-y;
 }
 
 body {
