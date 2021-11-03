@@ -2,6 +2,6 @@ const serveStatic = require('serve-static');
 
 module.exports = function (app) {
   // Use static middleware
-  app.use(serveStatic('dist'))
   app.use(serveStatic('public'))
+  app.use(serveStatic('dist'))
 }
