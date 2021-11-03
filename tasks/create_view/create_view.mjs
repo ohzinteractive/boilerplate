@@ -11,7 +11,7 @@ class ViewCreator
   create_view(name)
   {
     let js_folder = path.join('app', 'js', 'views', name);
-    let js_base_path = path.join(js_folder, `${this.capitalize(name)}ViewBase.js`);
+    let js_transition_path = path.join(js_folder, `${this.capitalize(name)}TransitionController.js`);
     let js_scene_path = path.join(js_folder, `${this.capitalize(name)}SceneController.js`);
     let js_view_path = path.join(js_folder, `${this.capitalize(name)}View.js`);
 
@@ -23,7 +23,7 @@ class ViewCreator
     let scss_folder = path.join('app', 'css', name);
     let scss_path = path.join(scss_folder, `_${name}.scss`);
 
-    this.__copy_template_js(js_folder, js_base_path, name, 'ViewBase');
+    this.__copy_template_js(js_folder, js_transition_path, name, 'TransitionController');
     this.__copy_template_js(js_folder, js_scene_path, name, 'SceneController');
     this.__copy_template_js(js_folder, js_view_path, name, 'View');
 

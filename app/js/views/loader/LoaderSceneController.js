@@ -7,7 +7,7 @@ import { Mesh } from 'three';
 import { OrthographicCamera } from 'three';
 import { Scene } from 'three';
 
-export default class LoaderScene
+export default class LoaderSceneController
 {
   constructor(view)
   {

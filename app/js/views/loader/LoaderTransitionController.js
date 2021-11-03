@@ -1,5 +1,5 @@
 
-export default class HomeScene
+export default class LoaderTransitionController
 {
   constructor()
   {
