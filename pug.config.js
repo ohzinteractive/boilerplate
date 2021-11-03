@@ -5,7 +5,7 @@ let load_json = (file_path) =>
 
 module.exports = {
   locals: {
-    example: load_json('./assets/data/example.json'),
+    sections_meta: load_json('./app/assets/data/sections_meta.json'),
     package: load_json('./package.json')
   }
 };

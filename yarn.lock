@@ -566,6 +566,14 @@
     globals "^13.2.0"
     nullthrows "^1.1.1"
 
+"@parcel/packager-raw-url@2.0.0-beta.3.1":
+  version "2.0.0-beta.3.1"
+  resolved "https://registry.yarnpkg.com/@parcel/packager-raw-url/-/packager-raw-url-2.0.0-beta.3.1.tgz#a3a4f5f766e90d5e07a684c6a98e59afeaa0ae7d"
+  integrity sha512-AwOlRTIP2YWAF7aZJBkd5G+RB2Y/AcItrNLEMyie9xwskFy6GW4ieZoRbmV1zqLPYLHJ+a1sea/R+TZj0Pyh/Q==
+  dependencies:
+    "@parcel/plugin" "2.0.0-beta.3.1"
+    "@parcel/utils" "2.0.0-beta.3.1"
+
 "@parcel/packager-raw@2.0.0-beta.3.1":
   version "2.0.0-beta.3.1"
   resolved "https://registry.yarnpkg.com/@parcel/packager-raw/-/packager-raw-2.0.0-beta.3.1.tgz#408790733ffb69244508b0a918a64c5b81bc09d1"
@@ -796,6 +804,16 @@
     "@parcel/plugin" "2.0.0-beta.3.1"
     "@parcel/source-map" "2.0.0-rc.1.0"
     sass "^1.32.4"
+
+"@parcel/transformer-webmanifest@2.0.0-beta.3.1":
+  version "2.0.0-beta.3.1"
+  resolved "https://registry.yarnpkg.com/@parcel/transformer-webmanifest/-/transformer-webmanifest-2.0.0-beta.3.1.tgz#eff2afb3574a8d677252647172ea4259ef44ed05"
+  integrity sha512-HqFwBlZg0IqCV7pYjFjaRWw9FsXAv0lNI2tyYuIGKjV0OpIagO3y0SBdXvAGjt3ZtmPdVgmLwHktp+Vcz+AUdQ==
+  dependencies:
+    "@parcel/diagnostic" "2.0.0-beta.3.1"
+    "@parcel/plugin" "2.0.0-beta.3.1"
+    "@parcel/utils" "2.0.0-beta.3.1"
+    json-source-map "^0.6.1"
 
 "@parcel/types@2.0.0-beta.3.1":
   version "2.0.0-beta.3.1"
@@ -5337,14 +5355,6 @@ object.values@^1.1.0, object.values@^1.1.1:
     define-properties "^1.1.3"
     es-abstract "^1.18.2"
 
-ohzi-core@5.14.3:
-  version "5.14.3"
-  resolved "https://registry.yarnpkg.com/ohzi-core/-/ohzi-core-5.14.3.tgz#7222b4bd505487bf4a0a26cfe590de3358a8c737"
-  integrity sha512-mdKsxgKg42wbbNAwojOPb/7W86/dp3IUM21t0C+nvgrxyu3YRSJcAEooff9fzJePLd54MmgMNsuQhhSfALGauQ==
-  dependencies:
-    pit-js "1.5.0"
-    three "^0.128.0"
-
 on-finished@~2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/on-finished/-/on-finished-2.3.0.tgz#20f1336481b083cd75337992a16971aa2d906947"
@@ -5629,10 +5639,10 @@ pify@^4.0.1:
   resolved "https://registry.yarnpkg.com/pify/-/pify-4.0.1.tgz#4b2cd25c50d598735c50292224fd8c6df41e3231"
   integrity sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==
 
-pit-js@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/pit-js/-/pit-js-1.5.0.tgz#2b157504aef4aa84e753387760ad3f855405dcee"
-  integrity sha512-KncCNWngVEspvkeP8RR6AyiwZWGTyaPvCfLYCttNLoBveZ0DVVyBu74YZ6UDQdQ5aDwd1SQ7ECBSjTtYCB20Gw==
+pit-js@1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/pit-js/-/pit-js-1.5.2.tgz#9822c3ef3d77fda71c9b10fb584a0f1d1af2ab59"
+  integrity sha512-XbzRP97x54jmwUecpJhmqcuL0ywSOYZtsGg7rtCsHMR3wkFYBxtS+Ug4N02I4Aq6R3wX4KdtaZSho/Ldrfr/3g==
 
 pkg-conf@^3.1.0:
   version "3.1.0"

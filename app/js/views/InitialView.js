@@ -9,7 +9,7 @@ export default class InitialView extends ApplicationView
     super({
       name: Sections.INITIAL,
       url: SectionsURLs.INITIAL,
-      container: undefined
+      container: { style: {} }
     });
   }
 

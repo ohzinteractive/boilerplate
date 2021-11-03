@@ -11,7 +11,7 @@ import LoaderState from './LoaderState';
 
 // APP
 import MainApplication from './MainApplication';
-import TestApplication from './TestApplication';
+// import TestApplication from './TestApplication';
 
 class Api
 {
