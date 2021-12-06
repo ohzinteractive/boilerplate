@@ -7,8 +7,8 @@
   "scripts": {
     "start": "parcel ./app/index.pug --no-cache",
     "start-tracker": "node start_tracker.js",
-    "preinstall": "yarn update-submodule && yarn config-boilerplate-hooks && yarn config-core-hooks",
-    "update-submodule": "cd core && git pull origin master && cd ..",
+    "preinstall": "yarn update-core && yarn config-boilerplate-hooks && yarn config-core-hooks",
+    "update-core": "node update_core.mjs",
     "config-boilerplate-hooks": "git config core.hooksPath git_hooks",
     "config-core-hooks": "cd core && git config core.hooksPath git_hooks && cd ..",
     "build": "yarn remove_dist && yarn build_parcel && yarn copy_public",
