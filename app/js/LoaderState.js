@@ -2,7 +2,7 @@ import { BaseApplication } from 'ohzi-core';
 import { ResourceContainer } from 'ohzi-core';
 import { ResourceBatch } from 'ohzi-core';
 import { ViewManager } from 'ohzi-core';
-import { MathUtilities } from 'ohzi-core';
+import { OMath } from 'ohzi-core';
 
 import GeneralLoader from './loaders/GeneralLoader';
 
@@ -107,7 +107,7 @@ export default class LoaderState extends BaseApplication
   {
     if (this.second_step)
     {
-      const progress = MathUtilities.linear_map(
+      const progress = OMath.linear_map(
         this.__get_progress(),
         0, 1,
         0, 0.8

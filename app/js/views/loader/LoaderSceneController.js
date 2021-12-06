@@ -1,6 +1,6 @@
 
 import { Graphics } from 'ohzi-core';
-import { MathUtilities } from 'ohzi-core';
+import { OMath } from 'ohzi-core';
 import { Time } from 'ohzi-core';
 
 import { Mesh } from 'three';
@@ -84,7 +84,7 @@ export default class LoaderSceneController
       if (this.compilation_index < this.objects.length)
       {
         // console.log(this.compilation_index, this.objects.length);
-        const progress = MathUtilities.linear_map(
+        const progress = OMath.linear_map(
           this.compilation_index,
           0, 21,
           0.8, 1

@@ -3,7 +3,7 @@ import ImmediateMode from './movement_mode/ImmediateMode';
 
 import { Screen } from 'ohzi-core';
 // import { Debug } from 'ohzi-core';
-import { MathUtilities } from 'ohzi-core';
+import { OMath } from 'ohzi-core';
 // import { SceneManager } from 'ohzi-core';
 import { PerspectiveFrustumPointFitter } from 'ohzi-core';
 import { OrthographicFrustumPointFitter } from 'ohzi-core';
@@ -110,7 +110,7 @@ export default class CameraController
   update_normalized_zoom(min_zoom, max_zoom)
   {
     let zoom = this.camera.position.distanceTo(this.reference_position);
-    this.normalized_zoom = MathUtilities.linear_map(zoom, min_zoom, max_zoom, 1, 0);
+    this.normalized_zoom = OMath.linear_map(zoom, min_zoom, max_zoom, 1, 0);
     this.normalized_zoom = TMath.clamp(this.normalized_zoom, 0, 1);
 
     // EventManager.fire_zoom_changed(this.normalized_zoom);
@@ -172,7 +172,7 @@ export default class CameraController
 
   set_rotation_delta(delta_x, delta_y)
   {
-    this.current_orientation = MathUtilities.mod(this.current_orientation + delta_x,  360);
+    this.current_orientation = OMath.mod(this.current_orientation + delta_x,  360);
     this.current_tilt += delta_y;
 
     this.set_rotation(this.current_tilt, this.current_orientation);
