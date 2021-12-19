@@ -17,7 +17,7 @@ import { Box3 } from 'three';
 import { Ray } from 'three';
 import { Math as TMath } from 'three';
 
-import CameraStandardState from './states/CameraSimpleState';
+import CameraStandardState from './states/CameraStandardState';
 
 export default class CameraController
 {

@@ -5,9 +5,7 @@ import { CameraUtilities }  from 'ohzi-core';
 
 import { Vector2 } from 'three';
 import { Vector3 } from 'three';
-import { Ray, Math as TMath } from 'three';
-import { Raycaster } from 'three';
-import SceneController from '../../components/SceneController';
+import { Ray } from 'three';
 
 export default class CameraSimpleState extends CameraViewState
 {
@@ -37,7 +35,6 @@ export default class CameraSimpleState extends CameraViewState
     this.last_point = new Vector2();
 
     this.rotation_velocity = new Vector2();
-    this.zoom_velocity = 0;
 
     this.forward_dir = 0;
     this.right_dir = 0;

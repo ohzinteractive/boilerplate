@@ -33,7 +33,15 @@ export default class CameraStandardState extends CameraViewState
     this.last_NDC = new Vector2();
 
     this.rotation_velocity = new Vector2();
-    this.zoom_velocity = 0;
+
+    if (process.env.NODE_ENV === 'development')
+    {
+      window.addEventListener('keydown', this.on_key_down.bind(this), false);
+      window.addEventListener('keyup', this.on_key_up.bind(this), false);
+    }
+
+    this.forward_dir = 0;
+    this.right_dir = 0;
   }
 
   on_enter(camera_controller)
@@ -69,8 +77,59 @@ export default class CameraStandardState extends CameraViewState
 
     camera_controller.set_rotation_delta(this.rotation_velocity.x, this.rotation_velocity.y);
 
+    camera_controller.translate_forward(this.forward_dir);
+    camera_controller.translate_right(this.right_dir);
+
     this.rotation_velocity.multiplyScalar(0.9);
 
     this.last_NDC.copy(Input.NDC);
+  }
+
+  on_key_down(event)
+  {
+    switch (event.key)
+    {
+    case 'w':
+      this.forward_dir = -0.2;
+      break;
+    case 's':
+      this.forward_dir = 0.2;
+      break;
+    case 'a':
+      this.right_dir = -0.2;
+      break;
+    case 'd':
+      this.right_dir = 0.2;
+      break;
+    case 'Shift':
+      this.shift_key = true;
+      break;
+    default:
+      break;
+    }
+  }
+
+  on_key_up(event)
+  {
+    switch (event.key)
+    {
+    case 'w':
+      this.forward_dir = 0;
+      break;
+    case 's':
+      this.forward_dir = 0;
+      break;
+    case 'a':
+      this.right_dir = 0;
+      break;
+    case 'd':
+      this.right_dir = 0;
+      break;
+    case 'Shift':
+      this.shift_key = false;
+      break;
+    default:
+      break;
+    }
   }
 }
