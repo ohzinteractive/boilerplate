@@ -1,5 +1,4 @@
-import * as dat from 'dat.gui';
-
+/* global dat */
 class DatGUI
 {
   constructor()
