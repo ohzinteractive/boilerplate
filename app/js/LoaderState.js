@@ -1,6 +1,5 @@
 import { BaseApplication } from 'ohzi-core';
 import { ResourceContainer } from 'ohzi-core';
-import { ResourceBatch } from 'ohzi-core';
 import { ViewManager } from 'ohzi-core';
 import { OMath } from 'ohzi-core';
 
@@ -8,6 +7,10 @@ import GeneralLoader from './loaders/GeneralLoader';
 
 import InitialView from './views/InitialView';
 import LoaderView from './views/loader/LoaderView';
+
+import initial_state_data from '../assets/data/initial_state_data.json';
+import loader_data from 'bundle-text:../assets/data/loader.xml';
+import { SectionsURLs } from './views/Sections';
 
 export default class LoaderState extends BaseApplication
 {
@@ -28,15 +31,15 @@ export default class LoaderState extends BaseApplication
   // Do not add any assets here. Use GeneralLoader or a specific loader.
   init()
   {
-    let batch = new ResourceBatch();
+    this.__redirect_invalid_url();
 
-    batch.add_json('config', 'data/config.json', 2000);
-    batch.add_json('initial_state_data', 'data/initial_state_data.json', 1919);
-    batch.add_text('loader_data', 'data/loader.xml', 4250);
+    // Uncomment this if you need initial config in your project
+    // let batch = new ResourceBatch();
+    // batch.add_json('config', 'data/config.json', 2000);
+    // batch.load(ResourceContainer);
+    // this.check_resource_loading(batch, this.on_config_ready.bind(this), 10);
 
-    batch.load(ResourceContainer);
-
-    this.check_resource_loading(batch, this.on_config_ready.bind(this), 10);
+    this.on_config_ready();
   }
 
   on_enter()
@@ -46,10 +49,12 @@ export default class LoaderState extends BaseApplication
 
   on_config_ready()
   {
+    ResourceContainer.set_resource('loader_data', 'data/loader.xml', loader_data);
+
     this.initial_view = new InitialView();
     this.loader_view = new LoaderView(this.api);
 
-    ViewManager.set_initial_state_data(ResourceContainer.get('initial_state_data'));
+    ViewManager.set_initial_state_data(initial_state_data);
     ViewManager.set_view(this.initial_view.name);
 
     // Start render loop
@@ -156,5 +161,15 @@ export default class LoaderState extends BaseApplication
     }
 
     return progress / this.loaders.length;
+  }
+
+  __redirect_invalid_url()
+  {
+    const sections_urls = Object.values(SectionsURLs);
+
+    if (!sections_urls.includes(window.location.pathname))
+    {
+      window.location.replace('/');
+    }
   }
 }
