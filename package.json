@@ -2,10 +2,10 @@
   "name": "ohzi-boilerplate",
   "description": "OHZI Boilerplate.",
   "author": "OHZI Interactive",
-  "version": "5.16.5",
+  "version": "6.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "parcel ./app/index.pug --no-cache",
+    "start": "parcel app/index.pug",
     "start-tracker": "node start_tracker.js",
     "preinstall": "yarn update-core && yarn config-boilerplate-hooks && yarn config-core-hooks",
     "update-core": "node update_core.mjs",
@@ -21,24 +21,39 @@
     "create-tag": "cross-var git tag -a \"v$npm_package_version\" -m \"Release Version $npm_package_version\" && cross-var git push origin \"v$npm_package_version\"",
     "fix-syntax": "standardx --fix || echo 'Done'"
   },
+  "alias": {
+    "three": "./node_modules/three/src/Three.js",
+    "three/examples/jsm/utils/BufferGeometryUtils.js": "./node_modules/three/examples/jsm/utils/BufferGeometryUtils.js",
+    "three/examples/jsm/loaders/GLTFLoader.js": "./node_modules/three/examples/jsm/loaders/GLTFLoader.js",
+    "three/examples/jsm/loaders/OBJLoader.js": "./node_modules/three/examples/jsm/loaders/OBJLoader.js",
+    "three/examples/jsm/loaders/HDRCubeTextureLoader.js": "./node_modules/three/examples/jsm/loaders/HDRCubeTextureLoader.js",
+    "three/examples/jsm/loaders/DRACOLoader.js": "./node_modules/three/examples/jsm/loaders/DRACOLoader.js",
+    "three/examples/jsm/loaders/RGBELoader.js": "./node_modules/three/examples/jsm/loaders/RGBELoader.js",
+    "three/examples/jsm/loaders/FontLoader.js": "./node_modules/three/examples/jsm/loaders/FontLoader.js",
+    "three/examples/jsm/loaders/ColladaLoader.js": "./node_modules/three/examples/jsm/loaders/ColladaLoader.js"
+  },
   "dependencies": {
-    "dat.gui": "^0.7.7",
-    "ohzi-core": "5.20.0"
+    "ohzi-core": "6.0.0"
   },
   "devDependencies": {
-    "@parcel/transformer-glsl": "2.0.0-beta.3.1",
-    "@parcel/transformer-image": "2.0.0-beta.3.1",
-    "@parcel/transformer-pug": "2.0.0-beta.3.1",
-    "@parcel/transformer-sass": "2.0.0-beta.3.1",
-    "@parcel/transformer-webmanifest": "2.0.0-beta.3.1",
-    "@parcel/packager-raw-url": "2.0.0-beta.3.1",
+    "@parcel/packager-raw-url": "2.0.1",
+    "@parcel/packager-xml": "2.0.1",
+    "@parcel/transformer-glsl": "2.0.1",
+    "@parcel/transformer-image": "2.0.1",
+    "@parcel/transformer-inline-string": "2.0.1",
+    "@parcel/transformer-pug": "2.0.1",
+    "@parcel/transformer-sass": "2.0.1",
+    "@parcel/transformer-webmanifest": "2.0.1",
+    "@parcel/transformer-xml": "2.0.1",
     "basisu": "^1.2.1",
     "cross-var": "^1.1.0",
-    "parcel": "2.0.0-beta.3.1",
+    "parcel": "2.0.1",
     "replace-in-file": "^6.2.0",
     "serve-static": "^1.14.1",
     "standardx": "^7.0.0"
   },
   "private": true,
-  "workspaces": ["core"]
+  "workspaces": [
+    "core"
+  ]
 }

@@ -1,4 +1,4 @@
-import { Graphics, ResourceBatch } from 'ohzi-core';
+import { Graphics } from 'ohzi-core';
 import { RenderLoop } from 'ohzi-core';
 import { Configuration } from 'ohzi-core';
 import { EventManager } from 'ohzi-core';
@@ -96,4 +96,4 @@ class Api
 }
 
 const api = new Api();
-export { api as Api, ResourceBatch };
+export { api as Api };

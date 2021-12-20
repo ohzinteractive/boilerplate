@@ -42,7 +42,7 @@ html
 
       include views/loader/loader
 
-    script(src='init.js')
+    script(type='module', src='init.js')
 
     if (process.env.NODE_ENV !== 'development')
       include views/common/conversions_body.html
