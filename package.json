@@ -2,7 +2,7 @@
   "name": "ohzi-boilerplate",
   "description": "OHZI Boilerplate.",
   "author": "OHZI Interactive",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "license": "MIT",
   "scripts": {
     "start": "parcel app/index.pug",
@@ -33,7 +33,7 @@
     "three/examples/jsm/loaders/ColladaLoader.js": "./node_modules/three/examples/jsm/loaders/ColladaLoader.js"
   },
   "dependencies": {
-    "ohzi-core": "6.0.0"
+    "ohzi-core": "6.0.1"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "2.0.1",
