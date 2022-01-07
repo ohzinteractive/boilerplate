@@ -15,7 +15,7 @@ class ViewCreator
     let js_scene_path = path.join(js_folder, `${this.capitalize(name)}SceneController.js`);
     let js_view_path = path.join(js_folder, `${this.capitalize(name)}View.js`);
 
-    let data_path = path.join('public', 'data', `${name}.xml`);
+    let data_path = path.join('app', 'assets', 'data', `${name}.xml`);
 
     let pug_folder = path.join('app', 'views', name);
     let pug_path = path.join(pug_folder, `${name}.pug`);
@@ -34,7 +34,7 @@ class ViewCreator
     this.__update_initial_data_file(name);
     this.__update_index_pug_file(name);
     this.__update_application_scss_file(name);
-    this.__update_loader_file(name);
+    this.__update_general_loader_file(name);
     this.__update_sections_file(name);
     this.__update_mainapp_file(name);
   }
@@ -42,7 +42,7 @@ class ViewCreator
   __update_initial_data_file(name)
   {
     let new_data = `"loader_opacity": 0,\n    "${name}_opacity": 0,`;
-    let file_path = path.join('public', 'data', 'initial_state_data.json');
+    let file_path = path.join('app', 'assets', 'data', 'initial_state_data.json');
 
     const options = {
       files: file_path,
@@ -105,12 +105,20 @@ class ViewCreator
     }
   }
 
-  __update_loader_file(name)
+  __update_general_loader_file(name)
   {
-    let new_data = `__SECTIONS_DATA__\n    this.batch.add_text('${name}_data', 'data/${name}.xml', 1639);`;
+    let new_import = `home.xml';\nimport ${name}_data from 'bundle-text:../../assets/data/${name}.xml';`;
     let file_path = path.join('app', 'js', 'loaders', 'GeneralLoader.js');
 
-    const options = {
+    const options_1 = {
+      files: file_path,
+      from: 'home.xml\';',
+      to: new_import
+    };
+
+    let new_data = `__SECTIONS_DATA__\n    ResourceContainer.set_resource('${name}_data', 'data/${name}.xml', ${name}_data);`;
+
+    const options_2 = {
       files: file_path,
       from: '__SECTIONS_DATA__',
       to: new_data
@@ -118,7 +126,9 @@ class ViewCreator
 
     try
     {
-      replace.sync(options);
+      replace.sync(options_1);
+      replace.sync(options_2);
+
       console.log('\x1b[33m', `${file_path} Modified`);
     }
     catch (error)
