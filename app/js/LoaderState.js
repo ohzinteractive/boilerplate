@@ -115,7 +115,7 @@ export default class LoaderState extends BaseApplication
       const progress = OMath.linear_map(
         this.__get_progress(),
         0, 1,
-        0, 0.8
+        0, 1
       );
 
       this.loader_view.set_progress(progress);

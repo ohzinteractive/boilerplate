@@ -6,7 +6,6 @@
   "license": "MIT",
   "scripts": {
     "start": "parcel app/index.pug",
-    "start-tracker": "node start_tracker.js",
     "preinstall": "yarn update-core && yarn config-boilerplate-hooks && yarn config-core-hooks",
     "update-core": "node update_core.mjs",
     "config-boilerplate-hooks": "git config core.hooksPath git_hooks",
@@ -18,7 +17,6 @@
     "basisu": "basisu",
     "create-view": "node ./tasks/create_view/create_view.mjs",
     "create-component": "node ./tasks/create_component/create_component.mjs",
-    "create-tag": "cross-var git tag -a \"v$npm_package_version\" -m \"Release Version $npm_package_version\" && cross-var git push origin \"v$npm_package_version\"",
     "fix-syntax": "standardx --fix || echo 'Done'"
   },
   "alias": {
@@ -33,7 +31,7 @@
     "three/examples/jsm/loaders/ColladaLoader.js": "./node_modules/three/examples/jsm/loaders/ColladaLoader.js"
   },
   "dependencies": {
-    "ohzi-core": "6.0.1"
+    "ohzi-core": "6.1.0"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "2.0.1",
