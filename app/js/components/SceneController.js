@@ -12,6 +12,7 @@ import { Color } from 'three';
 // import { SpotLight } from 'three';
 
 import CameraController from '../camera_controller/CameraController';
+import DatGUI from './DatGUI';
 
 class SceneController
 {
@@ -64,6 +65,9 @@ class SceneController
   {
     this.camera_controller.update();
     // this.alley.update();
+
+    // Example of use of DatGUI
+    this.camera_controller.reference_position.z = DatGUI.settings.camera_z;
   }
 
   __init_camera()

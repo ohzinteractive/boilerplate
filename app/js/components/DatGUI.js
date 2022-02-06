@@ -1,12 +1,14 @@
-/* global dat */
+import GUI from 'lil-gui';
+
 class DatGUI
 {
   constructor()
   {
     this.dat_gui = undefined;
+    this.hidden = false;
 
     this.settings = {
-      scale: 0.8
+      camera_z: 0
     };
   }
 
@@ -14,22 +16,29 @@ class DatGUI
   {
     document.addEventListener('keydown', event =>
     {
-      if (event.shiftKey && event.key === 'K')
+      if (event.shiftKey && event.key === 'H')
       {
-        document.querySelector('.dg.ac').classList.toggle('hidden');
+        if (this.hidden)
+        {
+          this.hidden = false;
+          document.querySelector('.lil-gui.autoPlace').style.display = 'flex';
+        }
+        else
+        {
+          this.hidden = true;
+          document.querySelector('.lil-gui.autoPlace').style.display = 'none';
+        }
       }
     });
   }
 
   start()
   {
-    this.dat_gui = new dat.GUI();
+    this.dat_gui = new GUI();
 
-    document.querySelector('.dg.ac').style['z-index'] = 999;
-    document.querySelector('.dg.ac').classList.add('hidden');
+    // document.querySelector('.lil-gui.autoPlace').style['z-index'] = 999;
 
-    this.dat_gui.add(this.settings, 'scale', 0.1, 2);
-    this.dat_gui.width = 400;
+    this.dat_gui.add(this.settings, 'camera_z', -20, 20);
   }
 }
 
