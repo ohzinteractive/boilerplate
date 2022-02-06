@@ -10,16 +10,16 @@ class ComponentCreator
 
   create_component(name)
   {
-    let js_folder = path.join('app', 'js', 'view_components', name);
-    let js_base_path = path.join(js_folder, `${this.capitalize(name)}ComponentBase.js`);
-    let js_scene_path = path.join(js_folder, `${this.capitalize(name)}SceneController.js`);
-    let js_view_path = path.join(js_folder, `${this.capitalize(name)}Component.js`);
+    const js_folder = path.join('app', 'js', 'view_components', name);
+    const js_base_path = path.join(js_folder, `${this.capitalize(name)}ComponentBase.js`);
+    const js_scene_path = path.join(js_folder, `${this.capitalize(name)}SceneController.js`);
+    const js_view_path = path.join(js_folder, `${this.capitalize(name)}Component.js`);
 
-    let pug_folder = path.join('app', 'views', 'components', name);
-    let pug_path = path.join(pug_folder, `${name}.pug`);
+    const pug_folder = path.join('app', 'views', 'components', name);
+    const pug_path = path.join(pug_folder, `${name}.pug`);
 
-    let scss_folder = path.join('app', 'css', 'components', name);
-    let scss_path = path.join(scss_folder, `_${name}.scss`);
+    const scss_folder = path.join('app', 'css', 'components', name);
+    const scss_path = path.join(scss_folder, `_${name}.scss`);
 
     this.__copy_template_js(js_folder, js_base_path, name, 'ComponentBase');
     this.__copy_template_js(js_folder, js_scene_path, name, 'SceneController');
@@ -37,8 +37,8 @@ class ComponentCreator
 
   __update_initial_data_file(name)
   {
-    let new_data = `"loader_opacity": 0,\n    "${name}_opacity": 0,`;
-    let file_path = path.join('app', 'assets', 'data', 'initial_state_data.json');
+    const new_data = `"loader_opacity": 0,\n    "${name}_opacity": 0,`;
+    const file_path = path.join('app', 'assets', 'data', 'initial_state_data.json');
 
     const options = {
       files: file_path,
@@ -59,8 +59,8 @@ class ComponentCreator
 
   __update_application_scss_file(name)
   {
-    let new_data = `__COMPONENTS__\n@import 'components/${name}/${name}';`;
-    let file_path = path.join('app', 'css', 'application.scss');
+    const new_data = `__COMPONENTS__\n@import 'components/${name}/${name}';`;
+    const file_path = path.join('app', 'css', 'application.scss');
 
     const options = {
       files: file_path,
@@ -81,8 +81,8 @@ class ComponentCreator
 
   __update_index_pug_file(name)
   {
-    let new_data = `__COMPONENTS__\n      include views/components/${name}/${name}`;
-    let file_path = path.join('app', 'index.pug');
+    const new_data = `__COMPONENTS__\n      include views/components/${name}/${name}`;
+    const file_path = path.join('app', 'index.pug');
 
     const options = {
       files: file_path,
@@ -103,8 +103,8 @@ class ComponentCreator
 
   __update_mainapp_file(name)
   {
-    let new_import = `HomeView';\nimport ${this.capitalize(name)}Component from './view_components/${name}/${this.capitalize(name)}Component';`;
-    let file_path = path.join('app', 'js', 'MainApplication.js');
+    const new_import = `HomeView';\nimport ${this.capitalize(name)}Component from './view_components/${name}/${this.capitalize(name)}Component';`;
+    const file_path = path.join('app', 'js', 'MainApplication.js');
 
     const options_1 = {
       files: file_path,
@@ -112,7 +112,7 @@ class ComponentCreator
       to: new_import
     };
 
-    let new_section = `__COMPONENTS__\n    this.${name.toLowerCase()}_component = new ${this.capitalize(name)}Component();`;
+    const new_section = `__COMPONENTS__\n    this.${name.toLowerCase()}_component = new ${this.capitalize(name)}Component();`;
 
     const options_2 = {
       files: file_path,
@@ -120,7 +120,7 @@ class ComponentCreator
       to: new_section
     };
 
-    let new_section_start = `${this.capitalize(name)}Component();\n    this.${name.toLowerCase()}_component.start();`;
+    const new_section_start = `${this.capitalize(name)}Component();\n    this.${name.toLowerCase()}_component.start();`;
 
     const options_3 = {
       files: file_path,
@@ -143,8 +143,8 @@ class ComponentCreator
 
   __update_components_file(name)
   {
-    let new_section = `__COMPONENTS__\n  ${name.toUpperCase()}: '${name.toLowerCase()}',`;
-    let file_path = path.join('app', 'js', 'view_components', 'Components.js');
+    const new_section = `__COMPONENTS__\n  ${name.toUpperCase()}: '${name.toLowerCase()}',`;
+    const file_path = path.join('app', 'js', 'view_components', 'Components.js');
 
     const options_1 = {
       files: file_path,

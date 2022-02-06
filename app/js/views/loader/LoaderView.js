@@ -144,7 +144,7 @@ export default class LoaderView extends ApplicationView
 
   __round(value, precision)
   {
-    let multiplier = Math.pow(10, precision || 0);
+    const multiplier = Math.pow(10, precision || 0);
     return Math.round(value * multiplier) / multiplier;
   }
 }

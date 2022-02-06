@@ -109,7 +109,7 @@ export default class CameraController
 
   update_normalized_zoom(min_zoom, max_zoom)
   {
-    let zoom = this.camera.position.distanceTo(this.reference_position);
+    const zoom = this.camera.position.distanceTo(this.reference_position);
     this.normalized_zoom = OMath.linear_map(zoom, min_zoom, max_zoom, 1, 0);
     this.normalized_zoom = TMath.clamp(this.normalized_zoom, 0, 1);
 
@@ -162,8 +162,8 @@ export default class CameraController
 
   set_tilt(tilt)
   {
-    let new_tilt = new Quaternion().setFromAxisAngle(this.vector_right_axis, (-tilt / 360) * Math.PI * 2);
-    let old_tilt = new Quaternion().setFromAxisAngle(this.vector_right_axis, (-this.current_tilt / 360) * Math.PI * 2);
+    const new_tilt = new Quaternion().setFromAxisAngle(this.vector_right_axis, (-tilt / 360) * Math.PI * 2);
+    const old_tilt = new Quaternion().setFromAxisAngle(this.vector_right_axis, (-this.current_tilt / 360) * Math.PI * 2);
     old_tilt.conjugate();
 
     this.reference_rotation.multiply(old_tilt).multiply(new_tilt);
@@ -204,8 +204,8 @@ export default class CameraController
 
   build_rotation(tilt, orientation)
   {
-    let new_orientation = new Quaternion().setFromAxisAngle(this.vector_up_axis, (orientation / 360) * Math.PI * 2);
-    let new_tilt = new Quaternion().setFromAxisAngle(this.vector_right_axis, (-tilt / 360) * Math.PI * 2);
+    const new_orientation = new Quaternion().setFromAxisAngle(this.vector_up_axis, (orientation / 360) * Math.PI * 2);
+    const new_tilt = new Quaternion().setFromAxisAngle(this.vector_right_axis, (-tilt / 360) * Math.PI * 2);
 
     return new_orientation.multiply(new_tilt);
   }
@@ -232,9 +232,9 @@ export default class CameraController
     {
       bb.getSize(this.tmp_size);
 
-      let obj_x = this.tmp_size.x;
-      let obj_y = this.tmp_size.y;
-      let object_aspect = obj_x / obj_y;
+      const obj_x = this.tmp_size.x;
+      const obj_y = this.tmp_size.y;
+      const object_aspect = obj_x / obj_y;
       if (Screen.aspect_ratio / object_aspect > 1)
       {
         this.camera.zoom = Screen.height / obj_y;
@@ -248,19 +248,19 @@ export default class CameraController
     }
     else
     {
-      let dir = new Vector3();
+      const dir = new Vector3();
       dir.copy(bb.max).sub(bb.min);
 
-      let p1 = bb.min.clone();
+      const p1 = bb.min.clone();
 
-      let p2 = p1.clone().add(new Vector3(dir.x, 0, 0));
-      let p3 = p1.clone().add(new Vector3(0, dir.y, 0));
-      let p4 = p1.clone().add(new Vector3(0, 0, dir.z));
+      const p2 = p1.clone().add(new Vector3(dir.x, 0, 0));
+      const p3 = p1.clone().add(new Vector3(0, dir.y, 0));
+      const p4 = p1.clone().add(new Vector3(0, 0, dir.z));
 
-      let p5 = p1.clone().add(new Vector3(dir.x, 0, dir.z));
-      let p6 = p1.clone().add(new Vector3(0, dir.y, dir.z));
-      let p7 = bb.max.clone();
-      let p8 = p1.clone().add(new Vector3(dir.x, dir.y, 0));
+      const p5 = p1.clone().add(new Vector3(dir.x, 0, dir.z));
+      const p6 = p1.clone().add(new Vector3(0, dir.y, dir.z));
+      const p7 = bb.max.clone();
+      const p8 = p1.clone().add(new Vector3(dir.x, dir.y, 0));
 
       this.focus_camera_on_points([p1, p2, p3, p4, p5, p6, p7, p8], scale);
     }
@@ -273,10 +273,10 @@ export default class CameraController
       this.tmp_quat.copy(this.reference_rotation); // backup quaternion
       this.reference_rotation.copy(this.build_rotation(tilt, orientation));
     }
-    let original_zoom = this.reference_zoom;
-    let original_pos = new Vector3().copy(this.reference_position);
+    const original_zoom = this.reference_zoom;
+    const original_pos = new Vector3().copy(this.reference_position);
     this.focus_camera_on_bounding_box(bb);
-    let target_zoom = this.reference_zoom;
+    const target_zoom = this.reference_zoom;
     this.reference_position.copy(original_pos);
     this.reference_zoom = original_zoom;
 
@@ -290,10 +290,10 @@ export default class CameraController
 
   get_zoom_to_focus_on_points(points, scale)
   {
-    let old_zoom = this.reference_zoom;
-    let old_pos = new Vector3().copy(this.reference_position);
+    const old_zoom = this.reference_zoom;
+    const old_pos = new Vector3().copy(this.reference_position);
     this.focus_camera_on_points(points, scale);
-    let new_zoom = this.reference_zoom;
+    const new_zoom = this.reference_zoom;
     this.reference_zoom = old_zoom;
     this.reference_position.copy(old_pos);
     return new_zoom;
@@ -301,10 +301,10 @@ export default class CameraController
 
   get_target_pos_to_focus_on_points(points, scale)
   {
-    let old_zoom = this.reference_zoom;
-    let old_pos = new Vector3().copy(this.reference_position);
+    const old_zoom = this.reference_zoom;
+    const old_pos = new Vector3().copy(this.reference_position);
     this.focus_camera_on_points(points, scale);
-    let new_pos = this.reference_zoom.clone();
+    const new_pos = this.reference_zoom.clone();
     this.reference_zoom = old_zoom;
     this.reference_position.copy(old_pos);
     return new_pos;
@@ -318,8 +318,8 @@ export default class CameraController
 
   get_zoom_to_sphere(sphere, debug)
   {
-    let v_fov = (this.camera.fov / 2) * Math.PI / 180;
-    let h_fov = (2 * Math.atan(Math.tan(v_fov) * this.camera.aspect)) / 2;
+    const v_fov = (this.camera.fov / 2) * Math.PI / 180;
+    const h_fov = (2 * Math.atan(Math.tan(v_fov) * this.camera.aspect)) / 2;
 
     // if(debug )
     // {
@@ -328,8 +328,8 @@ export default class CameraController
     // this.camera.zoom = 1/((sphere.radius*2) /(ViewApi.map.camera_controller.camera.top*2));
     // this.camera.updateProjectionMatrix();
 
-    let distV = sphere.radius / Math.tan(v_fov);
-    let distH = sphere.radius / Math.tan(h_fov);
+    const distV = sphere.radius / Math.tan(v_fov);
+    const distH = sphere.radius / Math.tan(h_fov);
     return Math.max(Math.abs(distH), Math.abs(distV));
   }
 
@@ -370,34 +370,34 @@ export default class CameraController
   {
     if (this.camera.isPerspectiveCamera)
     {
-      let camera_forward_dir = new Vector3(0, 0, -1).applyQuaternion(this.reference_rotation);
-      let camera_backward_dir = camera_forward_dir.clone().multiplyScalar(-1);
+      const camera_forward_dir = new Vector3(0, 0, -1).applyQuaternion(this.reference_rotation);
+      const camera_backward_dir = camera_forward_dir.clone().multiplyScalar(-1);
 
-      let fitter = new PerspectiveFrustumPointFitter();
+      const fitter = new PerspectiveFrustumPointFitter();
 
-      let aspect_ratio = Screen.aspect_ratio;
+      const aspect_ratio = Screen.aspect_ratio;
 
-      let camera_pos = fitter.fit_points(points, this.reference_rotation, this.camera.fov * zoom_scale, aspect_ratio);
-      let box = new Box3().setFromPoints(points);
-      let center = new Vector3();
+      const camera_pos = fitter.fit_points(points, this.reference_rotation, this.camera.fov * zoom_scale, aspect_ratio);
+      const box = new Box3().setFromPoints(points);
+      const center = new Vector3();
       box.getCenter(center);
 
-      let reference_position_plane = new Plane().setFromNormalAndCoplanarPoint(camera_backward_dir, center);
+      const reference_position_plane = new Plane().setFromNormalAndCoplanarPoint(camera_backward_dir, center);
 
-      let camera_ray = new Ray(camera_pos, camera_forward_dir);
+      const camera_ray = new Ray(camera_pos, camera_forward_dir);
 
-      let reference_position = new Vector3();
+      const reference_position = new Vector3();
       camera_ray.intersectPlane(reference_position_plane, reference_position);
 
-      let zoom = camera_pos.distanceTo(reference_position);
+      const zoom = camera_pos.distanceTo(reference_position);
 
       this.reference_zoom = zoom;
       this.reference_position.copy(reference_position);
     }
     else
     {
-      let fitter = new OrthographicFrustumPointFitter();
-      let result = fitter.fit_points(points, this.reference_rotation, this.camera.fov * zoom_scale, Screen.aspect_ratio);
+      const fitter = new OrthographicFrustumPointFitter();
+      const result = fitter.fit_points(points, this.reference_rotation, this.camera.fov * zoom_scale, Screen.aspect_ratio);
 
       this.reference_position.copy(result.center);
       this.reference_zoom = result.distance_to_center;
@@ -417,11 +417,11 @@ export default class CameraController
   __get_zoom_to_show_rect(width, height, scale = 1)
   {
     // let v_fov = (this.camera.fov/2) * Math.PI/180;
-    let v_fov = TMath.degToRad(this.camera.fov / 2);
-    let h_fov = (2 * Math.atan(Math.tan(v_fov) * this.camera.aspect)) / 2;
+    const v_fov = TMath.degToRad(this.camera.fov / 2);
+    const h_fov = (2 * Math.atan(Math.tan(v_fov) * this.camera.aspect)) / 2;
 
-    let distV = height / Math.tan(v_fov * scale);
-    let distH = width / Math.tan(h_fov * scale);
+    const distV = height / Math.tan(v_fov * scale);
+    const distH = width / Math.tan(h_fov * scale);
     return Math.max(Math.abs(distH), Math.abs(distV));
   }
 }

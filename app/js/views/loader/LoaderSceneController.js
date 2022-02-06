@@ -78,7 +78,7 @@ export default class LoaderSceneController
   {
     if (this.is_assets_ready)
     {
-      let scene = new Scene();
+      const scene = new Scene();
       this.compilation_t += Time.delta_time;
 
       if (this.compilation_index < this.objects.length)

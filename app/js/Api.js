@@ -25,8 +25,8 @@ class Api
     this.render_loop = new RenderLoop(this.loader, Graphics);
     this.config = Configuration;
 
-    let app_container = document.querySelector('.container');
-    let canvas = document.querySelector('.main-canvas');
+    const app_container = document.querySelector('.container');
+    const canvas = document.querySelector('.main-canvas');
 
     Initializer.init(canvas, app_container, { antialias: true, force_webgl2: true });
     // Configuration.dpr = 1;

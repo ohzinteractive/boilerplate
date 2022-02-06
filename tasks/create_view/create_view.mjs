@@ -10,18 +10,18 @@ class ViewCreator
 
   create_view(name)
   {
-    let js_folder = path.join('app', 'js', 'views', name);
-    let js_transition_path = path.join(js_folder, `${this.capitalize(name)}TransitionController.js`);
-    let js_scene_path = path.join(js_folder, `${this.capitalize(name)}SceneController.js`);
-    let js_view_path = path.join(js_folder, `${this.capitalize(name)}View.js`);
+    const js_folder = path.join('app', 'js', 'views', name);
+    const js_transition_path = path.join(js_folder, `${this.capitalize(name)}TransitionController.js`);
+    const js_scene_path = path.join(js_folder, `${this.capitalize(name)}SceneController.js`);
+    const js_view_path = path.join(js_folder, `${this.capitalize(name)}View.js`);
 
-    let data_path = path.join('app', 'assets', 'data', `${name}.xml`);
+    const data_path = path.join('app', 'assets', 'data', `${name}.xml`);
 
-    let pug_folder = path.join('app', 'views', name);
-    let pug_path = path.join(pug_folder, `${name}.pug`);
+    const pug_folder = path.join('app', 'views', name);
+    const pug_path = path.join(pug_folder, `${name}.pug`);
 
-    let scss_folder = path.join('app', 'css', name);
-    let scss_path = path.join(scss_folder, `_${name}.scss`);
+    const scss_folder = path.join('app', 'css', name);
+    const scss_path = path.join(scss_folder, `_${name}.scss`);
 
     this.__copy_template_js(js_folder, js_transition_path, name, 'TransitionController');
     this.__copy_template_js(js_folder, js_scene_path, name, 'SceneController');
@@ -41,8 +41,8 @@ class ViewCreator
 
   __update_initial_data_file(name)
   {
-    let new_data = `"loader_opacity": 0,\n    "${name}_opacity": 0,`;
-    let file_path = path.join('app', 'assets', 'data', 'initial_state_data.json');
+    const new_data = `"loader_opacity": 0,\n    "${name}_opacity": 0,`;
+    const file_path = path.join('app', 'assets', 'data', 'initial_state_data.json');
 
     const options = {
       files: file_path,
@@ -63,8 +63,8 @@ class ViewCreator
 
   __update_application_scss_file(name)
   {
-    let new_data = `__SECTIONS__\n@import '${name}/${name}';`;
-    let file_path = path.join('app', 'css', 'application.scss');
+    const new_data = `__SECTIONS__\n@import '${name}/${name}';`;
+    const file_path = path.join('app', 'css', 'application.scss');
 
     const options = {
       files: file_path,
@@ -85,8 +85,8 @@ class ViewCreator
 
   __update_index_pug_file(name)
   {
-    let new_data = `__SECTIONS__\n      include views/${name}/${name}`;
-    let file_path = path.join('app', 'index.pug');
+    const new_data = `__SECTIONS__\n      include views/${name}/${name}`;
+    const file_path = path.join('app', 'index.pug');
 
     const options = {
       files: file_path,
@@ -107,8 +107,8 @@ class ViewCreator
 
   __update_general_loader_file(name)
   {
-    let new_import = `home.xml';\nimport ${name}_data from 'bundle-text:../../assets/data/${name}.xml';`;
-    let file_path = path.join('app', 'js', 'loaders', 'GeneralLoader.js');
+    const new_import = `home.xml';\nimport ${name}_data from 'bundle-text:../../assets/data/${name}.xml';`;
+    const file_path = path.join('app', 'js', 'loaders', 'GeneralLoader.js');
 
     const options_1 = {
       files: file_path,
@@ -116,7 +116,7 @@ class ViewCreator
       to: new_import
     };
 
-    let new_data = `__SECTIONS_DATA__\n    ResourceContainer.set_resource('${name}_data', 'data/${name}.xml', ${name}_data);`;
+    const new_data = `__SECTIONS_DATA__\n    ResourceContainer.set_resource('${name}_data', 'data/${name}.xml', ${name}_data);`;
 
     const options_2 = {
       files: file_path,
@@ -139,8 +139,8 @@ class ViewCreator
 
   __update_mainapp_file(name)
   {
-    let new_import = `HomeView';\nimport ${this.capitalize(name)}View from './views/${name}/${this.capitalize(name)}View';`;
-    let file_path = path.join('app', 'js', 'MainApplication.js');
+    const new_import = `HomeView';\nimport ${this.capitalize(name)}View from './views/${name}/${this.capitalize(name)}View';`;
+    const file_path = path.join('app', 'js', 'MainApplication.js');
 
     const options_1 = {
       files: file_path,
@@ -148,7 +148,7 @@ class ViewCreator
       to: new_import
     };
 
-    let new_section = `HomeView();\n    this.${name.toLowerCase()}_view = new ${this.capitalize(name)}View();`;
+    const new_section = `HomeView();\n    this.${name.toLowerCase()}_view = new ${this.capitalize(name)}View();`;
 
     const options_2 = {
       files: file_path,
@@ -156,7 +156,7 @@ class ViewCreator
       to: new_section
     };
 
-    let new_section_start = `home_view.start();\n    this.${name.toLowerCase()}_view.start();`;
+    const new_section_start = `home_view.start();\n    this.${name.toLowerCase()}_view.start();`;
 
     const options_3 = {
       files: file_path,
@@ -179,9 +179,9 @@ class ViewCreator
 
   __update_sections_file(name)
   {
-    let new_section = `'initial',\n  ${name.toUpperCase()}: '${name.toLowerCase()}',`;
-    let new_section_url = `'/initial',\n  ${name.toUpperCase()}: '/${name.replace(/_/g, '-')}',`;
-    let file_path = path.join('app', 'js', 'views', 'Sections.js');
+    const new_section = `'initial',\n  ${name.toUpperCase()}: '${name.toLowerCase()}',`;
+    const new_section_url = `'/initial',\n  ${name.toUpperCase()}: '/${name.replace(/_/g, '-')}',`;
+    const file_path = path.join('app', 'js', 'views', 'Sections.js');
 
     const options_1 = {
       files: file_path,

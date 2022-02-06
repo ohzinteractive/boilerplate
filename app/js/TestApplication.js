@@ -50,7 +50,7 @@ export default class TestApplication extends BaseApplication
     Debug.draw_axis();
     SceneManager.current.add(new Grid());
 
-    let testing_view = new TestingView();
+    const testing_view = new TestingView();
     testing_view.start();
     ViewManager.go_to_view(testing_view.name, false);
   }
@@ -62,7 +62,7 @@ export default class TestApplication extends BaseApplication
 
   __init_camera()
   {
-    let camera = new PerspectiveCamera(60, Screen.aspect_ratio, 0.1, 100);
+    const camera = new PerspectiveCamera(60, Screen.aspect_ratio, 0.1, 100);
     camera.updateProjectionMatrix();
     camera.position.z = 10;
 

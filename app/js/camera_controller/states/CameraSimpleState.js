@@ -69,8 +69,8 @@ export default class CameraSimpleState extends CameraViewState
 
     if (Input.right_mouse_button_down)
     {
-      let prev_point    = CameraUtilities.get_plane_intersection(camera_controller.reference_position, undefined, this.last_point).clone();
-      let current_point = CameraUtilities.get_plane_intersection(camera_controller.reference_position, undefined, Input.NDC).clone();
+      const prev_point    = CameraUtilities.get_plane_intersection(camera_controller.reference_position, undefined, this.last_point).clone();
+      const current_point = CameraUtilities.get_plane_intersection(camera_controller.reference_position, undefined, Input.NDC).clone();
       current_point.sub(prev_point);
 
       camera_controller.reference_position.x -= current_point.x;

@@ -68,7 +68,7 @@ class SceneController
 
   __init_camera()
   {
-    let camera = new PerspectiveCamera(60, Screen.aspect_ratio, 0.1, 200);
+    const camera = new PerspectiveCamera(60, Screen.aspect_ratio, 0.1, 200);
     camera.updateProjectionMatrix();
     camera.position.z = 10;
 

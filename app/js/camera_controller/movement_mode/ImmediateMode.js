@@ -30,7 +30,7 @@ export default class ImmediateMode extends CameraMovementMode
     camera_controller.camera.quaternion.copy(camera_controller.reference_rotation);
 
     this.tmp_forward.copy(this.vector_forward_axis);
-    let dir = this.tmp_forward.applyQuaternion(camera_controller.camera.quaternion);
+    const dir = this.tmp_forward.applyQuaternion(camera_controller.camera.quaternion);
 
     camera_controller.reference_zoom = TMath.clamp(camera_controller.reference_zoom,
       camera_controller.min_zoom, camera_controller.max_zoom);
@@ -45,9 +45,9 @@ export default class ImmediateMode extends CameraMovementMode
     this.tmp_quat.copy(camera_controller.reference_rotation);
     this.tmp_forward.copy(this.vector_forward_axis);
 
-    let dir = this.tmp_forward.applyQuaternion(this.tmp_quat);
+    const dir = this.tmp_forward.applyQuaternion(this.tmp_quat);
 
-    let zoom = TMath.clamp(camera_controller.reference_zoom,
+    const zoom = TMath.clamp(camera_controller.reference_zoom,
       camera_controller.min_zoom, camera_controller.max_zoom);
 
     this.tmp_camera_target_pos.copy(camera_controller.reference_position).sub(dir.multiplyScalar(zoom));

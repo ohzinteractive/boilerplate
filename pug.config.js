@@ -1,4 +1,4 @@
-let load_json = (file_path) =>
+const load_json = (file_path) =>
 {
   return require(file_path);
 };
