@@ -11,7 +11,6 @@ class ComponentCreator
   create_component(name)
   {
     const js_folder = path.join('app', 'js', 'view_components', name);
-    const js_base_path = path.join(js_folder, `${this.capitalize(name)}ComponentBase.js`);
     const js_scene_path = path.join(js_folder, `${this.capitalize(name)}SceneController.js`);
     const js_view_path = path.join(js_folder, `${this.capitalize(name)}Component.js`);
 
@@ -21,7 +20,6 @@ class ComponentCreator
     const scss_folder = path.join('app', 'css', 'components', name);
     const scss_path = path.join(scss_folder, `_${name}.scss`);
 
-    this.__copy_template_js(js_folder, js_base_path, name, 'ComponentBase');
     this.__copy_template_js(js_folder, js_scene_path, name, 'SceneController');
     this.__copy_template_js(js_folder, js_view_path, name, 'Component');
 
