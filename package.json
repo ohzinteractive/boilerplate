@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "lil-gui": "^0.16.0",
-    "ohzi-core": "6.2.1"
+    "ohzi-core": "6.2.3"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "2.1.1",
