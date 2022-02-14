@@ -46,6 +46,13 @@ export default class MainApplication extends BaseApplication
 
     DatGUI.start();
 
+    window.onpopstate = this.go_to_url_section.bind(this, true);
+
+    this.go_to_url_section(false);
+  }
+
+  go_to_url_section(skip)
+  {
     const next_view = ViewManager.get_by_url(window.location.pathname) || this.home_view;
     this.go_to(next_view.name);
   }
