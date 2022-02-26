@@ -22,10 +22,10 @@ export default class GeneralLoader
     // const renderer = Graphics._renderer;
 
     // PNG
-    // this.batch.add_texture('emoji_atlas', 'textures/emojis/emojis.png', 100000);
+    // this.batch.add_loader(new TextureLoader('emoji_atlas', 'textures/emojis/emojis.png', 100000));
 
     // BASIS
-    // this.batch.add_basis('emoji_atlas', 'textures/emojis/emojis.basis', renderer, basis_loader, 100000);
+    // this.batch.add_loader(new BasisLoader('emoji_atlas', 'textures/emojis/emojis.basis', renderer, basis_loader, 100000));
 
     // __SECTIONS_DATA__
 

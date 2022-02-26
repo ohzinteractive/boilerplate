@@ -24,6 +24,7 @@ export default class MainApplication extends BaseApplication
 
     Graphics.set_state(this.normal_render_mode);
     Graphics._renderer.outputEncoding = sRGBEncoding;
+    Graphics._renderer.debug.checkShaderErrors = process.env.NODE_ENV === 'development';
 
     DatGUI.init();
   }

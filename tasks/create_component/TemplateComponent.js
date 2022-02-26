@@ -38,6 +38,7 @@ export default class TemplateComponent extends ViewComponent
   // This method is called in every frame right after on_enter is called.
   update(current_state_data)
   {
+    super.update();
     this.set_opacity(current_state_data.template_opacity);
 
     this.scene.update();

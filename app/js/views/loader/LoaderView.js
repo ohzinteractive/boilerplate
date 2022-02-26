@@ -96,8 +96,6 @@ export default class LoaderView extends ApplicationView
     this.scene_controller.update_enter_transition(global_view_data, transition_progress, action_sequencer);
     this.transition_controller.update_enter_transition(global_view_data, transition_progress, action_sequencer);
 
-    this.set_opacity(global_view_data.loader_opacity);
-
     this.__update_progress();
   }
 
@@ -106,8 +104,6 @@ export default class LoaderView extends ApplicationView
   {
     this.scene_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
     this.transition_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
-
-    this.set_opacity(global_view_data.loader_opacity);
 
     this.__update_progress();
   }
