@@ -1,13 +1,17 @@
 // Small Devices Portrait
 $small-breakpoint:      370px;
 // Small Devices Landscale
-$small-wide-breakpoint: 415px;
+$small-wide-breakpoint: 568px;
 // Big Devices Portrait
 $medium-breakpoint:     820px;
 // Big Devices Landscape
 $wide-breakpoint:       960px;
 // Desktop Devices
 $ultra-wide-breakpoint: 1366px;
+// Desktop Devices wide screens
+$super-ultra-wide-breakpoint: 1920px;
+// Desktop Devices ultra wide screens
+$mega-ultra-wide-breakpoint: 2560px;
 
 // Pixel to rem
 $ptr: 0.0625rem;
@@ -16,6 +20,16 @@ html {
     scrollbar-width: none;
     -ms-overflow-style: none;
     -webkit-text-size-adjust: 100%;
+
+    font-size: 16px;
+
+    @include respond-to($super-ultra-wide-breakpoint) {
+        font-size: 20px;
+    }
+
+    @include respond-to($mega-ultra-wide-breakpoint) {
+        font-size: 30px;
+    }
 }
 
 html,
