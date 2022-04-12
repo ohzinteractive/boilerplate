@@ -39,24 +39,29 @@
   },
   "dependencies": {
     "lil-gui": "^0.16.0",
-    "ohzi-core": "6.3.4"
+    "ohzi-core": "6.5.5"
   },
   "devDependencies": {
-    "@parcel/packager-raw-url": "2.1.1",
-    "@parcel/packager-xml": "2.1.1",
-    "@parcel/transformer-glsl": "2.1.1",
-    "@parcel/transformer-image": "2.1.1",
-    "@parcel/transformer-inline-string": "2.1.1",
-    "@parcel/transformer-pug": "2.1.1",
-    "@parcel/transformer-sass": "2.1.1",
-    "@parcel/transformer-webmanifest": "2.1.1",
-    "@parcel/transformer-xml": "2.1.1",
+    "@parcel/packager-raw-url": "2.4.1",
+    "@parcel/packager-xml": "2.4.1",
+    "@parcel/transformer-glsl": "2.4.1",
+    "@parcel/transformer-image": "2.4.1",
+    "@parcel/transformer-inline-string": "2.4.1",
+    "@parcel/transformer-pug": "2.4.1",
+    "@parcel/transformer-sass": "2.4.1",
+    "@parcel/transformer-webmanifest": "2.4.1",
+    "@parcel/transformer-xml": "2.4.1",
     "basisu": "^1.2.1",
     "cross-var": "^1.1.0",
-    "parcel": "2.1.1",
+    "parcel": "2.4.1",
     "replace-in-file": "^6.2.0",
     "serve-static": "^1.14.1",
     "standardx": "^7.0.0"
+  },
+  "standardx": {
+    "ignore": [
+      "/public/"
+    ]
   },
   "private": true,
   "workspaces": [
