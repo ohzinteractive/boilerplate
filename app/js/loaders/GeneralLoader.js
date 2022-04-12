@@ -20,15 +20,17 @@ export default class GeneralLoader
   {
     // let basis_loader = new BasisTextureLoader();
     // const renderer = Graphics._renderer;
+    // basis_loader.setWorkerLimit(1);
+    // basis_loader.setTranscoderPath('libs/basis/');
+    // basis_loader.detectSupport(renderer);
 
     // PNG
     // this.batch.add_loader(new TextureLoader('emoji_atlas', 'textures/emojis/emojis.png', 100000));
 
     // BASIS
-    // this.batch.add_loader(new BasisLoader('emoji_atlas', 'textures/emojis/emojis.basis', renderer, basis_loader, 100000));
+    // this.batch.add_loader(new BasisLoader('emoji_atlas', 'textures/emojis/emojis.basis', basis_loader, 100000));
 
     // __SECTIONS_DATA__
-
     ResourceContainer.set_resource('home_data', 'data/home.xml', home_data);
   }
 
