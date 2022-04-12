@@ -17,7 +17,7 @@ import { Box3 } from 'three';
 import { Ray } from 'three';
 import { Math as TMath } from 'three';
 
-import CameraStandardState from './states/CameraStandardState';
+import CameraSimpleState from './states/CameraSimpleState';
 
 export default class CameraController
 {
@@ -58,6 +58,7 @@ export default class CameraController
 
     this.current_tilt = 0;
     this.current_orientation = 0;
+    this.current_azimuth = 0;
 
     this.input_enabled = true;
     // this.debug_box = Debug.draw_cube(undefined,15);
@@ -148,66 +149,126 @@ export default class CameraController
 
   set_standard_mode()
   {
-    this.set_state(new CameraStandardState());
+    this.set_state(new CameraSimpleState());
   }
 
-  set_rotation(tilt, orientation)
+  set_rotation(tilt, orientation, azimuth = 0)
   {
     this.old_orientation = this.current_orientation;
 
     this.current_tilt = tilt || this.current_tilt;
     this.current_orientation = orientation || this.current_orientation;
-    this.reference_rotation.copy(this.build_rotation(this.current_tilt, this.current_orientation));
+    this.current_azimuth = azimuth || this.current_azimuth;
+
+    this.reference_rotation.copy(this.build_rotation(this.current_tilt, this.current_orientation, this.current_azimuth));
   }
 
-  set_tilt(tilt)
+  // set_tilt(tilt)
+  // {
+  //   const new_tilt = new Quaternion().setFromAxisAngle(this.vector_right_axis, (-tilt / 360) * Math.PI * 2);
+  //   const old_tilt = new Quaternion().setFromAxisAngle(this.vector_right_axis, (-this.current_tilt / 360) * Math.PI * 2);
+  //   old_tilt.conjugate();
+
+  //   this.reference_rotation.multiply(old_tilt).multiply(new_tilt);
+  //   this.current_tilt = tilt;
+  // }
+
+  set_rotation_delta(tilt, orientation, azimuth = 0)
   {
-    const new_tilt = new Quaternion().setFromAxisAngle(this.vector_right_axis, (-tilt / 360) * Math.PI * 2);
-    const old_tilt = new Quaternion().setFromAxisAngle(this.vector_right_axis, (-this.current_tilt / 360) * Math.PI * 2);
-    old_tilt.conjugate();
+    this.lerp_rotation(
+      this.current_tilt, this.current_tilt + tilt,
+      this.current_orientation, this.current_orientation + orientation,
+      this.current_azimuth, this.current_azimuth + azimuth,
+      1
+    );
+    // this.current_orientation = OMath.mod(this.current_orientation + delta_x,  360);
+    // this.current_tilt = OMath.mod(this.current_tilt + delta_y,  360);
+    // this.current_azimuth = OMath.mod(this.current_azimuth + delta_z,  360);
 
-    this.reference_rotation.multiply(old_tilt).multiply(new_tilt);
-    this.current_tilt = tilt;
+    // this.set_rotation(this.current_tilt, this.current_orientation, this.current_azimuth);
   }
 
-  set_rotation_delta(delta_x, delta_y)
+  lerp_tilt(from_tilt, to_tilt, t)
   {
-    this.current_orientation = OMath.mod(this.current_orientation + delta_x,  360);
-    this.current_tilt += delta_y;
+    // if (Math.abs(to_tilt - from_tilt) > 180)
+    // {
+    //   if (from_tilt > 180)
+    //   {
+    //     from_tilt = (from_tilt % 360) - 360;
+    //     from_tilt = OMath.mod(OMath.mod(from_tilt, 360) - 360, 360);
+    //   }
+    //   if (to_tilt > 180)
+    //   {
+    //     to_tilt = OMath.mod(OMath.mod(to_tilt, 360) - 360, 360);
+    //   }
+    // }
 
-    this.set_rotation(this.current_tilt, this.current_orientation);
+    this.set_rotation(TMath.lerp(from_tilt, to_tilt, t), this.current_orientation, this.current_azimuth);
+    this.current_tilt = TMath.lerp(from_tilt, to_tilt, t);
   }
 
-  lerp_rotation(from_tilt, to_tilt, from_orientation, to_orientation, t)
+  lerp_orientation(from_orientation, to_orientation, t)
   {
     if (Math.abs(to_orientation - from_orientation) > 180)
     {
       if (from_orientation > 180)
       {
         from_orientation = (from_orientation % 360) - 360;
+        from_orientation = OMath.mod(OMath.mod(from_orientation, 360) - 360, 360);
       }
       if (to_orientation > 180)
       {
-        to_orientation = (to_orientation % 360) - 360;
+        to_orientation = OMath.mod(OMath.mod(to_orientation, 360) - 360, 360);
       }
     }
 
-    this.set_rotation(TMath.lerp(from_tilt, to_tilt, t), TMath.lerp(from_orientation, to_orientation, t));
-    // let from_quat = this.build_rotation(from_tilt, from_orientation)
-    // let to_quat   = this.build_rotation(to_tilt, to_orientation)
-
-    // this.reference_rotation.copy(from_quat).slerp(to_quat, t);
-
-    this.current_tilt = TMath.lerp(from_tilt, to_tilt, t);
+    this.set_rotation(this.current_tilt, TMath.lerp(from_orientation, to_orientation, t), this.current_azimuth);
     this.current_orientation = TMath.lerp(from_orientation, to_orientation, t);
   }
 
-  build_rotation(tilt, orientation)
+  lerp_azimuth(from_azimuth, to_azimuth, t)
+  {
+    // if (Math.abs(to_azimuth - from_azimuth) > 180)
+    // {
+    //   if (from_azimuth > 180)
+    //   {
+    //     from_azimuth = (from_azimuth % 360) - 360;
+    //     from_azimuth = OMath.mod(OMath.mod(from_azimuth, 360) - 360, 360);
+    //   }
+    //   if (to_azimuth > 180)
+    //   {
+    //     to_azimuth = OMath.mod(OMath.mod(to_azimuth, 360) - 360, 360);
+    //   }
+    // }
+
+    this.set_rotation(this.current_tilt, this.current_orientation, TMath.lerp(from_azimuth, to_azimuth, t));
+    this.current_azimuth = TMath.lerp(from_azimuth, to_azimuth, t);
+  }
+
+  lerp_rotation(from_tilt, to_tilt, from_orientation, to_orientation, from_azimuth, to_azimuth, t)
+  {
+    this.lerp_tilt(from_tilt, to_tilt, t);
+    this.lerp_orientation(from_orientation, to_orientation, t);
+    this.lerp_azimuth(from_azimuth, to_azimuth, t);
+
+    // this.set_rotation(
+    //   TMath.lerp(from_tilt, to_tilt, t),
+    //   TMath.lerp(from_orientation, to_orientation, t),
+    //   TMath.lerp(from_azimuth, to_azimuth, t)
+    // );
+
+    // this.current_tilt = TMath.lerp(from_tilt, to_tilt, t);
+    // this.current_orientation = TMath.lerp(from_orientation, to_orientation, t);
+    // this.current_azimuth = TMath.lerp(from_azimuth, to_azimuth, t);
+  }
+
+  build_rotation(tilt, orientation, azimuth)
   {
     const new_orientation = new Quaternion().setFromAxisAngle(this.vector_up_axis, (orientation / 360) * Math.PI * 2);
     const new_tilt = new Quaternion().setFromAxisAngle(this.vector_right_axis, (-tilt / 360) * Math.PI * 2);
+    const new_azimuth = new Quaternion().setFromAxisAngle(this.vector_forward_axis, (azimuth / 360) * Math.PI * 2);
 
-    return new_orientation.multiply(new_tilt);
+    return new_orientation.multiply(new_tilt).multiply(new_azimuth);
   }
 
   translate_forward(amount)
@@ -266,27 +327,27 @@ export default class CameraController
     }
   }
 
-  get_zoom_to_focus_on_bounding_box(bb, tilt, orientation)
-  {
-    if (tilt !== undefined && orientation !== undefined)
-    {
-      this.tmp_quat.copy(this.reference_rotation); // backup quaternion
-      this.reference_rotation.copy(this.build_rotation(tilt, orientation));
-    }
-    const original_zoom = this.reference_zoom;
-    const original_pos = new Vector3().copy(this.reference_position);
-    this.focus_camera_on_bounding_box(bb);
-    const target_zoom = this.reference_zoom;
-    this.reference_position.copy(original_pos);
-    this.reference_zoom = original_zoom;
+  // get_zoom_to_focus_on_bounding_box(bb, tilt, orientation)
+  // {
+  //   if (tilt !== undefined && orientation !== undefined)
+  //   {
+  //     this.tmp_quat.copy(this.reference_rotation); // backup quaternion
+  //     this.reference_rotation.copy(this.build_rotation(tilt, orientation, this.current_azimuth));
+  //   }
+  //   const original_zoom = this.reference_zoom;
+  //   const original_pos = new Vector3().copy(this.reference_position);
+  //   this.focus_camera_on_bounding_box(bb);
+  //   const target_zoom = this.reference_zoom;
+  //   this.reference_position.copy(original_pos);
+  //   this.reference_zoom = original_zoom;
 
-    if (tilt !== undefined && orientation !== undefined)
-    {
-      this.reference_rotation.copy(this.tmp_quat);
-    }
+  //   if (tilt !== undefined && orientation !== undefined)
+  //   {
+  //     this.reference_rotation.copy(this.tmp_quat);
+  //   }
 
-    return target_zoom;
-  }
+  //   return target_zoom;
+  // }
 
   get_zoom_to_focus_on_points(points, scale)
   {
@@ -412,6 +473,11 @@ export default class CameraController
   get_current_orientation()
   {
     return this.current_orientation;
+  }
+
+  get_current_azimuth()
+  {
+    return this.current_azimuth;
   }
 
   __get_zoom_to_show_rect(width, height, scale = 1)
