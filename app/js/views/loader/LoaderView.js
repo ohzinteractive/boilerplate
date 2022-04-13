@@ -124,12 +124,6 @@ export default class LoaderView extends ApplicationView
     this.target_progress = this.__round(progress, 2);
   }
 
-  // Overrride default behaviour
-  set_opacity()
-  {
-
-  }
-
   __update_progress()
   {
     // this.progress = this.target_progress + this.round((transition_progress / 3) * 2, 2);
