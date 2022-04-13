@@ -2,7 +2,7 @@ import { ResourceContainer } from 'ohzi-core';
 import { ResourceBatch } from 'ohzi-core';
 // import { Graphics } from 'ohzi-core';
 
-// import { BasisTextureLoader } from 'three/examples/jsm/loaders/BasisTextureLoader.js';
+// import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 
 import home_data from 'bundle-text:../../assets/data/home.xml';
 
@@ -18,11 +18,14 @@ export default class GeneralLoader
 
   __setup_batch()
   {
-    // let basis_loader = new BasisTextureLoader();
+    // const basis_loader = new KTX2Loader();
     // const renderer = Graphics._renderer;
+
     // basis_loader.setWorkerLimit(1);
     // basis_loader.setTranscoderPath('libs/basis/');
     // basis_loader.detectSupport(renderer);
+
+    // this.resource_container.set_resource('basis_loader', '/basis_loader', basis_loader);
 
     // PNG
     // this.batch.add_loader(new TextureLoader('emoji_atlas', 'textures/emojis/emojis.png', 100000));
