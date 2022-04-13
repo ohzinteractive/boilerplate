@@ -4,19 +4,20 @@
     background-color: $background-color;
     place-items: center;
     opacity: 1;
-    transition: opacity 1s;
-
-    &.hidden {
-        display: block;
-        pointer-events: none;
-        opacity: 0;
-    }
 }
 
     .loader__group {
         display: flex;
         flex-direction: column;
         align-items: center;
+        opacity: 1;
+        transition: opacity 1s;
+
+        &.hidden {
+            display: flex;
+            pointer-events: none;
+            opacity: 0;
+        }
     }
 
         .loader__animation {
