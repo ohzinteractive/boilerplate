@@ -3,6 +3,14 @@
     z-index: 999;
     background-color: $background-color;
     place-items: center;
+    opacity: 1;
+    transition: opacity 1s;
+
+    &.hidden {
+        display: block;
+        pointer-events: none;
+        opacity: 0;
+    }
 }
 
     .loader__group {
