@@ -16,18 +16,20 @@
     "config-core-hooks": "cd core && git config core.hooksPath git_hooks && cd ..",
     "start": "yarn remove_cache && yarn remove_dist && parcel app/index.pug",
     "build_api": "parcel build ./app/js/Api.js --no-cache",
-    "build": "yarn remove_dist && yarn build_parcel && yarn copy_public",
+    "build": "yarn remove_cache && yarn remove_dist && yarn build_parcel && yarn copy_public",
     "build_parcel": "parcel build ./app/index.pug --no-source-maps --no-cache",
     "remove_cache": "rm -f -R .parcel-cache",
     "remove_dist": "rm -f -R dist",
     "copy_public": "cp -R public/* dist",
     "basisu": "basisu",
+    "build_textures": "yarn basisu ./original_assets/textures/* -individual -mipmap -max_endpoints 16128 -max_selectors 16128 -comp_level 4 -y_flip -output_path ./public/textures/",
     "create-view": "node ./tasks/create_view/create_view.mjs",
     "create-component": "node ./tasks/create_component/create_component.mjs",
     "fix-syntax": "standardx --fix || echo 'Done'"
   },
   "alias": {
     "three": "./node_modules/three/src/Three.js",
+    "three/examples/jsm/controls/TransformControls.js": "./node_modules/three/examples/jsm/controls/TransformControls.js",
     "three/examples/jsm/utils/BufferGeometryUtils.js": "./node_modules/three/examples/jsm/utils/BufferGeometryUtils.js",
     "three/examples/jsm/loaders/GLTFLoader.js": "./node_modules/three/examples/jsm/loaders/GLTFLoader.js",
     "three/examples/jsm/loaders/OBJLoader.js": "./node_modules/three/examples/jsm/loaders/OBJLoader.js",
@@ -35,7 +37,8 @@
     "three/examples/jsm/loaders/DRACOLoader.js": "./node_modules/three/examples/jsm/loaders/DRACOLoader.js",
     "three/examples/jsm/loaders/RGBELoader.js": "./node_modules/three/examples/jsm/loaders/RGBELoader.js",
     "three/examples/jsm/loaders/FontLoader.js": "./node_modules/three/examples/jsm/loaders/FontLoader.js",
-    "three/examples/jsm/loaders/ColladaLoader.js": "./node_modules/three/examples/jsm/loaders/ColladaLoader.js"
+    "three/examples/jsm/loaders/ColladaLoader.js": "./node_modules/three/examples/jsm/loaders/ColladaLoader.js",
+    "three/examples/jsm/loaders/KTX2Loader.js": "./node_modules/three/examples/jsm/loaders/KTX2Loader.js"
   },
   "dependencies": {
     "lil-gui": "^0.16.0",
