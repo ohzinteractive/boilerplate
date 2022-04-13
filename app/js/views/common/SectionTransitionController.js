@@ -1,5 +1,4 @@
-import { ViewManager } from 'ohzi-core';
-import { Screen } from 'ohzi-core';
+import { OScreen, ViewManager } from 'ohzi-core';
 import { Vector3 } from 'three';
 import { Sections } from '../Sections';
 
@@ -140,11 +139,9 @@ export default class SectionTransitionController
 
   __update_camera_rotation(action_sequencer)
   {
-    const portrait = Screen.width < Screen.height;
-
-    const camera_tilt_suffix = portrait && action_sequencer.is_channel_redefined('camera_tilt_mobile') ? '_mobile' : '';
-    const camera_orientation_suffix = portrait && action_sequencer.is_channel_redefined('camera_orientation_mobile') ? '_mobile' : '';
-    const camera_azimuth_suffix = portrait && action_sequencer.is_channel_redefined('camera_azimuth_mobile') ? '_mobile' : '';
+    const camera_tilt_suffix = OScreen.portrait && action_sequencer.is_channel_redefined('camera_tilt_mobile') ? '_mobile' : '';
+    const camera_orientation_suffix = OScreen.portrait && action_sequencer.is_channel_redefined('camera_orientation_mobile') ? '_mobile' : '';
+    const camera_azimuth_suffix = OScreen.portrait && action_sequencer.is_channel_redefined('camera_azimuth_mobile') ? '_mobile' : '';
 
     SceneController.camera_controller.lerp_tilt(
       action_sequencer.get_current_starting_value(`camera_tilt${camera_tilt_suffix}`),
@@ -167,10 +164,9 @@ export default class SectionTransitionController
 
   __update_camera_zoom(action_sequencer)
   {
-    const portrait = Screen.width < Screen.height;
     const mobile = action_sequencer.is_channel_redefined('camera_zoom_mobile');
 
-    if (portrait && mobile)
+    if (OScreen.portrait && mobile)
     {
       SceneController.camera_controller.reference_zoom = this.current_camera_zoom_mobile;
     }
@@ -182,12 +178,11 @@ export default class SectionTransitionController
 
   __update_camera_pos(action_sequencer)
   {
-    const portrait = Screen.width < Screen.height;
     const mobile = action_sequencer.is_channel_redefined('camera_x_mobile') ||
       action_sequencer.is_channel_redefined('camera_y_mobile') ||
       action_sequencer.is_channel_redefined('camera_z_mobile');
 
-    if (portrait && mobile)
+    if (OScreen.portrait && mobile)
     {
       SceneController.camera_controller.reference_position.copy(this.current_camera_pos_mobile);
     }
@@ -199,10 +194,9 @@ export default class SectionTransitionController
 
   __update_camera_fov(action_sequencer)
   {
-    const portrait = Screen.width < Screen.height;
     const mobile = action_sequencer.is_channel_redefined('camera_fov_mobile');
 
-    if (portrait && mobile)
+    if (OScreen.portrait && mobile)
     {
       SceneController.camera_controller.camera.fov = this.current_camera_fov_mobile;
     }

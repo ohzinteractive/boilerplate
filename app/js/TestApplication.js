@@ -1,16 +1,16 @@
-import { BaseApplication } from 'ohzi-core';
+import { BaseApplication, OScreen } from 'ohzi-core';
 import { NormalRender } from 'ohzi-core';
 import { Graphics } from 'ohzi-core';
 import { PerspectiveCamera } from 'ohzi-core';
-import { ResourceContainer } from 'ohzi-core';
+// import { ResourceContainer } from 'ohzi-core';
 
-import { sRGBEncoding } from 'three';
-import { Vector3 } from 'three';
+// import { sRGBEncoding } from 'three';
+// import { Vector3 } from 'three';
 import { Color } from 'three';
 
 import { CameraManager } from 'ohzi-core';
 import { Grid } from 'ohzi-core';
-import { Time } from 'ohzi-core';
+// import { Time } from 'ohzi-core';
 import { Debug } from 'ohzi-core';
 import { SceneManager } from 'ohzi-core';
 import CameraController from './camera_controller/CameraController';
@@ -62,7 +62,7 @@ export default class TestApplication extends BaseApplication
 
   __init_camera()
   {
-    const camera = new PerspectiveCamera(60, Screen.aspect_ratio, 0.1, 100);
+    const camera = new PerspectiveCamera(60, OScreen.aspect_ratio, 0.1, 100);
     camera.updateProjectionMatrix();
     camera.position.z = 10;
 

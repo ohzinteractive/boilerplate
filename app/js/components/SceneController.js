@@ -3,7 +3,7 @@ import { CameraManager } from 'ohzi-core';
 import { Grid } from 'ohzi-core';
 import { Debug } from 'ohzi-core';
 import { SceneManager } from 'ohzi-core';
-import { Screen } from 'ohzi-core';
+import { OScreen } from 'ohzi-core';
 import { Graphics } from 'ohzi-core';
 
 import { Color } from 'three';
@@ -72,7 +72,7 @@ class SceneController
 
   __init_camera()
   {
-    const camera = new PerspectiveCamera(60, Screen.aspect_ratio, 0.1, 200);
+    const camera = new PerspectiveCamera(60, OScreen.aspect_ratio, 0.1, 200);
     camera.updateProjectionMatrix();
     camera.position.z = 10;
 

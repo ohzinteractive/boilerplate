@@ -1,7 +1,7 @@
 import CameraViewState from './states/CameraViewState';
 import ImmediateMode from './movement_mode/ImmediateMode';
 
-import { Screen } from 'ohzi-core';
+import { OScreen } from 'ohzi-core';
 // import { Debug } from 'ohzi-core';
 import { OMath } from 'ohzi-core';
 // import { SceneManager } from 'ohzi-core';
@@ -296,13 +296,13 @@ export default class CameraController
       const obj_x = this.tmp_size.x;
       const obj_y = this.tmp_size.y;
       const object_aspect = obj_x / obj_y;
-      if (Screen.aspect_ratio / object_aspect > 1)
+      if (OScreen.aspect_ratio / object_aspect > 1)
       {
-        this.camera.zoom = Screen.height / obj_y;
+        this.camera.zoom = OScreen.height / obj_y;
       }
       else
       {
-        this.camera.zoom = Screen.width / obj_x;
+        this.camera.zoom = OScreen.width / obj_x;
       }
 
       bb.getCenter(this.reference_position);
@@ -436,7 +436,7 @@ export default class CameraController
 
       const fitter = new PerspectiveFrustumPointFitter();
 
-      const aspect_ratio = Screen.aspect_ratio;
+      const aspect_ratio = OScreen.aspect_ratio;
 
       const camera_pos = fitter.fit_points(points, this.reference_rotation, this.camera.fov * zoom_scale, aspect_ratio);
       const box = new Box3().setFromPoints(points);
@@ -458,7 +458,7 @@ export default class CameraController
     else
     {
       const fitter = new OrthographicFrustumPointFitter();
-      const result = fitter.fit_points(points, this.reference_rotation, this.camera.fov * zoom_scale, Screen.aspect_ratio);
+      const result = fitter.fit_points(points, this.reference_rotation, this.camera.fov * zoom_scale, OScreen.aspect_ratio);
 
       this.reference_position.copy(result.center);
       this.reference_zoom = result.distance_to_center;
