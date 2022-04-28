@@ -15,7 +15,7 @@ class ViewCreator
     const js_scene_path = path.join(js_folder, `${this.capitalize(name)}SceneController.js`);
     const js_view_path = path.join(js_folder, `${this.capitalize(name)}View.js`);
 
-    const data_path = path.join('app', 'assets', 'data', `${name}.json`);
+    const data_path = path.join('app', 'data', `${name}.json`);
 
     const pug_folder = path.join('app', 'views', name);
     const pug_path = path.join(pug_folder, `${name}.pug`);
@@ -42,7 +42,7 @@ class ViewCreator
   __update_initial_data_file(name)
   {
     const new_data = `"loader_opacity": 0,\n    "${name}_opacity": 0,`;
-    const file_path = path.join('app', 'assets', 'data', 'initial_state_data.json');
+    const file_path = path.join('app', 'data', 'initial_state_data.json');
 
     const options = {
       files: file_path,
