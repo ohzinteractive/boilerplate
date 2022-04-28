@@ -15,7 +15,7 @@ class ViewCreator
     const js_scene_path = path.join(js_folder, `${this.capitalize(name)}SceneController.js`);
     const js_view_path = path.join(js_folder, `${this.capitalize(name)}View.js`);
 
-    const data_path = path.join('app', 'data', `${name}.json`);
+    const transition_data_path = path.join('app', 'data', 'transitions', `${name}.json`);
 
     const pug_folder = path.join('app', 'views', name);
     const pug_path = path.join(pug_folder, `${name}.pug`);
@@ -27,7 +27,7 @@ class ViewCreator
     this.__copy_template_js(js_folder, js_scene_path, name, 'SceneController');
     this.__copy_template_js(js_folder, js_view_path, name, 'View');
 
-    this.__copy_template_data(data_path, name);
+    this.__copy_template_data(transition_data_path, name);
     this.__copy_template_pug(pug_folder, pug_path, name);
     this.__copy_template_scss(scss_folder, scss_path, name);
 
