@@ -9,7 +9,7 @@ import InitialView from './views/InitialView';
 import LoaderView from './views/loader/LoaderView';
 
 import initial_state_data from '../data/initial_state_data.json';
-import loader_data from 'bundle-text:../data/transitions/loader.xml';
+import loader_data from '../data/transitions/loader.json';
 
 import { SectionsURLs } from './views/Sections';
 
@@ -50,7 +50,7 @@ export default class LoaderState extends BaseApplication
 
   on_config_ready()
   {
-    ResourceContainer.set_resource('loader_data', 'data/loader.xml', loader_data);
+    ResourceContainer.set_resource('loader_data', 'data/loader.json', loader_data);
 
     this.initial_view = new InitialView();
     this.loader_view = new LoaderView(this.api);

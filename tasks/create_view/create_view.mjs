@@ -15,7 +15,7 @@ class ViewCreator
     const js_scene_path = path.join(js_folder, `${this.capitalize(name)}SceneController.js`);
     const js_view_path = path.join(js_folder, `${this.capitalize(name)}View.js`);
 
-    const data_path = path.join('app', 'assets', 'data', `${name}.xml`);
+    const data_path = path.join('app', 'assets', 'data', `${name}.json`);
 
     const pug_folder = path.join('app', 'views', name);
     const pug_path = path.join(pug_folder, `${name}.pug`);
@@ -107,16 +107,16 @@ class ViewCreator
 
   __update_general_loader_file(name)
   {
-    const new_import = `home.xml';\nimport ${name}_data from 'bundle-text:../../data/transitions/${name}.xml';`;
+    const new_import = `home.json';\nimport ${name}_data from '../../data/transitions/${name}.json';`;
     const file_path = path.join('app', 'js', 'loaders', 'GeneralLoader.js');
 
     const options_1 = {
       files: file_path,
-      from: 'home.xml\';',
+      from: 'home.json\';',
       to: new_import
     };
 
-    const new_data = `__SECTIONS_DATA__\n    ResourceContainer.set_resource('${name}_data', 'data/${name}.xml', ${name}_data);`;
+    const new_data = `__SECTIONS_DATA__\n    ResourceContainer.set_resource('${name}_data', 'data/${name}.json', ${name}_data);`;
 
     const options_2 = {
       files: file_path,
@@ -230,7 +230,7 @@ class ViewCreator
   __copy_template_data(data_path, name)
   {
     fs.copyFileSync(
-      path.join('tasks', 'create_view', 'template.xml'),
+      path.join('tasks', 'create_view', 'template.json'),
       data_path
     );
 

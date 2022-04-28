@@ -4,7 +4,7 @@ import { ResourceBatch } from 'ohzi-core';
 
 // import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 
-import home_data from 'bundle-text:../../data/transitions/home.xml';
+import home_data from '../../data/transitions/home.json';
 
 export default class GeneralLoader
 {
@@ -34,7 +34,7 @@ export default class GeneralLoader
     // this.batch.add_loader(new BasisLoader('emoji_atlas', 'textures/emojis/emojis.basis', basis_loader, 100000));
 
     // __SECTIONS_DATA__
-    ResourceContainer.set_resource('home_data', 'data/home.xml', home_data);
+    ResourceContainer.set_resource('home_data', 'data/home.json', home_data);
   }
 
   load()
