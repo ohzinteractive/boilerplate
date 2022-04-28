@@ -107,7 +107,7 @@ class ViewCreator
 
   __update_general_loader_file(name)
   {
-    const new_import = `home.xml';\nimport ${name}_data from 'bundle-text:../../assets/data/${name}.xml';`;
+    const new_import = `home.xml';\nimport ${name}_data from 'bundle-text:../../data/transitions/${name}.xml';`;
     const file_path = path.join('app', 'js', 'loaders', 'GeneralLoader.js');
 
     const options_1 = {

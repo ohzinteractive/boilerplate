@@ -4,7 +4,7 @@ import { ResourceBatch } from 'ohzi-core';
 
 // import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 
-import home_data from 'bundle-text:../../assets/data/home.xml';
+import home_data from 'bundle-text:../../data/transitions/home.xml';
 
 export default class GeneralLoader
 {

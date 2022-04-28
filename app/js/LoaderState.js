@@ -8,8 +8,9 @@ import GeneralLoader from './loaders/GeneralLoader';
 import InitialView from './views/InitialView';
 import LoaderView from './views/loader/LoaderView';
 
-import initial_state_data from '../assets/data/initial_state_data.json';
-import loader_data from 'bundle-text:../assets/data/loader.xml';
+import initial_state_data from '../data/initial_state_data.json';
+import loader_data from 'bundle-text:../data/transitions/loader.xml';
+
 import { SectionsURLs } from './views/Sections';
 
 export default class LoaderState extends BaseApplication
