@@ -37,6 +37,9 @@ export default class MainApplication extends BaseApplication
 
     ViewContext.set_app(this);
 
+    this.view_manager = ViewManager;
+    this.view_manager.set_browser_title_suffix('OHZI Interactive');
+
     // __SECTIONS__
     this.home_view = new HomeView();
     this.home_view.start();
