@@ -41,6 +41,7 @@ export default class LoaderState extends BaseApplication
     // this.check_resource_loading(batch, this.on_config_ready.bind(this), 10);
 
     this.on_config_ready();
+    this.__setup_debug_mode();
   }
 
   on_enter()
@@ -172,5 +173,60 @@ export default class LoaderState extends BaseApplication
     {
       window.location.replace('/');
     }
+  }
+
+  __setup_debug_mode()
+  {
+    let debug_mode = localStorage.getItem('debug_mode');
+    window.debug_mode = debug_mode === 'true';
+
+    let skip_mode = localStorage.getItem('skip_mode');
+    window.skip_mode = skip_mode === 'true';
+
+    if (debug_mode === 'true')
+    {
+      const sections_containers = document.querySelectorAll('.section');
+
+      for (let i = 0; i < sections_containers.length; i++)
+      {
+        const section_container = sections_containers[i];
+
+        section_container.classList.add('debug');
+      }
+    }
+
+    document.addEventListener('keydown', event =>
+    {
+      if (event.shiftKey && event.key === 'D')
+      {
+        if (debug_mode === 'true')
+        {
+          debug_mode = 'false';
+          document.querySelector('.lil-gui.autoPlace').style.display = 'flex';
+        }
+        else
+        {
+          debug_mode = 'true';
+        }
+
+        localStorage.setItem('debug_mode', debug_mode);
+        location.reload();
+      }
+
+      if (event.shiftKey && event.key === 'S')
+      {
+        if (skip_mode === 'true')
+        {
+          skip_mode = 'false';
+        }
+        else
+        {
+          skip_mode = 'true';
+        }
+
+        localStorage.setItem('skip_mode', skip_mode);
+        location.reload();
+      }
+    });
   }
 }

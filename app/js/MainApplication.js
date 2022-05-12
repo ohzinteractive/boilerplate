@@ -40,13 +40,13 @@ export default class MainApplication extends BaseApplication
     this.view_manager = ViewManager;
     this.view_manager.set_browser_title_suffix('OHZI Interactive');
 
+    this.scene_controller.start();
+
     // __SECTIONS__
     this.home_view = new HomeView();
     this.home_view.start();
 
     // __COMPONENTS__
-
-    this.scene_controller.start();
 
     DatGUI.start();
 
@@ -63,6 +63,11 @@ export default class MainApplication extends BaseApplication
 
   go_to(section, skip = false)
   {
+    if (window.debug_mode || window.skip_mode)
+    {
+      skip = true;
+    }
+
     ViewManager.go_to_view(section, true, skip);
   }
 
