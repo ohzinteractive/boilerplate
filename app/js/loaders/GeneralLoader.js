@@ -1,7 +1,7 @@
 import { ResourceContainer } from 'ohzi-core';
 import { ResourceBatch } from 'ohzi-core';
-// import { Graphics } from 'ohzi-core';
 
+// import { Graphics } from 'ohzi-core';
 // import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 
 import home_data from '../../data/transitions/home.json';
@@ -27,11 +27,7 @@ export default class GeneralLoader
 
     // this.resource_container.set_resource('basis_loader', '/basis_loader', basis_loader);
 
-    // PNG
-    // this.batch.add_loader(new TextureLoader('emoji_atlas', 'textures/emojis/emojis.png', 100000));
-
-    // BASIS
-    // this.batch.add_loader(new BasisLoader('emoji_atlas', 'textures/emojis/emojis.basis', basis_loader, 100000));
+    // window.draco_decoder_path = 'https://www.gstatic.com/draco/versioned/decoders/1.4.3/';
 
     // __SECTIONS_DATA__
     ResourceContainer.set_resource('home_data', 'data/home.json', home_data);
