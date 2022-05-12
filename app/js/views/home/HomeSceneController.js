@@ -1,3 +1,5 @@
+import { SceneManager } from 'ohzi-core';
+import SceneController from '../../components/SceneController';
 
 export default class HomeSceneController
 {
@@ -8,11 +10,13 @@ export default class HomeSceneController
   // This method is called one time at the beginning of the app execution.
   start()
   {
+    this.scene = SceneController.home_scene;
   }
 
   // This method is called one time before the transition to this section is started.
   before_enter()
   {
+    SceneManager.current = this.scene;
   }
 
   // This method is called one time after the transition to this section is finished.

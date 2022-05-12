@@ -1,18 +1,13 @@
-import { PerspectiveCamera } from 'ohzi-core';
+import { OScreen, PerspectiveCamera } from 'ohzi-core';
 import { CameraManager } from 'ohzi-core';
-import { Grid } from 'ohzi-core';
-import { Debug } from 'ohzi-core';
-import { SceneManager } from 'ohzi-core';
-import { OScreen } from 'ohzi-core';
 import { Graphics } from 'ohzi-core';
 
 import { Color } from 'three';
-// import { AmbientLight } from 'three';
-// import { DirectionalLight } from 'three';
-// import { SpotLight } from 'three';
 
 import CameraController from '../camera_controller/CameraController';
-import DatGUI from './DatGUI';
+
+import HomeScene from '../scenes/HomeScene';
+import TestGeneralScene from '../scenes/TestGeneralScene';
 
 class SceneController
 {
@@ -26,48 +21,48 @@ class SceneController
     this.__init_camera();
     this.__init_camera_controller();
 
-    this.add_lights();
+    this.home_scene = new HomeScene();
 
-    // Debug.draw_sphere();
-    Debug.draw_axis();
-    SceneManager.current.add(new Grid());
+    this.test_general_scene = new TestGeneralScene();
 
-    // Here we add all objects into the scene
-    // this.alley = new Alley();
-    // SceneManager.current.add(this.alley);
+    this.scenes = [
+      this.home_scene,
+      this.test_general_scene
+    ];
 
-    // Compile shaders on the first frame
     Graphics.update();
-
-    // After the object is rendered, we hide it
-    // this.alley.hide();
   }
 
-  add_lights()
+  get_by_name(name)
   {
-    // let light = new AmbientLight('#FFFFFF', 2);
-    // SceneManager.current.add(light);
+    for (let i = 0; i < this.scenes.length; i++)
+    {
+      const scene = this.scenes[i];
+      if (scene.name === name)
+      {
+        return scene;
+      }
+    }
 
-    // let directional_light = new DirectionalLight('#FFFFFF', 1);
-    // directional_light.position.set(0, 10, 20);
-    // SceneManager.current.add(directional_light);
-
-    // let spot_light = new SpotLight('#FFFFFF', 0.3);
-    // spot_light.position.set(-10, 10, 20);
-    // SceneManager.current.add(spot_light);
-
-    // let spot_light_2 = new SpotLight('#FFFFFF', 0.3);
-    // spot_light_2.position.set(10, 10, 20);
-    // SceneManager.current.add(spot_light_2);
+    console.error('[SceneController.get_by_name] no scene found for:', name);
+    return undefined;
   }
 
   update()
   {
     this.camera_controller.update();
-    // this.alley.update();
 
-    // Example of use of DatGUI
-    this.camera_controller.reference_position.z = DatGUI.settings.camera_z;
+    // SceneManager.current.traverse(child =>
+    // {
+    //   if (child.update)
+    //   {
+    //     child.update();
+    //   }
+    //   if (child.material && child.material.update)
+    //   {
+    //     child.material.update();
+    //   }
+    // });
   }
 
   __init_camera()
