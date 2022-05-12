@@ -1,6 +1,3 @@
-import { SceneManager } from 'ohzi-core';
-import SceneController from '../../components/SceneController';
-
 export default class TransitionSceneController
 {
   constructor()
@@ -10,13 +7,11 @@ export default class TransitionSceneController
   // This method is called one time at the beginning of the app execution.
   start()
   {
-    this.scene = SceneController.home_scene;
   }
 
   // This method is called one time before the transition to this section is started.
   before_enter()
   {
-    SceneManager.current = this.scene;
   }
 
   // This method is called one time after the transition to this section is finished.
@@ -47,5 +42,23 @@ export default class TransitionSceneController
   // This method is called in every frame when the site is transitioning from this section.
   update_exit_transition(global_view_data, transition_progress, action_sequencer)
   {
+  }
+
+  set_next_scene(next_scene)
+  {
+    this.next_scene = next_scene;
+  }
+
+  is_ready_to_exit()
+  {
+    if (this.next_scene.is_loaded())
+    {
+      if (this.next_scene.is_compiled())
+      {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

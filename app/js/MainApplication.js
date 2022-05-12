@@ -56,25 +56,35 @@ export default class MainApplication extends BaseApplication
 
     DatGUI.start();
 
-    window.onpopstate = this.go_to_url_section.bind(this, true);
+    window.onpopstate = this.go_to_url_section.bind(this);
 
-    this.go_to_url_section(false);
+    this.go_to_url_section();
   }
 
-  go_to_url_section(skip)
+  go_to_url_section()
   {
     const next_view = ViewManager.get_by_url(window.location.pathname) || this.home_view;
-    this.go_to(next_view.name);
+
+    this.transition_view.set_next_view(next_view);
+    this.go_to(Sections.TRANSITION, false, false);
   }
 
-  go_to(section, skip = false)
+  go_to(section, change_url = true, skip = false)
   {
     if (window.debug_mode || window.skip_mode)
     {
       skip = true;
     }
 
-    ViewManager.go_to_view(section, true, skip);
+    ViewManager.go_to_view(section, change_url, skip);
+  }
+
+  go_to_scene(view_name)
+  {
+    const next_view = ViewManager.get(view_name);
+
+    this.transition_view.set_next_view(next_view);
+    this.go_to(Sections.TRANSITION, false, false);
   }
 
   update()

@@ -11,6 +11,8 @@ import scene_high_objects from '../../data/assets/test_general/high/test_general
 import scene_high_textures from '../../data/assets/test_general/high/test_general_high_textures.json';
 import scene_high_sounds from '../../data/assets/test_general/high/test_general_high_sounds.json';
 
+import { Debug, Grid } from 'ohzi-core';
+
 export default class TestGeneralScene extends AbstractScene
 {
   constructor()
@@ -23,7 +25,8 @@ export default class TestGeneralScene extends AbstractScene
 
   init()
   {
-
+    this.add(Debug.draw_axis());
+    this.add(new Grid());
   }
 
   update()

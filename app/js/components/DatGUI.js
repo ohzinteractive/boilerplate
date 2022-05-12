@@ -38,6 +38,11 @@ class DatGUI
 
     // document.querySelector('.lil-gui.autoPlace').style['z-index'] = 999;
 
+    if (!window.debug_mode)
+    {
+      document.querySelector('.lil-gui.autoPlace').style.display = 'none';
+    }
+
     this.dat_gui.add(this.settings, 'camera_z', -20, 20);
   }
 }

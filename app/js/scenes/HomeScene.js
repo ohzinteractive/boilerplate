@@ -11,6 +11,8 @@ import scene_high_objects from '../../data/assets/home/high/home_high_objects.js
 import scene_high_textures from '../../data/assets/home/high/home_high_textures.json';
 import scene_high_sounds from '../../data/assets/home/high/home_high_sounds.json';
 
+import { Debug, Grid } from 'ohzi-core';
+
 export default class HomeScene extends AbstractScene
 {
   constructor()
@@ -23,7 +25,11 @@ export default class HomeScene extends AbstractScene
 
   init()
   {
-
+    if (window.debug_mode)
+    {
+      this.add(Debug.draw_axis());
+      this.add(new Grid());
+    }
   }
 
   update()

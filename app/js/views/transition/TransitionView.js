@@ -1,4 +1,4 @@
-import { ApplicationView } from 'ohzi-core';
+import { ApplicationView, ViewManager } from 'ohzi-core';
 import { Sections, SectionsURLs } from '../Sections';
 
 import TransitionSceneController from './TransitionSceneController';
@@ -16,6 +16,8 @@ export default class TransitionView extends ApplicationView
 
     this.scene_controller = new TransitionSceneController();
     this.transition_controller = new TransitionTransitionController();
+
+    this.next_view_name = '';
   }
 
   // This method is called one time at the beginning of the app execution.
@@ -62,6 +64,8 @@ export default class TransitionView extends ApplicationView
   {
     this.scene_controller.update();
     this.transition_controller.update();
+
+    this.__check_section_ready();
   }
 
   // This method is called in every frame when the site is transitioning to this section.
@@ -76,5 +80,26 @@ export default class TransitionView extends ApplicationView
   {
     this.scene_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
     this.transition_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
+  }
+
+  set_next_view(view)
+  {
+    this.scene_controller.set_next_scene(view.scene_controller.scene);
+    this.next_view_name = view.name;
+  }
+
+  __check_section_ready()
+  {
+    if (this.scene_controller.is_ready_to_exit())
+    {
+      let skip = false;
+
+      if (window.debug_mode || window.skip_mode)
+      {
+        skip = true;
+      }
+
+      ViewManager.go_to_view(this.next_view_name, true, skip);
+    }
   }
 }
