@@ -1,5 +1,6 @@
 const Sections = {
   INITIAL: 'initial',
+  TRANSITION: 'transition',
   TEST_GENERAL: 'test_general',
   LOADER: 'loader',
   HOME: 'home'
@@ -7,6 +8,7 @@ const Sections = {
 
 const SectionsURLs = {
   INITIAL: '/initial',
+  TRANSITION: '/transition',
   TEST_GENERAL: '/test-general',
   LOADER: '/loader',
   HOME: '/'

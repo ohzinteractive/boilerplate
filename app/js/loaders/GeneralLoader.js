@@ -5,6 +5,7 @@ import { ResourceBatch } from 'ohzi-core';
 // import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 
 import home_data from '../../data/transitions/home.json';
+import transition_data from '../../data/transitions/transition.json';
 import test_general_data from '../../data/transitions/test_general.json';
 
 export default class GeneralLoader
@@ -31,6 +32,7 @@ export default class GeneralLoader
     // window.draco_decoder_path = 'https://www.gstatic.com/draco/versioned/decoders/1.4.3/';
 
     // __SECTIONS_DATA__
+    ResourceContainer.set_resource('transition_data', 'data/transition.json', transition_data);
     ResourceContainer.set_resource('test_general_data', 'data/test_general.json', test_general_data);
     ResourceContainer.set_resource('home_data', 'data/home.json', home_data);
   }
