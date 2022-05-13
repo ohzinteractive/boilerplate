@@ -11,14 +11,12 @@ import LoaderState from './LoaderState';
 
 // APP
 import MainApplication from './MainApplication';
-// import TestApplication from './TestApplication';
 
 class Api
 {
   init(settings)
   {
     this.application = new MainApplication();
-    // this.application = new TestApplication();
 
     this.loader = new LoaderState(this);
 
