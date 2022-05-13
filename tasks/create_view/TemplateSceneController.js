@@ -37,6 +37,7 @@ export default class TemplateSceneController
   // This method is called in every frame right after on_enter is called.
   update()
   {
+    this.scene.update();
   }
 
   // This method is called in every frame when the site is transitioning to this section.
