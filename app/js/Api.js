@@ -26,7 +26,7 @@ class Api
     const app_container = document.querySelector('.container');
     const canvas = document.querySelector('.main-canvas');
 
-    Initializer.init(canvas, app_container, { antialias: true, force_webgl2: true });
+    Initializer.init(canvas, app_container, { antialias: true, force_webgl2: true, xr_enabled: false });
     // Configuration.dpr = 1;
     Configuration.dpr = window.devicePixelRatio;
 
