@@ -9,7 +9,7 @@ const Sections = {
 const SectionsURLs = {
   INITIAL: '/initial',
   TRANSITION: '/transition',
-  TEST_GENERAL: '/test-general',
+  TEST_GENERAL: '/test',
   LOADER: '/loader',
   HOME: '/'
 };
