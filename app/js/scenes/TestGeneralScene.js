@@ -17,10 +17,15 @@ export default class TestGeneralScene extends AbstractScene
 {
   constructor()
   {
-    super(scene_objects, scene_textures, scene_sounds,
-      scene_high_objects, scene_high_textures, scene_high_sounds);
-
-    this.name = Sections.HOME;
+    super({
+      name: Sections.TEST_GENERAL,
+      scene_objects,
+      scene_textures,
+      scene_sounds,
+      scene_high_objects,
+      scene_high_textures,
+      scene_high_sounds
+    });
   }
 
   init()

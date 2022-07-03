@@ -1,52 +1,37 @@
 import { Scene } from 'three';
-import AudiosCompilator from '../../compilators/AudiosCompilator';
+// import AvatarSystem from '../../components/avatar/AvatarSystem';
 
-import CompilatorManager from '../../compilators/CompilatorManager';
-import ObjectsCompilator from '../../compilators/ObjectsCompilator';
-import TexturesCompilator from '../../compilators/TexturesCompilator';
-
-import AsyncAudiosLoader from '../../loaders/AsyncAudiosLoader';
-import AsyncObjectsLoader from '../../loaders/AsyncObjectsLoader';
-import AsyncTexturesLoader from '../../loaders/AsyncTexturesLoader';
+import HighQualityAssetsState from './loading_states/HighQualityAssetsState';
+import RegularAssetsState from './loading_states/RegularAssetsState';
+import SceneLoadingState from './loading_states/SceneLoadingState';
 
 export default class AbstractScene extends Scene
 {
-  constructor(scene_objects, scene_textures, scene_sounds,
-    scene_high_objects, scene_high_textures, scene_high_sounds)
+  constructor({
+    name,
+    scene_objects, scene_textures, scene_sounds,
+    scene_high_objects, scene_high_textures, scene_high_sounds
+  })
   {
     super();
 
-    this.first_time = true;
-    this.callback_called = false;
+    this.name = name;
 
-    this.high_quality_callback_called = false;
-    this.scene_high_objects = scene_high_objects;
-    this.scene_high_textures = scene_high_textures;
-    this.scene_high_sounds = scene_high_sounds;
+    this.is_loaded = false;
+    this.is_high_loaded = false;
 
-    this.setup_loader(scene_objects, scene_textures, scene_sounds);
+    this.loading_states = {
+      regular: new RegularAssetsState(this, scene_objects, scene_textures, scene_sounds),
+      high: new HighQualityAssetsState(this, scene_high_objects, scene_high_textures, scene_high_sounds)
+    };
+
+    this.current_state = new SceneLoadingState();
+    this.set_state(this.loading_states.regular);
   }
 
-  setup_loader(scene_objects, scene_textures, scene_sounds)
+  get loading_progress()
   {
-    this.loaders = [];
-    this.compilators = [];
-
-    const compilators = [];
-
-    const object_loader = new AsyncObjectsLoader(scene_objects);
-    this.loaders.push(object_loader);
-    compilators.push(new ObjectsCompilator(this.get_objects(), object_loader.get_assets_names()));
-
-    const textures_loader = new AsyncTexturesLoader(scene_textures);
-    this.loaders.push(textures_loader);
-    compilators.push(new TexturesCompilator(textures_loader.get_assets_names()));
-
-    const audios_loader = new AsyncAudiosLoader(scene_sounds);
-    this.loaders.push(audios_loader);
-    compilators.push(new AudiosCompilator(audios_loader.get_assets_names()));
-
-    this.compilator_manager = new CompilatorManager(compilators);
+    return this.current_state.loading_progress;
   }
 
   init()
@@ -55,11 +40,10 @@ export default class AbstractScene extends Scene
 
   load()
   {
-    for (let i = 0; i < this.loaders.length; i++)
-    {
-      const loader = this.loaders[i];
-      loader.load();
-    }
+    this.init();
+
+    this.set_state(this.loading_states.regular);
+    this.current_state.load();
   }
 
   get_objects()
@@ -80,70 +64,85 @@ export default class AbstractScene extends Scene
     return objects;
   }
 
-  is_loaded()
+  dispose_cpu()
   {
-    if (this.first_time)
+    this.traverse(child =>
     {
-      this.init();
-      this.load();
-      this.first_time = false;
-    }
+      if (child.geometry)
+      {
+        child.geometry.attributes.position.array = new Float32Array(3);
+        if (child.geometry.attributes.normal)
+        {
+          child.geometry.attributes.normal.array = new Float32Array(3);
+        }
+        if (child.geometry.attributes.uv)
+        {
+          child.geometry.attributes.uv.array = new Float32Array(2);
+        }
+        if (child.material.map)
+        {
+          for (let i = 0; i < child.material.map.mipmaps.length; i++)
+          {
+            child.material.map.mipmaps[i] = new Uint8Array(4);
+          }
+        }
+      }
+    });
 
-    let loaded = true;
-
-    for (let i = 0; i < this.loaders.length; i++)
-    {
-      const loader = this.loaders[i];
-
-      loaded = loaded && loader.is_loaded();
-    }
-
-    if (loaded && !this.callback_called)
-    {
-      this.on_assets_ready();
-
-      // Loader High quality assets
-      this.setup_loader(this.scene_high_objects, this.scene_high_textures, this.scene_high_sounds);
-      this.load();
-
-      this.callback_called = true;
-    }
-
-    return loaded;
+    // AvatarSystem.component_container.component_instancer.data_texture.data = new Float32Array(4);
   }
 
-  check_high_quality_loaded()
+  dispose()
   {
-    const loaded = this.is_loaded();
-
-    if (loaded && !this.high_quality_callback_called)
+    this.traverse(child =>
     {
-      this.on_high_quality_assets_ready();
+      if (child.material)
+      {
+        if (child.material.map)
+        {
+          child.material.map.dispose();
+        }
 
-      this.high_quality_callback_called = true;
-    }
-
-    return loaded;
+        child.material.dispose();
+        child.geometry.dispose();
+      }
+    });
+    // AvatarSystem.component_container.component_instancer.data_texture.data = new Float32Array(4);
   }
 
-  is_compiled()
+  set_state(state)
   {
-    this.compilator_manager.update();
-    return this.compilator_manager.is_finished();
+    this.current_state.on_exit();
+    this.current_state = state;
+    this.current_state.on_enter();
+  }
+
+  // Called from transition
+  update_loading_state()
+  {
+    if (!this.is_high_loaded)
+    {
+      this.current_state.update();
+    }
   }
 
   update()
   {
-    this.check_high_quality_loaded();
+    this.update_loading_state();
   }
 
   on_assets_ready()
   {
-    console.warn('Not implemented');
+    this.is_loaded = true;
+
+    // Load high quality assets
+    this.set_state(this.loading_states.high);
+    this.current_state.load();
   }
 
   on_high_quality_assets_ready()
   {
+    this.is_high_loaded = true;
     // If sounds are loaded, this line should be used
     // AudioManager.init_sounds(AudioManager.get_sounds_names(sounds));
   }

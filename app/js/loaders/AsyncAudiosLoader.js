@@ -1,5 +1,5 @@
+import { AudioLoader } from 'ohzi-core';
 import AsyncAbstractLoader from './AsyncAbstractLoader';
-import AudioLoader from './AudioLoader';
 
 export default class AsyncAudiosLoader extends AsyncAbstractLoader
 {

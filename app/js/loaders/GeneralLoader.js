@@ -8,6 +8,7 @@ import { ResourceBatch } from 'ohzi-core';
 import home_data from '../../data/transitions/home.json';
 import transition_data from '../../data/transitions/transition.json';
 import test_general_data from '../../data/transitions/test_general.json';
+import AsyncAbstractLoader from './AsyncAbstractLoader';
 
 export default class GeneralLoader
 {
@@ -38,6 +39,9 @@ export default class GeneralLoader
     // draco_loader.setWorkerLimit(1);
 
     // this.resource_container.set_resource('draco_loader', '/draco_loader', draco_loader);
+
+    const assets_worker = AsyncAbstractLoader.create_worker();
+    this.resource_container.set_resource('assets_worker', '/assets_worker', assets_worker);
 
     // __SECTIONS_DATA__
     ResourceContainer.set_resource('transition_data', 'data/transition.json', transition_data);

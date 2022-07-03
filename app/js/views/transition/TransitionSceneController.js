@@ -1,17 +1,25 @@
+import SceneController from '../../components/SceneController';
+
 export default class TransitionSceneController
 {
   constructor()
   {
+    this.next_scene = undefined;
   }
 
   // This method is called one time at the beginning of the app execution.
   start()
   {
+    this.scene = SceneController.home_scene;
   }
 
   // This method is called one time before the transition to this section is started.
   before_enter()
   {
+    if (!this.next_scene.is_loaded)
+    {
+      this.next_scene.load();
+    }
   }
 
   // This method is called one time after the transition to this section is finished.
@@ -32,11 +40,13 @@ export default class TransitionSceneController
   // This method is called in every frame right after on_enter is called.
   update()
   {
+    // this.next_scene.update_loading_state();
   }
 
   // This method is called in every frame when the site is transitioning to this section.
   update_enter_transition(global_view_data, transition_progress, action_sequencer)
   {
+
   }
 
   // This method is called in every frame when the site is transitioning from this section.
@@ -51,14 +61,18 @@ export default class TransitionSceneController
 
   is_ready_to_exit()
   {
-    if (this.next_scene.is_loaded())
+    this.next_scene.update_loading_state();
+
+    if (this.next_scene.is_loaded)
     {
-      if (this.next_scene.is_compiled())
-      {
-        return true;
-      }
+      return true;
     }
 
     return false;
+  }
+
+  get loading_progress()
+  {
+    return this.next_scene.loading_progress;
   }
 }

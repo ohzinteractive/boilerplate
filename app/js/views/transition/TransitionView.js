@@ -1,4 +1,4 @@
-import { ApplicationView, ViewManager } from 'ohzi-core';
+import { ApplicationView, OMath, ViewManager } from 'ohzi-core';
 import { Sections, SectionsURLs } from '../Sections';
 
 import TransitionSceneController from './TransitionSceneController';
@@ -18,6 +18,9 @@ export default class TransitionView extends ApplicationView
     this.transition_controller = new TransitionTransitionController();
 
     this.next_view_name = '';
+
+    this.current_progress = 0;
+    this.target_progress = 0;
   }
 
   // This method is called one time at the beginning of the app execution.
@@ -25,13 +28,27 @@ export default class TransitionView extends ApplicationView
   {
     this.scene_controller.start();
     this.transition_controller.start();
+
+    this.progress_bar = document.querySelector('.transition__progress-bar-fill');
+  }
+
+  show()
+  {
+    super.show();
+
+    this.transition_controller.show();
   }
 
   // This method is called one time before the transition to this section is started.
   before_enter()
   {
+    this.current_progress = 0;
+    this.target_progress = 0;
+
     this.scene_controller.before_enter();
     this.transition_controller.before_enter();
+
+    this.load_html_images();
   }
 
   // This method is called one time after the transition to this section is finished.
@@ -66,6 +83,7 @@ export default class TransitionView extends ApplicationView
     this.transition_controller.update();
 
     this.__check_section_ready();
+    this.__update_progress();
   }
 
   // This method is called in every frame when the site is transitioning to this section.
@@ -73,6 +91,9 @@ export default class TransitionView extends ApplicationView
   {
     this.scene_controller.update_enter_transition(global_view_data, transition_progress, action_sequencer);
     this.transition_controller.update_enter_transition(global_view_data, transition_progress, action_sequencer);
+
+    // this.__check_section_ready();
+    this.__update_progress();
   }
 
   // This method is called in every frame when the site is transitioning from this section.
@@ -80,12 +101,21 @@ export default class TransitionView extends ApplicationView
   {
     this.scene_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
     this.transition_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
+    this.__update_progress();
   }
 
-  set_next_view(view)
+  set_next_view(view, reload = false)
   {
-    this.scene_controller.set_next_scene(view.scene_controller.scene);
-    this.next_view_name = view.name;
+    if (reload)
+    {
+      localStorage.setItem('next_view', view.name);
+      window.location.reload();
+    }
+    else
+    {
+      this.scene_controller.set_next_scene(view.scene_controller.scene);
+      this.next_view_name = view.name;
+    }
   }
 
   __check_section_ready()
@@ -99,7 +129,23 @@ export default class TransitionView extends ApplicationView
         skip = true;
       }
 
-      ViewManager.go_to_view(this.next_view_name, true, skip);
+      ViewManager.go_to_view(this.next_view_name, false, skip);
     }
+  }
+
+  __update_progress()
+  {
+    this.target_progress = this.__round(this.scene_controller.loading_progress, 2);
+
+    this.current_progress += (this.target_progress - this.current_progress) * 0.05;
+    this.current_progress = OMath.clamp(this.current_progress, 0, 1);
+
+    this.progress_bar.style.transform = `translate3d(${this.current_progress * 100}%,0,0)`;
+  }
+
+  __round(value, precision)
+  {
+    const multiplier = Math.pow(10, precision || 0);
+    return Math.round(value * multiplier) / multiplier;
   }
 }
