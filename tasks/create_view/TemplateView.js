@@ -25,6 +25,13 @@ export default class TemplateView extends ApplicationView
     this.transition_controller.start();
   }
 
+  show()
+  {
+    super.show();
+
+    this.transition_controller.show();
+  }
+
   // This method is called one time before the transition to this section is started.
   before_enter()
   {

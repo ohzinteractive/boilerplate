@@ -39,7 +39,6 @@ export default class TemplateComponent extends ViewComponent
   update(current_state_data)
   {
     super.update();
-    this.set_opacity(current_state_data.template_opacity);
 
     this.scene.update();
   }
