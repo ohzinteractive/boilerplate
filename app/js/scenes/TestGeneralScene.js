@@ -38,4 +38,14 @@ export default class TestGeneralScene extends AbstractScene
   {
     super.update();
   }
+
+  on_assets_ready()
+  {
+    super.on_assets_ready();
+  }
+
+  on_high_quality_assets_ready()
+  {
+    super.on_high_quality_assets_ready();
+  }
 }

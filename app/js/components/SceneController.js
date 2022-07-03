@@ -1,6 +1,6 @@
 import { OScreen, PerspectiveCamera, ResourceContainer, SceneManager } from 'ohzi-core';
 import { CameraManager } from 'ohzi-core';
-import { Graphics } from 'ohzi-core';
+// import { Graphics } from 'ohzi-core';
 
 import { Color } from 'three';
 import { sRGBEncoding } from 'three';
