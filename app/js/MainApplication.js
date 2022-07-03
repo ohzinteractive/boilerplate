@@ -1,4 +1,4 @@
-import { BaseApplication } from 'ohzi-core';
+import { BaseApplication, Input } from 'ohzi-core';
 import { NormalRender } from 'ohzi-core';
 import { Graphics } from 'ohzi-core';
 import { ResourceContainer } from 'ohzi-core';
@@ -19,6 +19,7 @@ export default class MainApplication extends BaseApplication
 {
   init()
   {
+    this.input = Input;
     this.scene_controller = SceneController;
     this.normal_render_mode = new NormalRender();
 
@@ -44,6 +45,8 @@ export default class MainApplication extends BaseApplication
 
     this.scene_controller.start();
 
+    // __COMPONENTS__
+
     // __SECTIONS__
     this.home_view = new HomeView();
     this.transition_view = new TransitionView();
@@ -51,8 +54,6 @@ export default class MainApplication extends BaseApplication
     this.home_view.start();
     this.transition_view.start();
     this.test_general_view.start();
-
-    // __COMPONENTS__
 
     DatGUI.start();
 
