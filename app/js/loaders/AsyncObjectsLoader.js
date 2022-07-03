@@ -1,4 +1,4 @@
-import { GLTFDRACOLoader, GLTFLoader } from 'ohzi-core';
+import { GLTFDRACOLoader, GLTFLoader, ResourceContainer } from 'ohzi-core';
 import AsyncAbstractLoader from './AsyncAbstractLoader';
 
 export default class AsyncObjectsLoader extends AsyncAbstractLoader
@@ -19,7 +19,9 @@ export default class AsyncObjectsLoader extends AsyncAbstractLoader
 
       if (asset_data.draco)
       {
-        loaders.push(new GLTFDRACOLoader(asset_data.name, asset_data.url, asset_data.size));
+        const draco_loader = ResourceContainer.get('draco_loader');
+
+        loaders.push(new GLTFDRACOLoader(asset_data.name, asset_data.url, draco_loader, asset_data.size));
       }
       else
       {

@@ -3,6 +3,7 @@ import { ResourceBatch } from 'ohzi-core';
 
 // import { Graphics } from 'ohzi-core';
 // import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
+// import { DRACOLoader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 
 import home_data from '../../data/transitions/home.json';
 import transition_data from '../../data/transitions/transition.json';
@@ -20,6 +21,7 @@ export default class GeneralLoader
 
   __setup_batch()
   {
+    // Uncomment to use BASIS
     // const basis_loader = new KTX2Loader();
     // const renderer = Graphics._renderer;
 
@@ -29,7 +31,13 @@ export default class GeneralLoader
 
     // this.resource_container.set_resource('basis_loader', '/basis_loader', basis_loader);
 
-    // window.draco_decoder_path = 'https://www.gstatic.com/draco/versioned/decoders/1.4.3/';
+    // Uncomment to use DRACO
+    // const draco_loader = new DRACOLoader();
+    // draco_loader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.4.3/');
+    // draco_loader.setDecoderConfig({ type: 'js' });
+    // draco_loader.setWorkerLimit(1);
+
+    // this.resource_container.set_resource('draco_loader', '/draco_loader', draco_loader);
 
     // __SECTIONS_DATA__
     ResourceContainer.set_resource('transition_data', 'data/transition.json', transition_data);
