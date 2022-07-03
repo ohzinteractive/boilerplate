@@ -3650,10 +3650,10 @@ pify@^4.0.1:
   resolved "https://registry.yarnpkg.com/pify/-/pify-4.0.1.tgz#4b2cd25c50d598735c50292224fd8c6df41e3231"
   integrity sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==
 
-pit-js@1.8.6:
-  version "1.8.6"
-  resolved "https://registry.yarnpkg.com/pit-js/-/pit-js-1.8.6.tgz#f14369104611890e6d1a097f783aacf6c787792d"
-  integrity sha512-7oP5wJ/QCg9j3QDTT8T0CV1N77yu0hUbTd5NDbNkB6+uNynkA9f0fg2ePtzakyn0SlZBPRfCL+KOD7JNfqc7Xw==
+pit-js@1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/pit-js/-/pit-js-1.9.0.tgz#204c0f1a268c5ef6c7ecee1573e664e59ae4bca4"
+  integrity sha512-dZ8x4Uf2gBR8ebm0oI3EHDE8iU/Wg1rV3lYjRUl44LW/emea4pf+xi261Z6SCsNvPidqij4cJ6K+IcM89Ph8+w==
 
 pkg-conf@^3.1.0:
   version "3.1.0"
