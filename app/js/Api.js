@@ -1,10 +1,11 @@
 import { Graphics } from 'ohzi-core';
 import { RenderLoop } from 'ohzi-core';
 import { Configuration } from 'ohzi-core';
-import { EventManager } from 'ohzi-core';
-import { Debug } from 'ohzi-core';
 import { Initializer } from 'ohzi-core';
-import { ResourceContainer } from 'ohzi-core';
+
+// import { EventManager } from 'ohzi-core';
+// import { Debug } from 'ohzi-core';
+// import { ResourceContainer } from 'ohzi-core';
 
 import package_json from '../../package.json';
 import LoaderState from './LoaderState';
@@ -47,20 +48,20 @@ class Api
     Initializer.dispose(this.render_loop);
   }
 
-  draw_debug_axis()
-  {
-    Debug.draw_axis();
-  }
+  // draw_debug_axis()
+  // {
+  //   Debug.draw_axis();
+  // }
 
-  register_event(name, callback)
-  {
-    EventManager.on(name, callback);
-  }
+  // register_event(name, callback)
+  // {
+  //   EventManager.on(name, callback);
+  // }
 
-  set_resource(name, resource)
-  {
-    ResourceContainer.set_resource(name, resource);
-  }
+  // set_resource(name, resource)
+  // {
+  //   ResourceContainer.set_resource(name, resource);
+  // }
 
   set_settings(settings)
   {
@@ -82,15 +83,15 @@ class Api
     this.render_loop.stop();
   }
 
-  take_screenshot(callback)
-  {
-    Graphics.take_screenshot(callback);
-  }
+  // take_screenshot(callback)
+  // {
+  //   Graphics.take_screenshot(callback);
+  // }
 
-  download_blob(blob)
-  {
-    Graphics.download_screenshot(blob);
-  }
+  // download_blob(blob)
+  // {
+  //   Graphics.download_screenshot(blob);
+  // }
 }
 
 const api = new Api();
