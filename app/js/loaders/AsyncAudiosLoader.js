@@ -1,11 +1,11 @@
-import { AudioLoader } from 'ohzi-core';
 import AsyncAbstractLoader from './AsyncAbstractLoader';
+import AudioLoader from './AudioLoader';
 
 export default class AsyncAudiosLoader extends AsyncAbstractLoader
 {
-  constructor(assets)
+  constructor(scene_name, assets, worker)
   {
-    super(assets);
+    super(scene_name, assets, worker);
   }
 
   // Called from parent

@@ -64,17 +64,27 @@ export default class AbstractLoader
 
   load(resource_container)
   {
-    const cache = 'no-cache';
+    if (resource_container.resources_by_url[this.url] === undefined)
+    {
+      const cache = 'no-cache';
 
-    fetch(this.url, {
-      method: 'GET', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      cache: cache, // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, *same-origin, omit
-      redirect: 'follow' // manual, *follow, error
-    })
-      .then(this.on_progress.bind(this, resource_container))
-      .catch(this.__on_error.bind(this));
+      fetch(this.url, {
+        method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: cache, // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        redirect: 'follow' // manual, *follow, error
+      })
+        .then(this.on_progress.bind(this, resource_container))
+        .catch(this.__on_error.bind(this));
+    }
+    else
+    {
+      resource_container.set_resource(this.resource_id, this.url, resource_container.resources_by_url[this.url]);
+
+      this.__update_downloaded_bytes(1, 1);
+      this.__loading_ended();
+    }
   }
 
   async on_progress(resource_container, response)

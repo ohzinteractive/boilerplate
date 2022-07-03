@@ -1,10 +1,11 @@
 
 export default class ResourceBatch
 {
-  constructor(batch_name)
+  constructor(batch_name, resource_container)
   {
     this.resource_loaders = [];
     this.batch_name = batch_name || 'unnamed batch';
+    this.resource_container = resource_container;
   }
 
   add_loader(loader)
@@ -12,11 +13,11 @@ export default class ResourceBatch
     this.resource_loaders.push(loader);
   }
 
-  load(resource_container)
+  load()
   {
     for (let i = 0; i < this.resource_loaders.length; i++)
     {
-      this.resource_loaders[i].load(resource_container);
+      this.resource_loaders[i].load(this.resource_container);
     }
   }
 

@@ -4,9 +4,9 @@ import AsyncAbstractLoader from './AsyncAbstractLoader';
 
 export default class AsyncTexturesLoader extends AsyncAbstractLoader
 {
-  constructor(assets)
+  constructor(scene_name, assets, worker)
   {
-    super(assets);
+    super(scene_name, assets, worker);
   }
 
   // Called from parent

@@ -1,8 +1,9 @@
 
-class ResourceContainer
+export default class ResourceContainer
 {
-  init()
+  constructor(name)
   {
+    this.name = name;
     this.resources = {};
     this.resources_by_url = {};
   }
@@ -32,5 +33,3 @@ class ResourceContainer
     return this.resources[name];
   }
 }
-
-export default new ResourceContainer();
