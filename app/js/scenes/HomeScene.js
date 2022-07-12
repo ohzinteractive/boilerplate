@@ -13,6 +13,7 @@ import scene_high_sounds from '../../data/assets/home/high/home_high_sounds.json
 
 import { Debug, Grid } from 'ohzi-core';
 
+// import { AmbientLight, DirectionalLight } from 'three';
 export default class HomeScene extends AbstractScene
 {
   constructor()
@@ -39,6 +40,16 @@ export default class HomeScene extends AbstractScene
     }
   }
 
+  // add_lights()
+  // {
+  //   const light = new AmbientLight('#FFFFFF', 1);
+  //   this.add(light);
+
+  //   const directional_light = new DirectionalLight('#FFFFFF', 1);
+  //   directional_light.position.set(0, 10, 20);
+  //   this.add(directional_light);
+  // }
+
   update()
   {
     super.update();
@@ -47,6 +58,8 @@ export default class HomeScene extends AbstractScene
   on_assets_ready()
   {
     super.on_assets_ready();
+
+    // this.add_lights();
   }
 
   on_high_quality_assets_ready()
