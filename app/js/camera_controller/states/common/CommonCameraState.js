@@ -64,7 +64,7 @@ export default class CommonCameraState extends AbstractCameraState
 
   __zoom_camera(camera_controller)
   {
-    camera_controller.reference_zoom += Input.scroll_delta;
+    camera_controller.reference_zoom += Input.zoom_delta;
   }
 
   __rotate_camera(camera_controller)
