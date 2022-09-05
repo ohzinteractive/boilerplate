@@ -32,7 +32,7 @@ export default class LoaderState extends BaseApplication
   // Do not add any assets here. Use GeneralLoader or a specific loader.
   init()
   {
-    this.__redirect_invalid_url();
+    // this.__redirect_invalid_url();
 
     // Uncomment this if you need initial config in your project
     // let batch = new ResourceBatch();
@@ -69,7 +69,7 @@ export default class LoaderState extends BaseApplication
   {
     this.second_step = true;
 
-    // let config = ResourceContainer.get_resource('config');
+    // let config = ResourceContainer.get('config');
 
     ViewManager.go_to_view(this.loader_view.name, false);
 
