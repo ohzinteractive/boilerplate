@@ -21,3 +21,9 @@
         #{$vendor}user-select: #{$value};
     }
 }
+
+@mixin user-drag($value) {
+    @each $vendor in ('-webkit-', '-moz-', '-ms-', '-o-', '') {
+        #{$vendor}user-drag: #{$value};
+    }
+}

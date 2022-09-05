@@ -16,6 +16,10 @@ $mega-ultra-wide-breakpoint: 2560px;
 // Pixel to rem
 $ptr: 0.0625rem;
 
+*, *::after, *::before {
+    box-sizing: border-box;
+}
+
 html {
     scrollbar-width: none;
     -ms-overflow-style: none;
