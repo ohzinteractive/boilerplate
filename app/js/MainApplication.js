@@ -34,7 +34,13 @@ export default class MainApplication extends BaseApplication
 
   on_enter()
   {
-    this.config = ResourceContainer.get_resource('config');
+    this.config = ResourceContainer.get('config');
+
+    const glb = ResourceContainer.get('glb');
+    this.glb = glb;
+
+    // this.__download_materials(glb.scene);
+    this.__download_textures(glb.scene);
 
     this.sections = Sections;
 
@@ -60,6 +66,158 @@ export default class MainApplication extends BaseApplication
     window.onpopstate = this.go_to_url_section.bind(this);
 
     this.go_to_url_section();
+  }
+
+  __download_textures(scene, file_name = 'textures')
+  {
+    const textures = {};
+
+    scene.traverse((object) =>
+    {
+      if (object.material)
+      {
+        const object_json = {};
+        // object_json.name = object.name;
+
+        const material = object.material;
+
+        if (material.map)
+        {
+          console.log(material.map);
+          object_json.map_url = material.map.image.src.replace('http://localhost:1234/', '');
+        }
+
+        if (material.alphaMap)
+        {
+          object_json.alpha_map_url = material.alphaMap.image.src.replace('http://localhost:1234/', '');
+        }
+
+        if (material.aoMap)
+        {
+          object_json.ao_map_url = material.aoMap.image.src.replace('http://localhost:1234/', '');
+        }
+
+        if (material.bumpMap)
+        {
+          object_json.bump_map_url = material.bumpMap.image.src.replace('http://localhost:1234/', '');
+        }
+
+        if (material.displacementMap)
+        {
+          object_json.displacement_map_url = material.displacementMap.image.src.replace('http://localhost:1234/', '');
+        }
+
+        if (material.emissiveMap)
+        {
+          object_json.emissive_map_url = material.emissiveMap.image.src.replace('http://localhost:1234/', '');
+        }
+
+        if (material.envMap)
+        {
+          object_json.env_map_url = material.envMap.image.src.replace('http://localhost:1234/', '');
+        }
+
+        if (material.lightMap)
+        {
+          object_json.light_map_url = material.lightMap.image.src.replace('http://localhost:1234/', '');
+        }
+
+        if (material.metalnessMap)
+        {
+          object_json.metalness_map_url = material.metalnessMap.image.src.replace('http://localhost:1234/', '');
+        }
+
+        if (material.normalMap)
+        {
+          object_json.normal_map_url = material.normalMap.image.src.replace('http://localhost:1234/', '');
+        }
+
+        if (material.roughnessMap)
+        {
+          object_json.roughness_map_url = material.roughnessMap.image.src.replace('http://localhost:1234/', '');
+        }
+
+        if (Object.keys(object_json).length > 0)
+        {
+          textures[object.name] = object_json;
+        }
+      }
+    });
+
+    this.__download_json(textures, file_name);
+  }
+
+  __download_materials(scene, file_name = 'materials')
+  {
+    const materials = {};
+
+    scene.traverse(child =>
+    {
+      const object = child.clone();
+
+      if (object.geometry)
+      {
+        if (object.material.map)
+        {
+          object.material.map = undefined;
+        }
+        if (object.material.alphaMap)
+        {
+          object.material.alphaMap = undefined;
+        }
+        if (object.material.aoMap)
+        {
+          object.material.aoMap = undefined;
+        }
+        if (object.material.bumpMap)
+        {
+          object.material.bumpMap = undefined;
+        }
+        if (object.material.displacementMap)
+        {
+          object.material.displacementMap = undefined;
+        }
+        if (object.material.emissiveMap)
+        {
+          object.material.emissiveMap = undefined;
+        }
+        if (object.material.envMap)
+        {
+          object.material.envMap = undefined;
+        }
+        if (object.material.lightMap)
+        {
+          object.material.lightMap = undefined;
+        }
+        if (object.material.metalnessMap)
+        {
+          object.material.metalnessMap = undefined;
+        }
+        if (object.material.normalMap)
+        {
+          object.material.normalMap = undefined;
+        }
+        if (object.material.roughnessMap)
+        {
+          object.material.roughnessMap = undefined;
+        }
+        if (object.material)
+        {
+          materials[object.name] = object.material.toJSON();
+        }
+      }
+    });
+
+    this.__download_json(materials, file_name);
+  }
+
+  __download_json(data, file_name)
+  {
+    const dlAnchorElem = document.createElement('a');
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data));
+    dlAnchorElem.setAttribute('href',     dataStr);
+    dlAnchorElem.setAttribute('download', `${file_name}.json`);
+    dlAnchorElem.click();
   }
 
   go_to_url_section()

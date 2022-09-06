@@ -1,9 +1,9 @@
-import { ResourceContainer } from 'ohzi-core';
+import { GLTFDRACOLoader, GLTFLoader, ResourceContainer } from 'ohzi-core';
 import { ResourceBatch } from 'ohzi-core';
 
 // import { Graphics } from 'ohzi-core';
 // import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
-// import { DRACOLoader } from 'three/examples/jsm/loaders/KTX2Loader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 import home_data from '../../data/transitions/home.json';
 import transition_data from '../../data/transitions/transition.json';
@@ -33,12 +33,18 @@ export default class GeneralLoader
     // this.resource_container.set_resource('basis_loader', '/basis_loader', basis_loader);
 
     // Uncomment to use DRACO
-    // const draco_loader = new DRACOLoader();
-    // draco_loader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.4.3/');
-    // draco_loader.setDecoderConfig({ type: 'js' });
-    // draco_loader.setWorkerLimit(1);
+    const draco_loader = new DRACOLoader();
+    draco_loader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.4.3/');
+    draco_loader.setDecoderConfig({ type: 'js' });
+    draco_loader.setWorkerLimit(1);
 
-    // this.resource_container.set_resource('draco_loader', '/draco_loader', draco_loader);
+    this.resource_container.set_resource('draco_loader', '/draco_loader', draco_loader);
+
+    // this.batch.add_loader(new GLTFDRACOLoader('glb', '/models/Default Main.gltf', draco_loader, 100000));
+    this.batch.add_loader(new GLTFDRACOLoader('glb', '/models/PR Disc Pop-v19.gltf', draco_loader, 100000));
+    // this.batch.add_loader(new GLTFDRACOLoader('glb', '/models/disco-v11.gltf', draco_loader, 100000));
+    // this.batch.add_loader(new GLTFDRACOLoader('glb', '/models/pick_a_bite-v11.gltf', draco_loader, 100000));
+    // this.batch.add_loader(new GLTFDRACOLoader('glb', '/models/set_the_scene-v11.gltf', draco_loader, 100000));
 
     const assets_worker = AsyncAbstractLoader.create_worker();
     this.resource_container.set_resource('assets_worker', '/assets_worker', assets_worker);
