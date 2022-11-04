@@ -20,7 +20,7 @@
     "build": "yarn remove_cache && yarn remove_dist && yarn build_parcel && yarn copy_public",
     "build_parcel": "parcel build ./app/index.pug --no-source-maps --no-cache",
     "dist": "yarn build && yarn zip",
-    "zip": "cross-var zip -r \"$npm_package_name\" dist/*",
+    "zip": "cross-var zip -r \"$npm_package_name v$npm_package_version.zip\" dist/*",
     "remove_cache": "rm -f -R .parcel-cache",
     "remove_dist": "rm -f -R dist",
     "copy_public": "cp -R public/* dist",
