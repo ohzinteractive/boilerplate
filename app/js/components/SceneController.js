@@ -65,7 +65,7 @@ class SceneController
 
   update()
   {
-    this.camera_controller.update();
+    // this.camera_controller.update();
 
     // SceneManager.current.traverse(child =>
     // {
@@ -84,7 +84,7 @@ class SceneController
   {
     const camera = new PerspectiveCamera(60, OScreen.aspect_ratio, 0.1, 200);
     camera.updateProjectionMatrix();
-    camera.position.z = 10;
+    // camera.position.z = 10;
 
     camera.clear_color.copy(new Color('#181818'));
     camera.clear_alpha = 1;
@@ -94,12 +94,12 @@ class SceneController
   __init_camera_controller()
   {
     this.camera_controller.set_camera(CameraManager.current);
-    // this.camera_controller.set_idle();
-    this.camera_controller.set_simple_mode();
+    // this.camera_controller.set_simple_mode();
+    this.camera_controller.set_idle();
 
-    this.camera_controller.min_zoom = 1;
-    this.camera_controller.max_zoom = 40;
-    this.camera_controller.reference_zoom = 10;
+    this.camera_controller.min_zoom = 0;
+    this.camera_controller.max_zoom = 1;
+    this.camera_controller.reference_zoom = 0;
     this.camera_controller.reference_position.set(0, 0, 0);
     this.camera_controller.set_rotation(0, 0);
   }

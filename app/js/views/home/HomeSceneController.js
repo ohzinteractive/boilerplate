@@ -1,4 +1,5 @@
-import { SceneManager } from 'ohzi-core';
+import { CameraManager, SceneManager } from 'ohzi-core';
+import { DeviceOrientationControls } from '../../components/DeviceOrientationControls';
 import SceneController from '../../components/SceneController';
 
 export default class HomeSceneController
@@ -11,6 +12,8 @@ export default class HomeSceneController
   start()
   {
     this.scene = SceneController.home_scene;
+
+    this.camera_controls = new DeviceOrientationControls(CameraManager.current);
   }
 
   // This method is called one time before the transition to this section is started.
@@ -38,6 +41,13 @@ export default class HomeSceneController
   update()
   {
     this.scene.update();
+
+    this.camera_controls.update();
+  }
+
+  request_motion_permition()
+  {
+    this.camera_controls.connect();
   }
 
   // This method is called in every frame when the site is transitioning to this section.
