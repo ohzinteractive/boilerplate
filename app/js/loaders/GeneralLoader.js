@@ -1,5 +1,6 @@
 import { ResourceContainer } from 'ohzi-core';
 import { ResourceBatch } from 'ohzi-core';
+import { RGBETextureLoader } from 'ohzi-core';
 
 // import { Graphics } from 'ohzi-core';
 // import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
@@ -39,6 +40,7 @@ export default class GeneralLoader
     // draco_loader.setWorkerLimit(1);
 
     // this.resource_container.set_resource('draco_loader', '/draco_loader', draco_loader);
+    this.batch.add_loader(new RGBETextureLoader('env_hdr', 'textures/env.hdr', 1000000));
 
     const assets_worker = AsyncAbstractLoader.create_worker();
     this.resource_container.set_resource('assets_worker', '/assets_worker', assets_worker);

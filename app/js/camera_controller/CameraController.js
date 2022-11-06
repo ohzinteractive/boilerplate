@@ -14,7 +14,6 @@ import { Plane } from 'three';
 // import { Sphere } from 'three';
 import { Box3 } from 'three';
 import { Ray } from 'three';
-import { Math as TMath } from 'three';
 
 import SimpleCameraState from './states/SimpleCameraState';
 import AbstractCameraState from './states/common/AbstractCameraState';
@@ -104,7 +103,7 @@ export default class CameraController
 
   set_normalized_zoom(zoom)
   {
-    this.normalized_zoom = TMath.clamp(zoom, 0, 1);
+    this.normalized_zoom = OMath.clamp(zoom, 0, 1);
     // EventManager.fire_zoom_changed(this.normalized_zoom);
   }
 
@@ -112,7 +111,7 @@ export default class CameraController
   {
     const zoom = this.camera.position.distanceTo(this.reference_position);
     this.normalized_zoom = OMath.linear_map(zoom, min_zoom, max_zoom, 1, 0);
-    this.normalized_zoom = TMath.clamp(this.normalized_zoom, 0, 1);
+    this.normalized_zoom = OMath.clamp(this.normalized_zoom, 0, 1);
 
     // EventManager.fire_zoom_changed(this.normalized_zoom);
   }
@@ -492,7 +491,7 @@ export default class CameraController
   __get_zoom_to_show_rect(width, height, scale = 1)
   {
     // let v_fov = (this.camera.fov/2) * Math.PI/180;
-    const v_fov = TMath.degToRad(this.camera.fov / 2);
+    const v_fov = OMath.degToRad(this.camera.fov / 2);
     const h_fov = (2 * Math.atan(Math.tan(v_fov) * this.camera.aspect)) / 2;
 
     const distV = height / Math.tan(v_fov * scale);

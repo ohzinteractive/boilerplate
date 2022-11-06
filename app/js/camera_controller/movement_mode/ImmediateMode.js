@@ -4,8 +4,7 @@ import CameraMovementMode from './CameraMovementMode';
 import { Vector2 } from 'three';
 import { Vector3 } from 'three';
 import { Quaternion } from 'three';
-import { Math as TMath } from 'three';
-
+import { OMath } from 'ohzi-core';
 export default class ImmediateMode extends CameraMovementMode
 {
   constructor()
@@ -32,7 +31,7 @@ export default class ImmediateMode extends CameraMovementMode
     this.tmp_forward.copy(this.vector_forward_axis);
     const dir = this.tmp_forward.applyQuaternion(camera_controller.camera.quaternion);
 
-    camera_controller.reference_zoom = TMath.clamp(camera_controller.reference_zoom,
+    camera_controller.reference_zoom = OMath.clamp(camera_controller.reference_zoom,
       camera_controller.min_zoom, camera_controller.max_zoom);
 
     camera_controller.camera.position.copy(camera_controller.reference_position).sub(dir.multiplyScalar(camera_controller.reference_zoom));
@@ -47,7 +46,7 @@ export default class ImmediateMode extends CameraMovementMode
 
     const dir = this.tmp_forward.applyQuaternion(this.tmp_quat);
 
-    const zoom = TMath.clamp(camera_controller.reference_zoom,
+    const zoom = OMath.clamp(camera_controller.reference_zoom,
       camera_controller.min_zoom, camera_controller.max_zoom);
 
     this.tmp_camera_target_pos.copy(camera_controller.reference_position).sub(dir.multiplyScalar(zoom));

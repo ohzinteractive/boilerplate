@@ -12,9 +12,9 @@ import TransitionView from './views/transition/TransitionView';
 import TestGeneralView from './views/test_general/TestGeneralView';
 
 import { sRGBEncoding } from 'three';
+import { ACESFilmicToneMapping } from 'three';
 
 import { Sections } from './views/Sections';
-
 export default class MainApplication extends BaseApplication
 {
   init()
@@ -28,6 +28,15 @@ export default class MainApplication extends BaseApplication
     Graphics.set_state(this.normal_render_mode);
     Graphics._renderer.outputEncoding = sRGBEncoding;
     Graphics._renderer.debug.checkShaderErrors = process.env.NODE_ENV === 'development';
+
+    Graphics._renderer.physicallyCorrectLights = true;
+    Graphics._renderer.toneMapping = ACESFilmicToneMapping;
+    Graphics._renderer.toneMappingExposure = 0.7;
+
+    addEventListener('contextmenu', (event) =>
+    {
+      event.preventDefault();
+    });
 
     DatGUI.init();
   }
