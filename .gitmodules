@@ -3,4 +3,4 @@
 	url = https://github.com/ohzinteractive/core
 [submodule "components"]
 	path = components
-	url = git@github.com:ohzinteractive/components.git
+	url = https://github.com/ohzinteractive/components
