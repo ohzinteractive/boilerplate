@@ -10,6 +10,9 @@ import { test_high_objects } from '../../data/assets/test/high/test_high_objects
 import { test_high_textures } from '../../data/assets/test/high/test_high_textures';
 
 import { Debug, Grid } from 'ohzi-core';
+// import { ResourceContainer, Graphics, SceneManager } from 'ohzi-core';
+// import { PMREMGenerator } from 'three';
+// import { HalfFloatType } from 'three';
 
 export default class TestScene extends AbstractScene
 {
@@ -40,6 +43,23 @@ export default class TestScene extends AbstractScene
   on_assets_ready()
   {
     super.on_assets_ready();
+
+    // const pmremGenerator = new PMREMGenerator(Graphics._renderer);
+    // pmremGenerator.compileEquirectangularShader();
+
+    // const hdrEquirect = ResourceContainer.get_resource('env_hdr');
+    // hdrEquirect.needsUpdate = true;
+    // hdrEquirect.type = HalfFloatType;
+    // console.log(hdrEquirect);
+    // const hdrCubeRenderTarget = pmremGenerator.fromEquirectangular(hdrEquirect);
+    // hdrEquirect.dispose();
+    // pmremGenerator.dispose();
+
+    // SceneManager.current.environment = hdrCubeRenderTarget.texture;
+    // SceneManager.current.background = hdrCubeRenderTarget.texture;
+
+    // const scene = ResourceContainer.get('scene').scene;
+    // this.add(scene);
   }
 
   on_high_quality_assets_ready()

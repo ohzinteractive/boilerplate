@@ -12,7 +12,7 @@ import TransitionView from './views/transition/TransitionView';
 import TestView from './views/test/TestView';
 
 import { sRGBEncoding } from 'three';
-import { ACESFilmicToneMapping } from 'three';
+// import { ACESFilmicToneMapping } from 'three';
 
 import { Sections } from './views/Sections';
 export default class MainApplication extends BaseApplication
@@ -29,14 +29,14 @@ export default class MainApplication extends BaseApplication
     Graphics._renderer.outputEncoding = sRGBEncoding;
     Graphics._renderer.debug.checkShaderErrors = process.env.NODE_ENV === 'development';
 
-    Graphics._renderer.physicallyCorrectLights = true;
-    Graphics._renderer.toneMapping = ACESFilmicToneMapping;
-    Graphics._renderer.toneMappingExposure = 0.7;
+    // Graphics._renderer.physicallyCorrectLights = true;
+    // Graphics._renderer.toneMapping = ACESFilmicToneMapping;
+    // Graphics._renderer.toneMappingExposure = 0.7;
 
-    addEventListener('contextmenu', (event) =>
-    {
-      event.preventDefault();
-    });
+    // addEventListener('contextmenu', (event) =>
+    // {
+    //   event.preventDefault();
+    // });
 
     DatGUI.init();
   }

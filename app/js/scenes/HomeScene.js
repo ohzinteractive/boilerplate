@@ -10,9 +10,7 @@ import { home_high_objects } from '../../data/assets/home/high/home_high_objects
 import { home_high_textures } from '../../data/assets/home/high/home_high_textures';
 import { home_high_sounds } from '../../data/assets/home/high/home_high_sounds';
 
-import { Debug, Grid, ResourceContainer, Graphics, SceneManager } from 'ohzi-core';
-import { PMREMGenerator } from 'three';
-import { HalfFloatType } from 'three';
+import { Debug, Grid } from 'ohzi-core';
 
 // import { AmbientLight, DirectionalLight } from 'three';
 export default class HomeScene extends AbstractScene
@@ -60,22 +58,7 @@ export default class HomeScene extends AbstractScene
   {
     super.on_assets_ready();
 
-    const pmremGenerator = new PMREMGenerator(Graphics._renderer);
-    pmremGenerator.compileEquirectangularShader();
-
-    const hdrEquirect = ResourceContainer.get_resource('env_hdr');
-    hdrEquirect.needsUpdate = true;
-    hdrEquirect.type = HalfFloatType;
-    console.log(hdrEquirect);
-    const hdrCubeRenderTarget = pmremGenerator.fromEquirectangular(hdrEquirect);
-    hdrEquirect.dispose();
-    pmremGenerator.dispose();
-
-    SceneManager.current.environment = hdrCubeRenderTarget.texture;
-    SceneManager.current.background = hdrCubeRenderTarget.texture;
-
-    const scene = ResourceContainer.get('scene').scene;
-    this.add(scene);
+    // this.add_lights();
   }
 
   on_high_quality_assets_ready()
