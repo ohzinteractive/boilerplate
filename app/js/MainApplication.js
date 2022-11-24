@@ -9,7 +9,7 @@ import DatGUI from './components/DatGUI';
 import SceneController from './components/SceneController';
 import HomeView from './views/home/HomeView';
 import TransitionView from './views/transition/TransitionView';
-import TestGeneralView from './views/test_general/TestGeneralView';
+import TestView from './views/test/TestView';
 
 import { sRGBEncoding } from 'three';
 import { ACESFilmicToneMapping } from 'three';
@@ -59,10 +59,10 @@ export default class MainApplication extends BaseApplication
     // __SECTIONS__
     this.home_view = new HomeView();
     this.transition_view = new TransitionView();
-    this.test_general_view = new TestGeneralView();
+    this.test_view = new TestView();
     this.home_view.start();
     this.transition_view.start();
-    this.test_general_view.start();
+    this.test_view.start();
 
     DatGUI.start();
 

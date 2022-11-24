@@ -1,4 +1,4 @@
-const test_general_objects = [
+const test_objects = [
   // {
   //   name: 'scene',
   //   url: 'models/scene.glb',
@@ -7,4 +7,4 @@ const test_general_objects = [
   // }
 ];
 
-export { test_general_objects };
+export { test_objects };

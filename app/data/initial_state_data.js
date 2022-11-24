@@ -1,7 +1,7 @@
 const initial_state_data = {
   loader_opacity: 0,
   transition_opacity: 0,
-  test_general_opacity: 0,
+  test_opacity: 0,
   home_opacity: 0,
   camera_x: 0,
   camera_y: 0,

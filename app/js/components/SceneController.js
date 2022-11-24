@@ -11,7 +11,7 @@ import { RGBFormat } from 'three';
 import CameraController from '../camera_controller/CameraController';
 
 import HomeScene from '../scenes/HomeScene';
-import TestGeneralScene from '../scenes/TestGeneralScene';
+import TestScene from '../scenes/TestScene';
 
 class SceneController
 {
@@ -36,11 +36,11 @@ class SceneController
 
     this.home_scene = new HomeScene();
 
-    this.test_general_scene = new TestGeneralScene();
+    this.test_scene = new TestScene();
 
     this.scenes = [
       this.home_scene,
-      this.test_general_scene
+      this.test_scene
     ];
 
     SceneManager.current = this.home_scene;
