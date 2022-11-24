@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "lil-gui": "^0.16.0",
-    "ohzi-core": "7.0.0",
+    "ohzi-core": "7.0.1",
     "ohzi-components": "1.0.0"
   },
   "devDependencies": {
