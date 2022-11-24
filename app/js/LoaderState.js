@@ -8,10 +8,10 @@ import GeneralLoader from './loaders/GeneralLoader';
 import InitialView from './views/InitialView';
 import LoaderView from './views/loader/LoaderView';
 
-import initial_state_data from '../data/initial_state_data.json';
 import loader_data from '../data/transitions/loader.json';
 
 import { SectionsURLs } from './views/Sections';
+import { initial_state_data } from '../data/initial_state_data';
 
 export default class LoaderState extends BaseApplication
 {
