@@ -1,6 +1,8 @@
 import { ApplicationView } from 'ohzi-core';
 import { Sections, SectionsURLs } from '../Sections';
 
+import { UICollisionLayer } from 'ohzi-components';
+
 import HomeSceneController from './HomeSceneController';
 import HomeTransitionController from './HomeTransitionController';
 
@@ -39,6 +41,8 @@ export default class HomeView extends ApplicationView
 
     this.scene_controller.on_enter();
     this.transition_controller.on_enter();
+
+    UICollisionLayer.add_element(this.container);
   }
 
   // This method is called one time before the transition to the next section is started.
@@ -48,6 +52,8 @@ export default class HomeView extends ApplicationView
 
     this.scene_controller.before_exit();
     this.transition_controller.before_exit();
+
+    UICollisionLayer.remove_element(this.container);
   }
 
   // This method is called one time after this section is completely hidden.

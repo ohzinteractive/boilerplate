@@ -1,9 +1,11 @@
-import { BaseApplication, Input } from 'ohzi-core';
+import { BaseApplication, Input, Time } from 'ohzi-core';
 import { NormalRender } from 'ohzi-core';
 import { Graphics } from 'ohzi-core';
 import { ResourceContainer } from 'ohzi-core';
 import { ViewManager } from 'ohzi-core';
 import { ViewContext } from 'ohzi-core';
+
+import { UICollisionLayer } from 'ohzi-components';
 
 import DatGUI from './components/DatGUI';
 import SceneController from './components/SceneController';
@@ -54,6 +56,9 @@ export default class MainApplication extends BaseApplication
 
     this.scene_controller.start();
 
+    this.ui_collision_layer = UICollisionLayer;
+    this.ui_collision_layer.init(Input, Time);
+
     // __COMPONENTS__
 
     // __SECTIONS__
@@ -99,6 +104,7 @@ export default class MainApplication extends BaseApplication
 
   update()
   {
+    this.ui_collision_layer.update();
     this.scene_controller.update();
   }
 }
