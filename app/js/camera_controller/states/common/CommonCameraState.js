@@ -25,6 +25,8 @@ export default class CommonCameraState extends AbstractCameraState
     this.right_dir = 0;
     this.y_dir = 0;
     this.azimuth_dir = 0;
+
+    this.shift_key = false;
   }
 
   on_enter(camera_controller)

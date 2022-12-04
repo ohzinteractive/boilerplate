@@ -4,4 +4,4 @@ import * as fs from 'fs';
 const package_json = JSON.parse(fs.readFileSync('./package.json'));
 const submodule_version = package_json.dependencies[process.argv[2]];
 
-execSync(`cd ${process.argv[3]} && git fetch origin main && git checkout v${submodule_version}`);
+execSync(`cd ${process.argv[3]} && git fetch origin v${submodule_version} && git checkout v${submodule_version}`);
