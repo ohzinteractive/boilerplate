@@ -9,6 +9,8 @@ export default class SectionTransitionController
   constructor()
   {
     this.camera_position = new Vector3();
+    this.camera_orientation = 0;
+    this.camera_tilti = 0;
 
     this.current_camera_pos = new Vector3();
     this.current_camera_pos_mobile = new Vector3();
@@ -36,6 +38,12 @@ export default class SectionTransitionController
     this.__set_keyframes_offset('camera_x_mobile', this.camera_position.x);
     this.__set_keyframes_offset('camera_y_mobile', this.camera_position.y);
     this.__set_keyframes_offset('camera_z_mobile', this.camera_position.z);
+
+    this.__set_keyframes_offset('camera_orientation', this.camera_orientation);
+    this.__set_keyframes_offset('camera_tilt', this.camera_tilt);
+
+    this.__set_keyframes_offset('camera_orientation_mobile', this.camera_orientation);
+    this.__set_keyframes_offset('camera_tilt_mobile', this.camera_tilt);
   }
 
   __set_keyframes_offset(channel_name, offset)
@@ -135,6 +143,16 @@ export default class SectionTransitionController
   set_camera_position(position)
   {
     this.camera_position = position; // .clone();
+  }
+
+  set_camera_orientation(orientation)
+  {
+    this.camera_orientation = orientation;
+  }
+
+  set_camera_tilt(tilt)
+  {
+    this.camera_tilt = tilt;
   }
 
   __update_camera_rotation(action_sequencer)
