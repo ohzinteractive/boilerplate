@@ -15,6 +15,7 @@ import { sRGBEncoding } from 'three';
 // import { ACESFilmicToneMapping } from 'three';
 
 import { Sections } from './views/Sections';
+// import KeyboardInputController from './components/KeyboardInputController';
 export default class MainApplication extends BaseApplication
 {
   init()
@@ -48,6 +49,8 @@ export default class MainApplication extends BaseApplication
     this.sections = Sections;
 
     ViewContext.set_app(this);
+
+    // this.keyboard_input_controller = new KeyboardInputController();
 
     this.view_manager = ViewManager;
     this.view_manager.set_browser_title_suffix('OHZI Interactive');

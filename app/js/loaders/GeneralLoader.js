@@ -3,7 +3,7 @@ import { ResourceBatch } from 'ohzi-core';
 
 // import { Graphics } from 'ohzi-core';
 // import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
-// import { DRACOLoader } from 'three/examples/jsm/loaders/KTX2Loader.js';
+// import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 import home_data from '../../data/transitions/home.json';
 import transition_data from '../../data/transitions/transition.json';
