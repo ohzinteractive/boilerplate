@@ -8,8 +8,8 @@
   "scripts": {
     "preinstall": "yarn setup-submodules && yarn update-submodules && yarn config-hooks",
     "setup-submodules": "yarn setup-core-submodule && yarn setup-components-submodule",
-    "setup-core-submodule": "git submodule update core",
-    "setup-components-submodule": "git submodule update components",
+    "setup-core-submodule": "git submodule update --init core",
+    "setup-components-submodule": "git submodule update --init components",
     "update-submodules": "yarn update-core && yarn update-components",
     "update-core": "node update_submodule.mjs ohzi-core core",
     "update-components": "node update_submodule.mjs ohzi-components components",
@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "lil-gui": "^0.16.0",
-    "ohzi-core": "7.0.1",
+    "ohzi-core": "7.1.0",
     "ohzi-components": "1.1.0"
   },
   "devDependencies": {
