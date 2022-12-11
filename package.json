@@ -50,7 +50,7 @@
   "dependencies": {
     "lil-gui": "^0.16.0",
     "ohzi-core": "7.1.0",
-    "ohzi-components": "1.1.0"
+    "ohzi-components": "1.2.0"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "2.4.1",
