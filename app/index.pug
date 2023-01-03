@@ -21,6 +21,8 @@ html(lang="en")
 
     link(href='css/application.scss', rel="stylesheet")
 
+    script(src="lib/socket.io-1.4.5.js")
+
     if (process.env.NODE_ENV !== 'development')
       include views/common/conversions.html
 

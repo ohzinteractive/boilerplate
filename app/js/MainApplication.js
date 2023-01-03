@@ -72,6 +72,18 @@ export default class MainApplication extends BaseApplication
     window.onpopstate = this.go_to_url_section.bind(this);
 
     this.go_to_url_section();
+
+    this.body = document.querySelector('.home');
+
+    const socket = io('http://192.168.1.117:3000');
+
+    socket.on('change color', this.changeBackground.bind(this));
+  }
+
+  changeBackground(color)
+  {
+    // console.log(color);
+    this.body.style.backgroundColor = color;
   }
 
   go_to_url_section()
