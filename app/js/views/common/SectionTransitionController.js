@@ -10,7 +10,7 @@ export default class SectionTransitionController
   {
     this.camera_position = new Vector3();
     this.camera_orientation = 0;
-    this.camera_tilti = 0;
+    this.camera_tilt = 0;
 
     this.current_camera_pos = new Vector3();
     this.current_camera_pos_mobile = new Vector3();
