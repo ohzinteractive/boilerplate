@@ -34,19 +34,6 @@
     "create-component": "node ./tasks/create_component/create_component.mjs",
     "fix-syntax": "standardx --fix || echo 'Done'"
   },
-  "alias": {
-    "three": "./node_modules/three/src/Three.js",
-    "three/examples/jsm/controls/TransformControls.js": "./node_modules/three/examples/jsm/controls/TransformControls.js",
-    "three/examples/jsm/utils/BufferGeometryUtils.js": "./node_modules/three/examples/jsm/utils/BufferGeometryUtils.js",
-    "three/examples/jsm/loaders/GLTFLoader.js": "./node_modules/three/examples/jsm/loaders/GLTFLoader.js",
-    "three/examples/jsm/loaders/OBJLoader.js": "./node_modules/three/examples/jsm/loaders/OBJLoader.js",
-    "three/examples/jsm/loaders/HDRCubeTextureLoader.js": "./node_modules/three/examples/jsm/loaders/HDRCubeTextureLoader.js",
-    "three/examples/jsm/loaders/DRACOLoader.js": "./node_modules/three/examples/jsm/loaders/DRACOLoader.js",
-    "three/examples/jsm/loaders/RGBELoader.js": "./node_modules/three/examples/jsm/loaders/RGBELoader.js",
-    "three/examples/jsm/loaders/FontLoader.js": "./node_modules/three/examples/jsm/loaders/FontLoader.js",
-    "three/examples/jsm/loaders/ColladaLoader.js": "./node_modules/three/examples/jsm/loaders/ColladaLoader.js",
-    "three/examples/jsm/loaders/KTX2Loader.js": "./node_modules/three/examples/jsm/loaders/KTX2Loader.js"
-  },
   "dependencies": {
     "lil-gui": "^0.16.0",
     "ohzi-core": "8.0.2",
