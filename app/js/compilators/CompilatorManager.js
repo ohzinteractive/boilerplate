@@ -1,4 +1,4 @@
-export default class CompilatorManager
+class CompilatorManager
 {
   constructor(compilators)
   {
@@ -27,3 +27,5 @@ export default class CompilatorManager
     return this.index === this.compilators.length;
   }
 }
+
+export { CompilatorManager };

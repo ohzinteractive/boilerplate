@@ -3,10 +3,10 @@ import { OMath } from 'ohzi-core';
 
 import { Sections, SectionsURLs } from '../Sections';
 
-import LoaderSceneController from './LoaderSceneController';
-import LoaderTransitionController from './LoaderTransitionController';
+import { LoaderSceneController } from './LoaderSceneController';
+import { LoaderTransitionController } from './LoaderTransitionController';
 
-export default class LoaderView extends ApplicationView
+class LoaderView extends ApplicationView
 {
   constructor(api)
   {
@@ -143,3 +143,5 @@ export default class LoaderView extends ApplicationView
     return Math.round(value * multiplier) / multiplier;
   }
 }
+
+export { LoaderView };

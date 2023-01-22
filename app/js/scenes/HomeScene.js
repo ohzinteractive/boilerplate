@@ -1,5 +1,5 @@
 
-import AbstractScene from './common/AbstractScene';
+import { AbstractScene } from './common/AbstractScene';
 
 import { Sections } from '../views/Sections';
 
@@ -13,7 +13,7 @@ import { home_high_sounds } from '../../data/assets/home/high/home_high_sounds';
 import { Debug, Grid } from 'ohzi-core';
 
 // import { AmbientLight, DirectionalLight } from 'three';
-export default class HomeScene extends AbstractScene
+class HomeScene extends AbstractScene
 {
   constructor()
   {
@@ -66,3 +66,5 @@ export default class HomeScene extends AbstractScene
     super.on_high_quality_assets_ready();
   }
 }
+
+export { HomeScene };

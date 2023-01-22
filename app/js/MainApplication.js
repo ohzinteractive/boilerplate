@@ -5,18 +5,18 @@ import { ResourceContainer } from 'ohzi-core';
 import { ViewManager } from 'ohzi-core';
 import { ViewContext } from 'ohzi-core';
 
-import DatGUI from './components/DatGUI';
-import SceneController from './components/SceneController';
-import HomeView from './views/home/HomeView';
-import TransitionView from './views/transition/TransitionView';
-import TestView from './views/test/TestView';
+import { DatGUI } from './components/DatGUI';
+import { SceneController } from './components/SceneController';
+import { HomeView } from './views/home/HomeView';
+import { TransitionView } from './views/transition/TransitionView';
+import { TestView } from './views/test/TestView';
 
 import { sRGBEncoding } from 'three';
 // import { ACESFilmicToneMapping } from 'three';
 
 import { Sections } from './views/Sections';
-// import KeyboardInputController from './components/KeyboardInputController';
-export default class MainApplication extends BaseApplication
+// import { KeyboardInputController } from './components/KeyboardInputController';
+class MainApplication extends BaseApplication
 {
   init()
   {
@@ -105,3 +105,5 @@ export default class MainApplication extends BaseApplication
     this.scene_controller.update();
   }
 }
+
+export { MainApplication };

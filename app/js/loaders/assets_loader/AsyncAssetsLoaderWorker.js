@@ -1,8 +1,8 @@
 // We use custom ResourceBatch, ResourceContainer and AbstractLoader to reduce build size
-import ResourceBatch from './ResourceBatch';
-import ResourceContainer from './ResourceContainer';
-import AssetLoader from './AssetLoader';
-import ResourceLoaderChecker from './ResourceLoaderChecker';
+import { ResourceBatch } from './ResourceBatch';
+import { ResourceContainer } from './ResourceContainer';
+import { AssetLoader } from './AssetLoader';
+import { ResourceLoaderChecker } from './ResourceLoaderChecker';
 
 class AsyncAssetsLoaderWorker
 {

@@ -1,7 +1,7 @@
 import { SceneManager } from 'ohzi-core';
-import SceneController from '../../components/SceneController';
+import { SceneController } from '../../components/SceneController';
 
-export default class HomeSceneController
+class HomeSceneController
 {
   constructor()
   {
@@ -50,3 +50,5 @@ export default class HomeSceneController
   {
   }
 }
+
+export { HomeSceneController };

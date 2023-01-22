@@ -8,9 +8,10 @@ import { ResourceBatch } from 'ohzi-core';
 import home_data from '../../data/transitions/home.json';
 import transition_data from '../../data/transitions/transition.json';
 import test_data from '../../data/transitions/test.json';
-import AsyncAbstractLoader from './AsyncAbstractLoader';
 
-export default class GeneralLoader
+import { AsyncAbstractLoader } from './AsyncAbstractLoader';
+
+class GeneralLoader
 {
   constructor(resource_container)
   {
@@ -54,3 +55,5 @@ export default class GeneralLoader
     this.batch.load(this.resource_container);
   }
 }
+
+export { GeneralLoader };

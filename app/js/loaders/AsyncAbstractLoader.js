@@ -1,6 +1,6 @@
 import { ResourceContainer } from 'ohzi-core';
 
-export default class AsyncAbstractLoader
+class AsyncAbstractLoader
 {
   constructor(name, assets, worker)
   {
@@ -140,3 +140,5 @@ export default class AsyncAbstractLoader
     console.warn('Not implemented');
   }
 }
+
+export { AsyncAbstractLoader };

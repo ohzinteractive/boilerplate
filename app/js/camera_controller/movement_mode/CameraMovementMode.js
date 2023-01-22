@@ -1,4 +1,4 @@
-export default class CameraMovementMode
+class CameraMovementMode
 {
   constructor()
   {
@@ -20,3 +20,5 @@ export default class CameraMovementMode
 
   }
 }
+
+export { CameraMovementMode };

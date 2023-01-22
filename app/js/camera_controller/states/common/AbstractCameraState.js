@@ -1,4 +1,4 @@
-export default class AbstractCameraState
+class AbstractCameraState
 {
   constructor()
   {
@@ -30,3 +30,5 @@ export default class AbstractCameraState
 
   }
 }
+
+export { AbstractCameraState };

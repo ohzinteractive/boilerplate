@@ -1,10 +1,10 @@
 import { ApplicationView } from 'ohzi-core';
 import { Sections, SectionsURLs } from '../Sections';
 
-import HomeSceneController from './HomeSceneController';
-import HomeTransitionController from './HomeTransitionController';
+import { HomeSceneController } from './HomeSceneController';
+import { HomeTransitionController } from './HomeTransitionController';
 
-export default class HomeView extends ApplicationView
+class HomeView extends ApplicationView
 {
   constructor()
   {
@@ -78,3 +78,5 @@ export default class HomeView extends ApplicationView
     this.transition_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
   }
 }
+
+export { HomeView };

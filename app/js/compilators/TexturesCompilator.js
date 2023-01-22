@@ -1,4 +1,4 @@
-export default class TexturesCompilator
+class TexturesCompilator
 {
   constructor(textures_names)
   {
@@ -12,3 +12,5 @@ export default class TexturesCompilator
     this.finished = true;
   }
 }
+
+export { TexturesCompilator };

@@ -1,6 +1,6 @@
-import SceneLoadingState from './SceneLoadingState';
+import { SceneLoadingState } from './SceneLoadingState';
 
-export default class RegularAssetsState extends SceneLoadingState
+class RegularAssetsState extends SceneLoadingState
 {
   // constructor(scene_objects, scene_textures, scene_sounds)
   // {
@@ -31,3 +31,5 @@ export default class RegularAssetsState extends SceneLoadingState
     }
   }
 }
+
+export { RegularAssetsState };

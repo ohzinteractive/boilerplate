@@ -1,6 +1,6 @@
 import { Input } from 'ohzi-core';
 
-export default class KeyboardInputController
+class KeyboardInputController
 {
   constructor()
   {
@@ -18,3 +18,5 @@ export default class KeyboardInputController
     Input.keyboard.register_key(' ');
   }
 }
+
+export { KeyboardInputController };

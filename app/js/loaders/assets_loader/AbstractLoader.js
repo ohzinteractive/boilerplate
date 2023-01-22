@@ -1,5 +1,5 @@
 
-export default class AbstractLoader
+class AbstractLoader
 {
   constructor(resource_id, url, size = 1)
   {
@@ -125,3 +125,5 @@ export default class AbstractLoader
     console.error(data);
   }
 }
+
+export { AbstractLoader };

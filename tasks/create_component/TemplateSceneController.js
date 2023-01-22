@@ -1,5 +1,5 @@
 
-export default class TemplateSceneController
+class TemplateSceneController
 {
   constructor()
   {
@@ -25,3 +25,5 @@ export default class TemplateSceneController
   {
   }
 }
+
+export { TemplateSceneController };

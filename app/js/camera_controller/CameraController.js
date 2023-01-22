@@ -1,4 +1,4 @@
-import ImmediateMode from './movement_mode/ImmediateMode';
+import { ImmediateMode } from './movement_mode/ImmediateMode';
 
 import { OScreen } from 'ohzi-core';
 // import { Debug } from 'ohzi-core';
@@ -15,10 +15,10 @@ import { Plane } from 'three';
 import { Box3 } from 'three';
 import { Ray } from 'three';
 
-import SimpleCameraState from './states/SimpleCameraState';
-import AbstractCameraState from './states/common/AbstractCameraState';
+import { SimpleCameraState } from './states/SimpleCameraState';
+import { AbstractCameraState } from './states/common/AbstractCameraState';
 
-export default class CameraController
+class CameraController
 {
   constructor()
   {
@@ -499,3 +499,5 @@ export default class CameraController
     return Math.max(Math.abs(distH), Math.abs(distV));
   }
 }
+
+export { CameraController };

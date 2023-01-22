@@ -1,10 +1,10 @@
 import { ApplicationView } from 'ohzi-core';
 import { Sections, SectionsURLs } from '../Sections';
 
-import TestSceneController from './TestSceneController';
-import TestTransitionController from './TestTransitionController';
+import { TestSceneController } from './TestSceneController';
+import { TestTransitionController } from './TestTransitionController';
 
-export default class TestView extends ApplicationView
+class TestView extends ApplicationView
 {
   constructor()
   {
@@ -78,3 +78,5 @@ export default class TestView extends ApplicationView
     this.transition_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
   }
 }
+
+export { TestView };

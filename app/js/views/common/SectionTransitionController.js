@@ -2,9 +2,9 @@ import { OScreen, ViewManager } from 'ohzi-core';
 import { Vector3 } from 'three';
 import { Sections } from '../Sections';
 
-import SceneController from '../../components/SceneController';
+import { SceneController } from '../../components/SceneController';
 
-export default class SectionTransitionController
+class SectionTransitionController
 {
   constructor()
   {
@@ -224,3 +224,5 @@ export default class SectionTransitionController
     }
   }
 }
+
+export { SectionTransitionController };

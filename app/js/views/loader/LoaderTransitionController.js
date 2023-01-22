@@ -1,5 +1,5 @@
 
-export default class LoaderTransitionController
+class LoaderTransitionController
 {
   constructor()
   {
@@ -45,3 +45,5 @@ export default class LoaderTransitionController
   {
   }
 }
+
+export { LoaderTransitionController };

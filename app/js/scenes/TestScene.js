@@ -1,5 +1,5 @@
 
-import AbstractScene from './common/AbstractScene';
+import { AbstractScene } from './common/AbstractScene';
 
 import { Sections } from '../views/Sections';
 
@@ -14,7 +14,7 @@ import { Debug, Grid } from 'ohzi-core';
 // import { PMREMGenerator } from 'three';
 // import { HalfFloatType } from 'three';
 
-export default class TestScene extends AbstractScene
+class TestScene extends AbstractScene
 {
   constructor()
   {
@@ -67,3 +67,5 @@ export default class TestScene extends AbstractScene
     super.on_high_quality_assets_ready();
   }
 }
+
+export { TestScene };

@@ -1,6 +1,6 @@
-import CommonCameraState from './common/CommonCameraState';
+import { CommonCameraState } from './common/CommonCameraState';
 
-export default class SimpleCameraState extends CommonCameraState
+class SimpleCameraState extends CommonCameraState
 {
   update(camera_controller)
   {
@@ -12,3 +12,5 @@ export default class SimpleCameraState extends CommonCameraState
     this.__show_camera_position(camera_controller);
   }
 }
+
+export { SimpleCameraState };

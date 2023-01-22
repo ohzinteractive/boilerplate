@@ -8,10 +8,10 @@ import { LinearEncoding } from 'three';
 import { DataTexture } from 'three';
 import { RGBFormat } from 'three';
 
-import CameraController from '../camera_controller/CameraController';
+import { CameraController } from '../camera_controller/CameraController';
 
-import HomeScene from '../scenes/HomeScene';
-import TestScene from '../scenes/TestScene';
+import { HomeScene } from '../scenes/HomeScene';
+import { TestScene } from '../scenes/TestScene';
 
 class SceneController
 {
@@ -105,4 +105,5 @@ class SceneController
   }
 }
 
-export default new SceneController();
+const scene_controller = new SceneController();
+export { scene_controller as SceneController };

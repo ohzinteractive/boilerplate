@@ -1,10 +1,10 @@
 import { ApplicationView, OMath, ViewManager } from 'ohzi-core';
 import { Sections, SectionsURLs } from '../Sections';
 
-import TransitionSceneController from './TransitionSceneController';
-import TransitionTransitionController from './TransitionTransitionController';
+import { TransitionSceneController } from './TransitionSceneController';
+import { TransitionTransitionController } from './TransitionTransitionController';
 
-export default class TransitionView extends ApplicationView
+class TransitionView extends ApplicationView
 {
   constructor()
   {
@@ -149,3 +149,5 @@ export default class TransitionView extends ApplicationView
     return Math.round(value * multiplier) / multiplier;
   }
 }
+
+export { TransitionView };

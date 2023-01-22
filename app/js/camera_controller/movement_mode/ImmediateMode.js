@@ -1,11 +1,11 @@
 
-import CameraMovementMode from './CameraMovementMode';
+import { CameraMovementMode } from './CameraMovementMode';
 
 import { Vector2 } from 'three';
 import { Vector3 } from 'three';
 import { Quaternion } from 'three';
 import { OMath } from 'ohzi-core';
-export default class ImmediateMode extends CameraMovementMode
+class ImmediateMode extends CameraMovementMode
 {
   constructor()
   {
@@ -53,3 +53,5 @@ export default class ImmediateMode extends CameraMovementMode
     return this.tmp_camera_target_pos;
   }
 }
+
+export { ImmediateMode };
