@@ -35,7 +35,7 @@
     "fix-syntax": "standardx --fix || echo 'Done'"
   },
   "dependencies": {
-    "lil-gui": "^0.16.0",
+    "lil-gui": "0.17.0",
     "ohzi-core": "9.0.0",
     "ohzi-components": "2.0.0"
   },
