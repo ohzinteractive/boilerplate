@@ -65,7 +65,8 @@
   },
   "parcelIgnore": [
     "fonts/.+",
-    "images/.+"
+    "images/.+",
+    "lib/.+"
   ],
   "private": true,
   "workspaces": [
