@@ -1,4 +1,4 @@
-const initial_state_data = {
+const default_state_data = {
   loader_opacity: 0,
   transition_opacity: 0,
   test_opacity: 0,
@@ -21,4 +21,4 @@ const initial_state_data = {
   camera_azimuth_mobile: 0
 };
 
-export { initial_state_data };
+export { default_state_data };

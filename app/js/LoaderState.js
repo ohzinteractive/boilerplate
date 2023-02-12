@@ -11,7 +11,7 @@ import { LoaderView } from './views/loader/LoaderView';
 import loader_data from '../data/transitions/loader.json';
 
 import { SectionsURLs } from './views/Sections';
-import { initial_state_data } from '../data/initial_state_data';
+import { default_state_data } from '../data/default_state_data';
 
 class LoaderState extends BaseApplication
 {
@@ -56,7 +56,7 @@ class LoaderState extends BaseApplication
     this.initial_view = new InitialView();
     this.loader_view = new LoaderView(this.api);
 
-    ViewManager.set_initial_state_data(initial_state_data);
+    ViewManager.set_default_state_data(default_state_data);
     ViewManager.set_view(this.initial_view.name);
 
     // Start render loop
