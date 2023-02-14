@@ -8,10 +8,10 @@ import { Initializer } from 'ohzi-core';
 // import { ResourceContainer } from 'ohzi-core';
 
 import package_json from '../../package.json';
-import LoaderState from './LoaderState';
+import { LoaderState } from './LoaderState';
 
 // APP
-import MainApplication from './MainApplication';
+import { MainApplication } from './MainApplication';
 
 class Api
 {

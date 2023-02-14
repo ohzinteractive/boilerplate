@@ -8,7 +8,7 @@ import {  ResourceContainer } from 'ohzi-core';
 // import { SpotLight } from 'three';
 // import { DirectionalLight } from 'three';
 
-export default class ObjectsCompilator
+class ObjectsCompilator
 {
   constructor(objects = [], resource_names = [])
   {
@@ -105,3 +105,5 @@ export default class ObjectsCompilator
     }
   }
 }
+
+export { ObjectsCompilator };

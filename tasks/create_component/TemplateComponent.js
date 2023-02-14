@@ -1,9 +1,9 @@
 import { ViewComponent } from 'ohzi-core';
 import { Components } from '../Components';
 
-import TemplateSceneController from './TemplateSceneController';
+import { TemplateSceneController } from './TemplateSceneController';
 
-export default class TemplateComponent extends ViewComponent
+class TemplateComponent extends ViewComponent
 {
   constructor()
   {
@@ -43,3 +43,5 @@ export default class TemplateComponent extends ViewComponent
     this.scene.update();
   }
 }
+
+export { TemplateComponent };

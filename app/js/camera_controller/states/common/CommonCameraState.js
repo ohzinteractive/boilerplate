@@ -1,12 +1,12 @@
 
-import { Input }  from 'ohzi-core';
-import { CameraUtilities }  from 'ohzi-core';
+import { Input } from 'ohzi-core';
+import { CameraUtilities } from 'ohzi-core';
 
 import { Vector2 } from 'three';
 
-import AbstractCameraState from './AbstractCameraState';
+import { AbstractCameraState } from './AbstractCameraState';
 
-export default class CommonCameraState extends AbstractCameraState
+class CommonCameraState extends AbstractCameraState
 {
   constructor()
   {
@@ -25,6 +25,8 @@ export default class CommonCameraState extends AbstractCameraState
     this.right_dir = 0;
     this.y_dir = 0;
     this.azimuth_dir = 0;
+
+    this.shift_key = false;
   }
 
   on_enter(camera_controller)
@@ -187,3 +189,5 @@ export default class CommonCameraState extends AbstractCameraState
     }
   }
 }
+
+export { CommonCameraState };

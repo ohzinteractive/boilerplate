@@ -1,14 +1,14 @@
 import { GLTFDRACOLoader, GLTFLoader, ResourceContainer } from 'ohzi-core';
-import AsyncAbstractLoader from './AsyncAbstractLoader';
+import { AsyncAbstractLoader } from './AsyncAbstractLoader';
 
-export default class AsyncObjectsLoader extends AsyncAbstractLoader
+class AsyncObjectsLoader extends AsyncAbstractLoader
 {
   constructor(scene_name, assets, worker)
   {
     super(scene_name, assets, worker);
   }
 
-  // Called from parent
+  // Called } from parent
   __setup_loaders()
   {
     const loaders = [];
@@ -32,3 +32,5 @@ export default class AsyncObjectsLoader extends AsyncAbstractLoader
     return loaders;
   }
 }
+
+export { AsyncObjectsLoader };

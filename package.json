@@ -2,18 +2,22 @@
   "name": "ohzi-boilerplate",
   "description": "OHZI Boilerplate.",
   "author": "OHZI Interactive",
-  "version": "6.6.0",
+  "version": "9.0.0",
   "license": "MIT",
   "module_example": "dist/index.module.js",
   "scripts": {
     "preinstall": "yarn setup-submodules && yarn update-submodules && yarn config-hooks",
-    "setup-submodules": "yarn setup-core-submodule",
-    "setup-core-submodule": "git submodule update core",
-    "update-submodules": "yarn update-core",
-    "update-core": "node update_core.mjs",
-    "config-hooks": "yarn config-boilerplate-hooks && yarn config-core-hooks",
+    "setup-submodules": "yarn setup-core-submodule && yarn setup-components-submodule",
+    "setup-core-submodule": "git submodule update --init core",
+    "setup-components-submodule": "git submodule update --init components",
+    "update-submodules": "yarn update-core && yarn update-components",
+    "update-core": "node update_submodule.mjs ohzi-core core",
+    "update-components": "node update_submodule.mjs ohzi-components components",
+    "config-hooks": "yarn config-boilerplate-hooks && yarn config-submodule-hooks",
     "config-boilerplate-hooks": "git config core.hooksPath git_hooks",
+    "config-submodule-hooks": "yarn config-core-hooks && yarn config-components-hooks",
     "config-core-hooks": "cd core && git config core.hooksPath git_hooks && cd ..",
+    "config-components-hooks": "cd components && git config core.hooksPath git_hooks && cd ..",
     "start": "yarn remove_cache && yarn remove_dist && parcel app/index.pug",
     "start_ssl": "yarn remove_cache && yarn remove_dist && parcel app/index.pug --https --port 443",
     "build_api": "parcel build ./app/js/Api.js --no-cache",
@@ -30,22 +34,10 @@
     "create-component": "node ./tasks/create_component/create_component.mjs",
     "fix-syntax": "standardx --fix || echo 'Done'"
   },
-  "alias": {
-    "three": "./node_modules/three/src/Three.js",
-    "three/examples/jsm/controls/TransformControls.js": "./node_modules/three/examples/jsm/controls/TransformControls.js",
-    "three/examples/jsm/utils/BufferGeometryUtils.js": "./node_modules/three/examples/jsm/utils/BufferGeometryUtils.js",
-    "three/examples/jsm/loaders/GLTFLoader.js": "./node_modules/three/examples/jsm/loaders/GLTFLoader.js",
-    "three/examples/jsm/loaders/OBJLoader.js": "./node_modules/three/examples/jsm/loaders/OBJLoader.js",
-    "three/examples/jsm/loaders/HDRCubeTextureLoader.js": "./node_modules/three/examples/jsm/loaders/HDRCubeTextureLoader.js",
-    "three/examples/jsm/loaders/DRACOLoader.js": "./node_modules/three/examples/jsm/loaders/DRACOLoader.js",
-    "three/examples/jsm/loaders/RGBELoader.js": "./node_modules/three/examples/jsm/loaders/RGBELoader.js",
-    "three/examples/jsm/loaders/FontLoader.js": "./node_modules/three/examples/jsm/loaders/FontLoader.js",
-    "three/examples/jsm/loaders/ColladaLoader.js": "./node_modules/three/examples/jsm/loaders/ColladaLoader.js",
-    "three/examples/jsm/loaders/KTX2Loader.js": "./node_modules/three/examples/jsm/loaders/KTX2Loader.js"
-  },
   "dependencies": {
-    "lil-gui": "^0.16.0",
-    "ohzi-core": "6.15.6"
+    "lil-gui": "0.17.0",
+    "ohzi-core": "9.1.0",
+    "ohzi-components": "2.0.1"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "2.4.1",
@@ -63,7 +55,8 @@
     "parcel-resolver-ignore": "^2.1.3",
     "replace-in-file": "^6.2.0",
     "serve-static": "^1.14.1",
-    "standardx": "^7.0.0"
+    "standardx": "^7.0.0",
+    "three": "0.148.0"
   },
   "standardx": {
     "ignore": [
@@ -72,10 +65,12 @@
   },
   "parcelIgnore": [
     "fonts/.+",
-    "images/.+"
+    "images/.+",
+    "lib/.+"
   ],
   "private": true,
   "workspaces": [
-    "core"
+    "core",
+    "components"
   ]
 }

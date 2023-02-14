@@ -47,4 +47,5 @@ class DatGUI
   }
 }
 
-export default new DatGUI();
+const dat = new DatGUI();
+export { dat as DatGUI };

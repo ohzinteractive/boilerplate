@@ -62,6 +62,11 @@ a {
     text-decoration: none;
 }
 
+img {
+    @include user-select('none');
+    @include user-drag('none');
+}
+
 h1.seo__title, h2.seo__subtitle {
     @include user-select('none');
 

@@ -3,17 +3,17 @@ import { ResourceContainer } from 'ohzi-core';
 import { ViewManager } from 'ohzi-core';
 import { OMath } from 'ohzi-core';
 
-import GeneralLoader from './loaders/GeneralLoader';
+import { GeneralLoader } from './loaders/GeneralLoader';
 
-import InitialView from './views/InitialView';
-import LoaderView from './views/loader/LoaderView';
+import { InitialView } from './views/InitialView';
+import { LoaderView } from './views/loader/LoaderView';
 
-import initial_state_data from '../data/initial_state_data.json';
 import loader_data from '../data/transitions/loader.json';
 
 import { SectionsURLs } from './views/Sections';
+import { default_state_data } from '../data/default_state_data';
 
-export default class LoaderState extends BaseApplication
+class LoaderState extends BaseApplication
 {
   constructor(api)
   {
@@ -56,7 +56,7 @@ export default class LoaderState extends BaseApplication
     this.initial_view = new InitialView();
     this.loader_view = new LoaderView(this.api);
 
-    ViewManager.set_initial_state_data(initial_state_data);
+    ViewManager.set_default_state_data(default_state_data);
     ViewManager.set_view(this.initial_view.name);
 
     // Start render loop
@@ -230,3 +230,5 @@ export default class LoaderState extends BaseApplication
     });
   }
 }
+
+export { LoaderState };

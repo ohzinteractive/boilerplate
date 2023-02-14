@@ -1,7 +1,7 @@
 import { SceneManager } from 'ohzi-core';
-import SceneController from '../../components/SceneController';
+import { SceneController } from '../../components/SceneController';
 
-export default class TestGeneralSceneController
+class TestSceneController
 {
   constructor()
   {
@@ -10,7 +10,7 @@ export default class TestGeneralSceneController
   // This method is called one time at the beginning of the app execution.
   start()
   {
-    this.scene = SceneController.test_general_scene;
+    this.scene = SceneController.test_scene;
   }
 
   // This method is called one time before the transition to this section is started.
@@ -49,3 +49,5 @@ export default class TestGeneralSceneController
   {
   }
 }
+
+export { TestSceneController };

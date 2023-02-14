@@ -1,8 +1,8 @@
-import { CameraManager, SceneManager } from 'ohzi-core';
+import { SceneManager } from 'ohzi-core';
+import { SceneController } from '../../components/SceneController';
 import { DeviceOrientationControls } from '../../components/DeviceOrientationControls';
-import SceneController from '../../components/SceneController';
 
-export default class HomeSceneController
+class HomeSceneController
 {
   constructor()
   {
@@ -60,3 +60,5 @@ export default class HomeSceneController
   {
   }
 }
+
+export { HomeSceneController };

@@ -1,13 +1,12 @@
 import { ApplicationView } from 'ohzi-core';
-
-import { Math as TMath } from 'three';
+import { OMath } from 'ohzi-core';
 
 import { Sections, SectionsURLs } from '../Sections';
 
-import LoaderSceneController from './LoaderSceneController';
-import LoaderTransitionController from './LoaderTransitionController';
+import { LoaderSceneController } from './LoaderSceneController';
+import { LoaderTransitionController } from './LoaderTransitionController';
 
-export default class LoaderView extends ApplicationView
+class LoaderView extends ApplicationView
 {
   constructor(api)
   {
@@ -128,7 +127,7 @@ export default class LoaderView extends ApplicationView
   {
     // this.progress = this.target_progress + this.round((transition_progress / 3) * 2, 2);
     this.current_progress += (this.target_progress - this.current_progress) * 0.05;
-    this.current_progress = TMath.clamp(this.current_progress, 0, 1);
+    this.current_progress = OMath.clamp(this.current_progress, 0, 1);
 
     this.progress_bar.style.transform = `translate3d(${this.current_progress * 100}%,0,0)`;
   }
@@ -144,3 +143,5 @@ export default class LoaderView extends ApplicationView
     return Math.round(value * multiplier) / multiplier;
   }
 }
+
+export { LoaderView };

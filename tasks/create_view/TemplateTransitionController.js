@@ -1,5 +1,7 @@
-import SectionTransitionController from '../common/SectionTransitionController';
+import { SectionTransitionController } from '../common/SectionTransitionController';
 
-export default class TemplateTransitionController extends SectionTransitionController
+class TemplateTransitionController extends SectionTransitionController
 {
 }
+
+export { TemplateTransitionController };

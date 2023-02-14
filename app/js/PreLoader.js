@@ -1,5 +1,5 @@
 
-export default class PreLoader
+class PreLoader
 {
   async init()
   {

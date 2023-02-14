@@ -1,6 +1,6 @@
-import SceneController from '../../components/SceneController';
+import { SceneController } from '../../components/SceneController';
 
-export default class TransitionSceneController
+class TransitionSceneController
 {
   constructor()
   {
@@ -76,3 +76,5 @@ export default class TransitionSceneController
     return this.next_scene.loading_progress;
   }
 }
+
+export { TransitionSceneController };

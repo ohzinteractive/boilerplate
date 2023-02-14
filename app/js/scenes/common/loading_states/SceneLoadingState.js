@@ -1,13 +1,13 @@
 import { ResourceContainer } from 'ohzi-core';
-import AudiosCompilator from '../../../compilators/AudiosCompilator';
-import CompilatorManager from '../../../compilators/CompilatorManager';
-import ObjectsCompilator from '../../../compilators/ObjectsCompilator';
-import TexturesCompilator from '../../../compilators/TexturesCompilator';
-import AsyncAudiosLoader from '../../../loaders/AsyncAudiosLoader';
-import AsyncObjectsLoader from '../../../loaders/AsyncObjectsLoader';
-import AsyncTexturesLoader from '../../../loaders/AsyncTexturesLoader';
+import { AudiosCompilator } from '../../../compilators/AudiosCompilator';
+import { CompilatorManager } from '../../../compilators/CompilatorManager';
+import { ObjectsCompilator } from '../../../compilators/ObjectsCompilator';
+import { TexturesCompilator } from '../../../compilators/TexturesCompilator';
+import { AsyncAudiosLoader } from '../../../loaders/AsyncAudiosLoader';
+import { AsyncObjectsLoader } from '../../../loaders/AsyncObjectsLoader';
+import { AsyncTexturesLoader } from '../../../loaders/AsyncTexturesLoader';
 
-export default class SceneLoadingState
+class SceneLoadingState
 {
   constructor(scene, scene_objects, scene_textures, scene_sounds)
   {
@@ -99,3 +99,5 @@ export default class SceneLoadingState
     return this.compilator_manager.is_finished();
   }
 }
+
+export { SceneLoadingState };

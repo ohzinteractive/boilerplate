@@ -51,4 +51,5 @@ class FPSCounter
   }
 }
 
-export default new FPSCounter();
+const fps_counter = new FPSCounter();
+export { fps_counter as FPSCounter };

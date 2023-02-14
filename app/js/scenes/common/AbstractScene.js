@@ -1,11 +1,11 @@
 import { Scene } from 'three';
-// import AvatarSystem from '../../components/avatar/AvatarSystem';
+// import { AvatarSystem } from '../../components/avatar/AvatarSystem';
 
-import HighQualityAssetsState from './loading_states/HighQualityAssetsState';
-import RegularAssetsState from './loading_states/RegularAssetsState';
-import SceneLoadingState from './loading_states/SceneLoadingState';
+import { HighQualityAssetsState } from './loading_states/HighQualityAssetsState';
+import { RegularAssetsState } from './loading_states/RegularAssetsState';
+import { SceneLoadingState } from './loading_states/SceneLoadingState';
 
-export default class AbstractScene extends Scene
+class AbstractScene extends Scene
 {
   constructor({
     name,
@@ -147,3 +147,5 @@ export default class AbstractScene extends Scene
     // AudioManager.init_sounds(AudioManager.get_sounds_names(sounds));
   }
 }
+
+export { AbstractScene };

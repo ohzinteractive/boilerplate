@@ -1,5 +1,5 @@
 
-export default class ResourceBatch
+class ResourceBatch
 {
   constructor(batch_name, resource_container)
   {
@@ -82,3 +82,5 @@ export default class ResourceBatch
     return total_bytes;
   }
 }
+
+export { ResourceBatch };

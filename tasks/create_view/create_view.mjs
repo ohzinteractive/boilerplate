@@ -41,12 +41,12 @@ class ViewCreator
 
   __update_initial_data_file(name)
   {
-    const new_data = `"loader_opacity": 0,\n    "${name}_opacity": 0,`;
-    const file_path = path.join('app', 'data', 'initial_state_data.json');
+    const new_data = `loader_opacity: 0,\n  ${name}_opacity: 0,`;
+    const file_path = path.join('app', 'data', 'default_state_data.js');
 
     const options = {
       files: file_path,
-      from: '"loader_opacity": 0,',
+      from: 'loader_opacity: 0,',
       to: new_data
     };
 
@@ -139,7 +139,7 @@ class ViewCreator
 
   __update_mainapp_file(name)
   {
-    const new_import = `HomeView';\nimport ${this.capitalize(name)}View from './views/${name}/${this.capitalize(name)}View';`;
+    const new_import = `HomeView';\nimport { ${this.capitalize(name)}View } from './views/${name}/${this.capitalize(name)}View';`;
     const file_path = path.join('app', 'js', 'MainApplication.js');
 
     const options_1 = {

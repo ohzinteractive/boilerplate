@@ -5,17 +5,18 @@ import { ResourceContainer } from 'ohzi-core';
 import { ViewManager } from 'ohzi-core';
 import { ViewContext } from 'ohzi-core';
 
-import DatGUI from './components/DatGUI';
-import SceneController from './components/SceneController';
-import HomeView from './views/home/HomeView';
-import TransitionView from './views/transition/TransitionView';
-import TestGeneralView from './views/test_general/TestGeneralView';
+import { DatGUI } from './components/DatGUI';
+import { SceneController } from './components/SceneController';
+import { HomeView } from './views/home/HomeView';
+import { TransitionView } from './views/transition/TransitionView';
+import { TestView } from './views/test/TestView';
 
 import { sRGBEncoding } from 'three';
+// import { ACESFilmicToneMapping } from 'three';
 
 import { Sections } from './views/Sections';
-
-export default class MainApplication extends BaseApplication
+// import { KeyboardInputController } from './components/KeyboardInputController';
+class MainApplication extends BaseApplication
 {
   init()
   {
@@ -29,6 +30,15 @@ export default class MainApplication extends BaseApplication
     Graphics._renderer.outputEncoding = sRGBEncoding;
     Graphics._renderer.debug.checkShaderErrors = process.env.NODE_ENV === 'development';
 
+    // Graphics._renderer.physicallyCorrectLights = true;
+    // Graphics._renderer.toneMapping = ACESFilmicToneMapping;
+    // Graphics._renderer.toneMappingExposure = 0.7;
+
+    // addEventListener('contextmenu', (event) =>
+    // {
+    //   event.preventDefault();
+    // });
+
     DatGUI.init();
   }
 
@@ -40,6 +50,8 @@ export default class MainApplication extends BaseApplication
 
     ViewContext.set_app(this);
 
+    // this.keyboard_input_controller = new KeyboardInputController();
+
     this.view_manager = ViewManager;
     this.view_manager.set_browser_title_suffix('OHZI Interactive');
 
@@ -50,10 +62,10 @@ export default class MainApplication extends BaseApplication
     // __SECTIONS__
     this.home_view = new HomeView();
     this.transition_view = new TransitionView();
-    this.test_general_view = new TestGeneralView();
+    this.test_view = new TestView();
     this.home_view.start();
     this.transition_view.start();
-    this.test_general_view.start();
+    this.test_view.start();
 
     DatGUI.start();
 
@@ -93,3 +105,5 @@ export default class MainApplication extends BaseApplication
     this.scene_controller.update();
   }
 }
+
+export { MainApplication };

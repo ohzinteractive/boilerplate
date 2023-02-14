@@ -1,4 +1,4 @@
-export default class ResourceLoaderChecker
+class ResourceLoaderChecker
 {
   constructor(batch)
   {
@@ -35,3 +35,5 @@ export default class ResourceLoaderChecker
     }
   }
 }
+
+export { ResourceLoaderChecker };

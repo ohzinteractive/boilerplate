@@ -1,4 +1,4 @@
-export default class TransitionTransitionController
+class TransitionTransitionController
 {
   // This method is called one time at the beginning of the app execution.
   start()
@@ -48,3 +48,5 @@ export default class TransitionTransitionController
   {
   }
 }
+
+export { TransitionTransitionController };

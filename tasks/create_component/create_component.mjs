@@ -36,7 +36,7 @@ class ComponentCreator
   __update_initial_data_file(name)
   {
     const new_data = `"loader_opacity": 0,\n    "${name}_opacity": 0,`;
-    const file_path = path.join('app', 'data', 'initial_state_data.json');
+    const file_path = path.join('app', 'data', 'default_state_data.js');
 
     const options = {
       files: file_path,

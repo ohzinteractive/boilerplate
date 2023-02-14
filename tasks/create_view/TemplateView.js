@@ -1,10 +1,10 @@
 import { ApplicationView } from 'ohzi-core';
 import { Sections, SectionsURLs } from '../Sections';
 
-import TemplateSceneController from './TemplateSceneController';
-import TemplateTransitionController from './TemplateTransitionController';
+import { TemplateSceneController } from './TemplateSceneController';
+import { TemplateTransitionController } from './TemplateTransitionController';
 
-export default class TemplateView extends ApplicationView
+class TemplateView extends ApplicationView
 {
   constructor()
   {
@@ -85,3 +85,5 @@ export default class TemplateView extends ApplicationView
     this.transition_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
   }
 }
+
+export { TemplateView };

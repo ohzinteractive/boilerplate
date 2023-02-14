@@ -1,5 +1,5 @@
 
-export default class ResourceContainer
+class ResourceContainer
 {
   constructor(name)
   {
@@ -33,3 +33,5 @@ export default class ResourceContainer
     return this.resources[name];
   }
 }
+
+export { ResourceContainer };

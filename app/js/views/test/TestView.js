@@ -1,21 +1,21 @@
 import { ApplicationView } from 'ohzi-core';
 import { Sections, SectionsURLs } from '../Sections';
 
-import TestGeneralSceneController from './TestGeneralSceneController';
-import TestGeneralTransitionController from './TestGeneralTransitionController';
+import { TestSceneController } from './TestSceneController';
+import { TestTransitionController } from './TestTransitionController';
 
-export default class TestGeneralView extends ApplicationView
+class TestView extends ApplicationView
 {
   constructor()
   {
     super({
-      name: Sections.TEST_GENERAL,
-      url: SectionsURLs.TEST_GENERAL,
-      container: document.querySelector('.test-general')
+      name: Sections.TEST,
+      url: SectionsURLs.TEST,
+      container: document.querySelector('.test')
     });
 
-    this.scene_controller = new TestGeneralSceneController();
-    this.transition_controller = new TestGeneralTransitionController();
+    this.scene_controller = new TestSceneController();
+    this.transition_controller = new TestTransitionController();
   }
 
   // This method is called one time at the beginning of the app execution.
@@ -78,3 +78,5 @@ export default class TestGeneralView extends ApplicationView
     this.transition_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
   }
 }
+
+export { TestView };
