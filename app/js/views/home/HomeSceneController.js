@@ -1,4 +1,4 @@
-import { SceneManager } from 'ohzi-core';
+import { CameraManager, SceneManager } from 'ohzi-core';
 import { SceneController } from '../../components/SceneController';
 import { DeviceOrientationControls } from '../../components/DeviceOrientationControls';
 
@@ -13,7 +13,8 @@ class HomeSceneController
   {
     this.scene = SceneController.home_scene;
 
-    this.camera_controls = new DeviceOrientationControls(CameraManager.current);
+    this.camera_controls = new DeviceOrientationControls(CameraManager.current, this.on_permissions_granted.bind(this));
+    this.camera_controls_enabled = false;
   }
 
   // This method is called one time before the transition to this section is started.
@@ -42,12 +43,10 @@ class HomeSceneController
   {
     this.scene.update();
 
-    this.camera_controls.update();
-  }
-
-  request_motion_permition()
-  {
-    this.camera_controls.connect();
+    if (this.camera_controls_enabled)
+    {
+      this.camera_controls.update();
+    }
   }
 
   // This method is called in every frame when the site is transitioning to this section.
@@ -58,6 +57,29 @@ class HomeSceneController
   // This method is called in every frame when the site is transitioning from this section.
   update_exit_transition(global_view_data, transition_progress, action_sequencer)
   {
+  }
+
+  toggle_background()
+  {
+    this.scene.toggle_background();
+  }
+
+  request_motion_permition()
+  {
+    if (!this.camera_controls_enabled)
+    {
+      this.camera_controls.connect();
+    }
+  }
+
+  on_permissions_granted()
+  {
+    if (!this.camera_controls_enabled)
+    {
+      this.camera_controls_enabled = true;
+
+      this.device_rotation_icon.classList.add('hidden');
+    }
   }
 }
 

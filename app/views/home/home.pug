@@ -1,2 +1,6 @@
-.section.home.hidden(onclick='app.home_view.scene_controller.request_motion_permition()')
-
+.section.home.hidden
+  .home__images-container
+    .button.home__image.home__image--device-rotation.hidden(onclick='app.home_view.scene_controller.request_motion_permition()')
+      img(src='images/device_rotation.svg', alt='Device Rotation Icon')
+    .button.home__image.home__image--switch-image(onclick='app.home_view.scene_controller.toggle_background()')
+      img(src='images/image.svg', alt='Background Icon')

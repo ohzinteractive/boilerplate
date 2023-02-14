@@ -10,7 +10,8 @@ import { home_high_objects } from '../../data/assets/home/high/home_high_objects
 import { home_high_textures } from '../../data/assets/home/high/home_high_textures';
 import { home_high_sounds } from '../../data/assets/home/high/home_high_sounds';
 
-import { Debug, Grid } from 'ohzi-core';
+import { Debug, Graphics, Grid, ResourceContainer, SceneManager } from 'ohzi-core';
+import { PMREMGenerator, sRGBEncoding } from 'three';
 
 // import { AmbientLight, DirectionalLight } from 'three';
 class HomeScene extends AbstractScene
@@ -28,6 +29,7 @@ class HomeScene extends AbstractScene
     });
 
     this.name = Sections.HOME;
+    this.current_background_id = 0;
   }
 
   init()
@@ -59,11 +61,45 @@ class HomeScene extends AbstractScene
     super.on_assets_ready();
 
     // this.add_lights();
+
+    this.change_background(`env_${this.current_background_id}`);
+
+    // const scene = ResourceContainer.get('scene').scene;
+    // this.add(scene);
   }
 
   on_high_quality_assets_ready()
   {
     super.on_high_quality_assets_ready();
+
+    this.change_background(`env_${this.current_background_id}`);
+  }
+
+  toggle_background()
+  {
+    this.current_background_id++;
+    this.current_background_id = this.current_background_id % 4;
+
+    this.change_background(`env_${this.current_background_id}`);
+  }
+
+  change_background(texture_id)
+  {
+    const pmremGenerator = new PMREMGenerator(Graphics._renderer);
+    pmremGenerator.compileEquirectangularShader();
+
+    const hdrEquirect = ResourceContainer.get_resource(texture_id);
+    hdrEquirect.needsUpdate = true;
+
+    // hdrEquirect.type = HalfFloatType;
+    hdrEquirect.encoding = sRGBEncoding;
+
+    const hdrCubeRenderTarget = pmremGenerator.fromEquirectangular(hdrEquirect);
+    hdrEquirect.dispose();
+    pmremGenerator.dispose();
+
+    // SceneManager.current.environment = hdrCubeRenderTarget.texture;
+    SceneManager.current.background = hdrCubeRenderTarget.texture;
   }
 }
 

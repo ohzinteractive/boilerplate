@@ -15,7 +15,8 @@ const _changeEvent = { type: 'change' };
 
 class DeviceOrientationControls extends EventDispatcher
 {
-  constructor(object)
+  constructor(object, on_permissions_granted = () =>
+  {})
   {
     super();
 
@@ -25,6 +26,7 @@ class DeviceOrientationControls extends EventDispatcher
     }
 
     const scope = this;
+    this.callback = on_permissions_granted;
 
     const EPS = 0.000001;
     const lastQuaternion = new Quaternion();
@@ -68,22 +70,32 @@ class DeviceOrientationControls extends EventDispatcher
 
       // iOS 13+
 
-      if (DeviceMotionEvent && DeviceMotionEvent.requestPermission)
+      if (window.DeviceOrientationEvent !== undefined && typeof window.DeviceOrientationEvent.requestPermission === 'function')
       {
-        // window.DeviceOrientationEvent.requestPermission().then(function(response)
-        DeviceMotionEvent.requestPermission().then(function(response)
+        window.DeviceOrientationEvent.requestPermission().then(function(response)
         {
           if (response === 'granted')
           {
             window.addEventListener('orientationchange', onScreenOrientationChangeEvent);
             window.addEventListener('deviceorientation', onDeviceOrientationChangeEvent);
+
+            scope.callback();
           }
+          else
+          {
+            alert('Access denied.\n\n Please restart your browser.');
+          }
+        }).catch(function(error)
+        {
+          console.error('THREE.DeviceOrientationControls: Unable to use DeviceOrientation API:', error);
         });
       }
       else
       {
         window.addEventListener('orientationchange', onScreenOrientationChangeEvent);
         window.addEventListener('deviceorientation', onDeviceOrientationChangeEvent);
+
+        scope.callback();
       }
 
       scope.enabled = true;

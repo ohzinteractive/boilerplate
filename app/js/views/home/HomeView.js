@@ -1,4 +1,4 @@
-import { ApplicationView } from 'ohzi-core';
+import { ApplicationView, OS } from 'ohzi-core';
 import { Sections, SectionsURLs } from '../Sections';
 
 import { HomeSceneController } from './HomeSceneController';
@@ -23,6 +23,13 @@ class HomeView extends ApplicationView
   {
     this.scene_controller.start();
     this.transition_controller.start();
+
+    this.device_rotation_icon = document.querySelector('.home__image--device-rotation');
+
+    if (OS.is_mobile)
+    {
+      this.device_rotation_icon.classList.remove('hidden');
+    }
   }
 
   // This method is called one time before the transition to this section is started.

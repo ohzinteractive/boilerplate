@@ -65,7 +65,7 @@ class SceneController
 
   update()
   {
-    // this.camera_controller.update();
+    this.camera_controller.update();
 
     // SceneManager.current.traverse(child =>
     // {
@@ -94,8 +94,8 @@ class SceneController
   __init_camera_controller()
   {
     this.camera_controller.set_camera(CameraManager.current);
-    // this.camera_controller.set_simple_mode();
-    this.camera_controller.set_idle();
+    this.camera_controller.set_simple_mode();
+    // this.camera_controller.set_idle();
 
     this.camera_controller.min_zoom = 0;
     this.camera_controller.max_zoom = 1;
