@@ -2,8 +2,8 @@ const home_textures = [
   // {
   //   name: 'leaf_texture',
   //   url: 'textures/leaf.ktx2',
-  //   size: 1000000,
-  //   basis: true
+  //   size: process.env['leaf.ktx2'],
+  //   kind: 'basis' // regular, basis, hdr
   // }
 ];
 

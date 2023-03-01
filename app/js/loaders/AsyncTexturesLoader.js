@@ -1,4 +1,4 @@
-import { AsyncTextureLoader, BasisLoader, ResourceContainer } from 'ohzi-core';
+import { AsyncTextureLoader, BasisLoader, ResourceContainer, RGBETextureLoader } from 'ohzi-core';
 
 import { AsyncAbstractLoader } from './AsyncAbstractLoader';
 
@@ -18,15 +18,35 @@ class AsyncTexturesLoader extends AsyncAbstractLoader
     {
       const asset_data = this.assets[i];
 
-      if (asset_data.basis)
+      switch (asset_data.kind)
       {
-        const basis_loader = ResourceContainer.get('basis_loader');
+      case 'regular':
+        loaders.push(new AsyncTextureLoader(
+          asset_data.name,
+          asset_data.url,
+          asset_data.size
+        ));
 
-        loaders.push(new BasisLoader(asset_data.name, asset_data.url, basis_loader, asset_data.size));
-      }
-      else
-      {
-        loaders.push(new AsyncTextureLoader(asset_data.name, asset_data.url, asset_data.size));
+        break;
+      case 'basis':
+        loaders.push(new BasisLoader(
+          asset_data.name,
+          asset_data.url,
+          ResourceContainer.get('basis_loader'),
+          asset_data.size
+        ));
+
+        break;
+      case 'hdr':
+        loaders.push(new RGBETextureLoader(
+          asset_data.name,
+          asset_data.url,
+          asset_data.size
+        ));
+
+        break;
+      default:
+        break;
       }
     }
 
