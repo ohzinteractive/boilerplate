@@ -1,10 +1,10 @@
-import { ApplicationView } from 'ohzi-core';
+import { CommonView } from '../common/CommonView';
 import { Sections, SectionsURLs } from '../Sections';
 
 import { TestSceneController } from './TestSceneController';
 import { TestTransitionController } from './TestTransitionController';
 
-class TestView extends ApplicationView
+class TestView extends CommonView
 {
   constructor()
   {

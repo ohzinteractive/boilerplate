@@ -1,12 +1,12 @@
-import { ApplicationView } from 'ohzi-core';
 import { OMath } from 'ohzi-core';
+import { CommonView } from '../common/CommonView';
 
 import { Sections, SectionsURLs } from '../Sections';
 
 import { LoaderSceneController } from './LoaderSceneController';
 import { LoaderTransitionController } from './LoaderTransitionController';
 
-class LoaderView extends ApplicationView
+class LoaderView extends CommonView
 {
   constructor(api)
   {
@@ -84,8 +84,8 @@ class LoaderView extends ApplicationView
 
     if (this.is_api_ready)
     {
-      this.api.start_main_app();
       this.set_progress(1);
+      this.api.start_main_app();
     }
   }
 
@@ -125,7 +125,9 @@ class LoaderView extends ApplicationView
 
   __update_progress()
   {
-    // this.progress = this.target_progress + this.round((transition_progress / 3) * 2, 2);
+    const next_progress = this.__round(this.scene_controller.loading_progress, 2);
+    this.target_progress = next_progress < this.target_progress ? this.target_progress : next_progress;
+
     this.current_progress += (this.target_progress - this.current_progress) * 0.05;
     this.current_progress = OMath.clamp(this.current_progress, 0, 1);
 

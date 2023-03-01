@@ -9,7 +9,7 @@ class SimpleCameraState extends CommonCameraState
     this.__move_camera(camera_controller);
     this.__zoom_camera(camera_controller);
     this.__rotate_camera(camera_controller);
-    this.__show_camera_position(camera_controller);
+    // this.__show_camera_position(camera_controller);
   }
 }
 

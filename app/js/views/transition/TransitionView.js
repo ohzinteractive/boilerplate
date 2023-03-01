@@ -1,10 +1,11 @@
-import { ApplicationView, OMath, ViewManager } from 'ohzi-core';
+import { OMath, ViewManager } from 'ohzi-core';
+import { CommonView } from '../common/CommonView';
 import { Sections, SectionsURLs } from '../Sections';
 
 import { TransitionSceneController } from './TransitionSceneController';
 import { TransitionTransitionController } from './TransitionTransitionController';
 
-class TransitionView extends ApplicationView
+class TransitionView extends CommonView
 {
   constructor()
   {
@@ -135,7 +136,8 @@ class TransitionView extends ApplicationView
 
   __update_progress()
   {
-    this.target_progress = this.__round(this.scene_controller.loading_progress, 2);
+    const next_progress = this.__round(this.scene_controller.loading_progress, 2);
+    this.target_progress = next_progress < this.target_progress ? this.target_progress : next_progress;
 
     this.current_progress += (this.target_progress - this.current_progress) * 0.05;
     this.current_progress = OMath.clamp(this.current_progress, 0, 1);
