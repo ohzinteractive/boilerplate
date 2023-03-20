@@ -143,8 +143,6 @@ class AbstractScene extends Scene
   on_high_quality_assets_ready()
   {
     this.is_high_loaded = true;
-    // If sounds are loaded, this line should be used
-    // AudioManager.init_sounds(AudioManager.get_sounds_names(sounds));
   }
 }
 
