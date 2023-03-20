@@ -1,3 +1,4 @@
+import { AudioManager } from 'ohzi-components';
 import { CommonView } from '../common/CommonView';
 import { Sections, SectionsURLs } from '../Sections';
 
@@ -76,6 +77,11 @@ class HomeView extends CommonView
   {
     this.scene_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
     this.transition_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
+  }
+
+  play_audio()
+  {
+    AudioManager.play([AudioManager.sounds_names.HOME_TEST]);
   }
 }
 

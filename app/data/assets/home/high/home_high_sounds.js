@@ -1,18 +1,18 @@
 const home_high_sounds = [
-  // {
-  //   name: 'background',
-  //   url: 'sounds/background.mp3',
-  //   loop: true,
-  //   volume: 0.05,
-  //   size: 1000000
-  // },
+  {
+    name: 'home_test',
+    url: 'sounds/test.mp3',
+    loop: false,
+    volume: 1,
+    size: process.env['test.mp3']
+  }
   // {
   //   name: 'pigeons_loop',
   //   url: 'sounds/mission/pigeons_loop.mp3',
   //   positional: true,
   //   loop: true,
   //   volume: 1,
-  //   size: 1000000
+  //   size: process.env['pideons_loop.mp3'],
   // }
 ];
 

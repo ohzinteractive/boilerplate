@@ -1,9 +1,11 @@
-import { BaseApplication, Input } from 'ohzi-core';
+import { BaseApplication, CameraManager, EasingFunctions, Input, OS, Time } from 'ohzi-core';
 import { NormalRender } from 'ohzi-core';
 import { Graphics } from 'ohzi-core';
 import { ResourceContainer } from 'ohzi-core';
 import { ViewManager } from 'ohzi-core';
 import { ViewContext } from 'ohzi-core';
+
+import { AudioManager } from 'ohzi-components';
 
 import { DatGUI } from './components/DatGUI';
 import { SceneController } from './components/SceneController';
@@ -11,10 +13,11 @@ import { HomeView } from './views/home/HomeView';
 import { TransitionView } from './views/transition/TransitionView';
 import { TestView } from './views/test/TestView';
 
-import { sRGBEncoding } from 'three';
+import { AudioContext, AudioListener, sRGBEncoding } from 'three';
 // import { ACESFilmicToneMapping } from 'three';
 
 import { Sections } from './views/Sections';
+import { OMath } from 'ohzi-core';
 // import { KeyboardInputController } from './components/KeyboardInputController';
 class MainApplication extends BaseApplication
 {
@@ -54,6 +57,10 @@ class MainApplication extends BaseApplication
 
     this.view_manager = ViewManager;
     this.view_manager.set_browser_title_suffix('OHZI Interactive');
+
+    this.audio_manager = AudioManager;
+    this.audio_manager.init(AudioListener, AudioContext, CameraManager,
+      ResourceContainer, Time, OMath, OS, EasingFunctions);
 
     this.scene_controller.start();
 
@@ -103,6 +110,7 @@ class MainApplication extends BaseApplication
   update()
   {
     this.scene_controller.update();
+    this.audio_manager.update();
   }
 }
 

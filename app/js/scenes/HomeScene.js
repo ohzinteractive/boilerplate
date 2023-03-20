@@ -11,6 +11,7 @@ import { home_high_textures } from '../../data/assets/home/high/home_high_textur
 import { home_high_sounds } from '../../data/assets/home/high/home_high_sounds';
 
 import { Debug, Grid } from 'ohzi-core';
+import { AudioManager } from 'ohzi-components';
 
 // import { AmbientLight, DirectionalLight } from 'three';
 class HomeScene extends AbstractScene
@@ -37,6 +38,8 @@ class HomeScene extends AbstractScene
       this.add(Debug.draw_axis());
       this.add(new Grid());
     }
+
+    AudioManager.setup_sounds_names([...home_sounds, ...home_high_sounds]);
   }
 
   // add_lights()
@@ -58,12 +61,15 @@ class HomeScene extends AbstractScene
   {
     super.on_assets_ready();
 
+    // AudioManager.init_sounds(home_sounds);
     // this.add_lights();
   }
 
   on_high_quality_assets_ready()
   {
     super.on_high_quality_assets_ready();
+
+    AudioManager.init_sounds(home_high_sounds);
   }
 }
 
