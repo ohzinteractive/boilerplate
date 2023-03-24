@@ -26,21 +26,21 @@ class ComponentCreator
     this.__copy_template_pug(pug_folder, pug_path, name);
     this.__copy_template_scss(scss_folder, scss_path, name);
 
-    this.__update_initial_data_file(name);
+    this.__update_default_data_file(name);
     this.__update_index_pug_file(name);
     this.__update_application_scss_file(name);
     this.__update_components_file(name);
     this.__update_mainapp_file(name);
   }
 
-  __update_initial_data_file(name)
+  __update_default_data_file(name)
   {
-    const new_data = `"loader_opacity": 0,\n    "${name}_opacity": 0,`;
+    const new_data = `loader_opacity: 0,\n  ${name}_opacity: 0,`;
     const file_path = path.join('app', 'data', 'default_state_data.js');
 
     const options = {
       files: file_path,
-      from: '"loader_opacity": 0,',
+      from: 'loader_opacity: 0,',
       to: new_data
     };
 
@@ -101,7 +101,7 @@ class ComponentCreator
 
   __update_mainapp_file(name)
   {
-    const new_import = `HomeView';\nimport ${this.capitalize(name)}Component from './view_components/${name}/${this.capitalize(name)}Component';`;
+    const new_import = `HomeView';\nimport { ${this.capitalize(name)}Component } from './view_components/${name}/${this.capitalize(name)}Component';`;
     const file_path = path.join('app', 'js', 'MainApplication.js');
 
     const options_1 = {

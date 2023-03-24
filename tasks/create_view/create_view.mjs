@@ -31,7 +31,7 @@ class ViewCreator
     this.__copy_template_pug(pug_folder, pug_path, name);
     this.__copy_template_scss(scss_folder, scss_path, name);
 
-    this.__update_initial_data_file(name);
+    this.__update_default_data_file(name);
     this.__update_index_pug_file(name);
     this.__update_application_scss_file(name);
     this.__update_general_loader_file(name);
@@ -39,7 +39,7 @@ class ViewCreator
     this.__update_mainapp_file(name);
   }
 
-  __update_initial_data_file(name)
+  __update_default_data_file(name)
   {
     const new_data = `loader_opacity: 0,\n  ${name}_opacity: 0,`;
     const file_path = path.join('app', 'data', 'default_state_data.js');
