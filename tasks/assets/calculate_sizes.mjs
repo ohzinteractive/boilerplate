@@ -27,7 +27,20 @@ class CalculateSizes
           // Save size in .env file
           if (!file.startsWith('_') && !file.startsWith('.'))
           {
-            this.logger.write(`${file}=${stat.size}\n`);
+            const split_path = file_path.split('/');
+            split_path.shift();
+
+            const file_name = split_path.pop();
+            const parent = split_path.pop();
+
+            const normalized_path = parent ? [parent, file_name].join('-') : file_name;
+
+            if (this.wrong_file_name(file_name))
+            {
+              console.log(`\x1b[33m Wrong name format found: ${file_name} \x1b[0m`);
+            }
+
+            this.logger.write(`${normalized_path}=${stat.size}\n`);
           }
         }
         else if (stat.isDirectory())
@@ -40,6 +53,18 @@ class CalculateSizes
     {
       console.error('We\'ve thrown! Whoops!', e);
     }
+  }
+
+  wrong_file_name(file_name)
+  {
+    return this.contains_uppercase(file_name) ||
+            file_name.includes('-') ||
+            file_name.includes(' ');
+  }
+
+  contains_uppercase(str)
+  {
+    return /[A-Z]/.test(str);
   }
 }
 

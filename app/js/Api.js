@@ -83,15 +83,15 @@ class Api
     this.render_loop.stop();
   }
 
-  // take_screenshot(callback)
-  // {
-  //   Graphics.take_screenshot(callback);
-  // }
+  take_screenshot(callback = (blob) => this.download_blob(blob))
+  {
+    Graphics.take_screenshot(callback);
+  }
 
-  // download_blob(blob)
-  // {
-  //   Graphics.download_screenshot(blob);
-  // }
+  download_blob(blob)
+  {
+    Graphics.download_screenshot(blob);
+  }
 }
 
 const api = new Api();

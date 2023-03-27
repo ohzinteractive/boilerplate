@@ -1,3 +1,4 @@
+import { CubemapLoader } from 'ohzi-core';
 import { AsyncTextureLoader, BasisLoader, ResourceContainer, RGBETextureLoader } from 'ohzi-core';
 
 import { AsyncAbstractLoader } from './AsyncAbstractLoader';
@@ -9,7 +10,7 @@ class AsyncTexturesLoader extends AsyncAbstractLoader
     super(scene_name, assets, worker);
   }
 
-  // Called } from parent
+  // Called from parent
   __setup_loaders()
   {
     const loaders = [];
@@ -39,6 +40,14 @@ class AsyncTexturesLoader extends AsyncAbstractLoader
         break;
       case 'hdr':
         loaders.push(new RGBETextureLoader(
+          asset_data.name,
+          asset_data.url,
+          asset_data.size
+        ));
+
+        break;
+      case 'cubemap':
+        loaders.push(new CubemapLoader(
           asset_data.name,
           asset_data.url,
           asset_data.size
