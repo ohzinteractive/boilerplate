@@ -1,28 +1,33 @@
 .loader {
+    place-items: center;
+
     top: 0;
     z-index: 999;
+
     background-color: $background-color;
-    place-items: center;
     opacity: 1;
 }
 
     .loader__background {
         position: absolute;
         top: 0;
+        z-index: -1;
+
         width: 100%;
         height: 100%;
-        pointer-events: none;
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
         min-height: 700 * $ptr;
 
-        z-index: -1;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        pointer-events: none;
     }
 
     .loader__group {
         display: flex;
+
         flex-direction: column;
+
         align-items: center;
         opacity: 1;
         transition: opacity 1s;
@@ -36,29 +41,36 @@
 
         .loader__animation {
             display: flex;
+
             width: 300 * $ptr;
 
             * path {
-                stroke: #ffffff;
+                stroke: #fff;
             }
         }
 
         .loader__progress-bar, .transition__progress-bar {
+            position: relative;
+
             width: 60%;
             max-width: 300 * $ptr;
+
             background: #909090;
+
             border-radius: 6 * $ptr;
             overflow: hidden;
-            position: relative;
             will-change: transform;
         }
 
             .loader__progress-bar-fill, .transition__progress-bar-fill {
                 position: relative;
                 left: -100%;
+
                 width: 100%;
                 height: 8 * $ptr;
+
                 background-color: $primary-color;
+
                 border-radius: 20 * $ptr;
                 transform-origin: left;
                 will-change: transform;
