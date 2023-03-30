@@ -4,14 +4,23 @@ $small-breakpoint:      370px;
 $small-wide-breakpoint: 568px;
 // Big Devices Portrait
 $medium-breakpoint:     820px;
+$medium-wide-breakpoint: 880px;
 // Big Devices Landscape
 $wide-breakpoint:       960px;
 // Desktop Devices
-$ultra-wide-breakpoint: 1366px;
-// Desktop Devices wide screens
-$super-ultra-wide-breakpoint: 1920px;
-// Desktop Devices ultra wide screens
-$mega-ultra-wide-breakpoint: 2560px;
+$wide-1300-breakpoint: 1366px;
+$wide-1600-breakpoint: 1600px;
+$wide-1700-breakpoint: 1700px;
+$wide-1800-breakpoint: 1800px;
+$wide-1900-breakpoint: 1920px;
+$wide-2000-breakpoint: 2000px;
+$wide-2500-breakpoint: 2560px;
+$wide-3500-breakpoint: 3500px;
+$ultra-small-height-breakpoint: 200px;
+$small-height-breakpoint: 450px;
+$medium-height-breakpoint: 530px;
+$high-height-breakpoint: 600px;
+$ultra-high-height-breakpoint: 660px;
 
 // Pixel to rem
 $ptr: 0.0625rem;
@@ -27,12 +36,48 @@ html {
 
     font-size: 16px;
 
-    @include respond-to($super-ultra-wide-breakpoint) {
-        font-size: 20px;
+    @include respond-to($wide-1300-breakpoint) {
+        font-size: 15px;
     }
 
-    @include respond-to($mega-ultra-wide-breakpoint) {
-        font-size: 30px;
+    @include respond-to($wide-1600-breakpoint) {
+        font-size: 17px;
+    }
+
+    @include respond-to($wide-1800-breakpoint) {
+        font-size: 19px;
+    }
+
+    @include respond-to($wide-2000-breakpoint) {
+        font-size:22px;
+    }
+
+    @include respond-to($wide-2500-breakpoint) {
+        font-size: 28px;
+    }
+
+    @include respond-to($wide-3500-breakpoint) {
+        font-size: 40px;
+    }
+
+    @include respond-to-vertical($ultra-small-height-breakpoint) {
+        font-size: 9px;
+    }
+
+    @include respond-to-vertical($small-height-breakpoint) {
+        font-size: 11px;
+    }
+
+    @include respond-to-vertical($medium-height-breakpoint) {
+        font-size: 13px;
+    }
+
+    @include respond-to-vertical($high-height-breakpoint) {
+        font-size: 14px;
+    }
+
+    @include respond-to-vertical($ultra-high-height-breakpoint) {
+        font-size: 16px;
     }
 }
 
