@@ -43,6 +43,7 @@ class TemplateSceneController
   // This method is called in every frame when the site is transitioning to this section.
   update_enter_transition(global_view_data, transition_progress, action_sequencer)
   {
+    this.scene.update();
   }
 
   // This method is called in every frame when the site is transitioning from this section.
