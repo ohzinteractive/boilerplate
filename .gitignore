@@ -29,7 +29,8 @@ tmp/
 # Parcel output folder.
 build/
 dist/
-builds/
+builds/*
+!builds/.keep
 
 # Bower stuff.
 bower_components/
