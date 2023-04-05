@@ -1,4 +1,4 @@
-import { BaseApplication, Input } from 'ohzi-core';
+import { BaseApplication, Configuration, Input, OMath, OScreen, Time } from 'ohzi-core';
 import { NormalRender } from 'ohzi-core';
 import { Graphics } from 'ohzi-core';
 import { ResourceContainer } from 'ohzi-core';
@@ -15,6 +15,7 @@ import { sRGBEncoding } from 'three';
 // import { ACESFilmicToneMapping } from 'three';
 
 import { Sections } from './views/Sections';
+import { FPSCounter, PerformanceController } from 'ohzi-components';
 // import { KeyboardInputController } from './components/KeyboardInputController';
 class MainApplication extends BaseApplication
 {
@@ -29,6 +30,12 @@ class MainApplication extends BaseApplication
     Graphics.set_state(this.normal_render_mode);
     Graphics._renderer.outputEncoding = sRGBEncoding;
     Graphics._renderer.debug.checkShaderErrors = process.env.NODE_ENV === 'development';
+
+    this.fps_counter = FPSCounter;
+    this.fps_counter.init(Time);
+
+    this.performance_contoller = new PerformanceController();
+    this.performance_contoller.init(OMath, Configuration, Graphics, Time, OScreen, this.fps_counter);
 
     // Graphics._renderer.physicallyCorrectLights = true;
     // Graphics._renderer.toneMapping = ACESFilmicToneMapping;
@@ -103,6 +110,9 @@ class MainApplication extends BaseApplication
   update()
   {
     this.scene_controller.update();
+
+    this.fps_counter.update();
+    this.performance_contoller.update();
   }
 }
 
