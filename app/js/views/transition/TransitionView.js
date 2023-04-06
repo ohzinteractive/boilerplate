@@ -140,7 +140,7 @@ class TransitionView extends CommonView
     this.target_progress = next_progress < this.target_progress ? this.target_progress : next_progress;
 
     this.current_progress += (this.target_progress - this.current_progress) * 0.05;
-    this.current_progress = OMath.clamp(this.current_progress, 0, 1);
+    this.current_progress = OMath.clamp(this.current_progress, 0.2, 1);
 
     this.progress_bar.style.transform = `translate3d(${this.current_progress * 100}%,0,0)`;
   }

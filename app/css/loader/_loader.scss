@@ -1,4 +1,4 @@
-.loader {
+.loader, .transition {
     place-items: center;
 
     top: 0;
@@ -23,7 +23,7 @@
         pointer-events: none;
     }
 
-    .loader__group {
+    .loader__group, .transition__group {
         display: flex;
 
         flex-direction: column;
@@ -39,7 +39,7 @@
         }
     }
 
-        .loader__animation {
+        .loader__animation, .transition__animation {
             display: flex;
 
             width: 300 * $ptr;

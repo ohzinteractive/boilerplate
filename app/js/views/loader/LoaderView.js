@@ -36,6 +36,7 @@ class LoaderView extends CommonView
     this.transition_controller.start();
 
     this.progress_bar = document.querySelector('.loader__progress-bar-fill');
+    this.transition_progress_bar = document.querySelector('.transition__progress-bar-fill');
 
     this.set_progress(0);
   }
@@ -119,19 +120,19 @@ class LoaderView extends CommonView
 
   set_progress(progress)
   {
-    // this.target_progress = this.__round(progress / 3, 1);
-    this.target_progress = this.__round(progress, 2);
+    // this.target_progress = this.__round(progress, 2);
+
+    // Hardcoded % because the real loader bar is in TransitionView
+    this.target_progress = 0.2;
   }
 
   __update_progress()
   {
-    const next_progress = this.__round(this.scene_controller.loading_progress, 2);
-    this.target_progress = next_progress < this.target_progress ? this.target_progress : next_progress;
-
     this.current_progress += (this.target_progress - this.current_progress) * 0.05;
     this.current_progress = OMath.clamp(this.current_progress, 0, 1);
 
     this.progress_bar.style.transform = `translate3d(${this.current_progress * 100}%,0,0)`;
+    this.transition_progress_bar.style.transform = `translate3d(${this.current_progress * 100}%,0,0)`;
   }
 
   __set_api_ready(is_api_ready)
