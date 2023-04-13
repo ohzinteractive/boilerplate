@@ -4085,10 +4085,10 @@ pify@^4.0.1:
   resolved "https://registry.yarnpkg.com/pify/-/pify-4.0.1.tgz#4b2cd25c50d598735c50292224fd8c6df41e3231"
   integrity sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==
 
-pit-js@1.9.1:
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/pit-js/-/pit-js-1.9.1.tgz#1f094c0cadd9b0e6cb03777274e86a04456fe622"
-  integrity sha512-3jwUnEpJXoZy01H8ScsWl2UeLXDXyaxNa7YgNamHDLz69T/2QKAHH4rI4LnelFsDfZmrLpGcVD5U7UlNMcmIXA==
+pit-js@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/pit-js/-/pit-js-2.0.1.tgz#486e9c9a218ff8e0770b139add64356a9a151de8"
+  integrity sha512-n7Hza3NExmw55L7EiBEuQG82QunNBsxLbokJWE0JB65LMIYnB3tjD3awyKN/6pekXrQrNjumWqvrJxHI+hU+LQ==
 
 pkg-conf@^3.1.0:
   version "3.1.0"

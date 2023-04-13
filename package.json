@@ -10,9 +10,11 @@
     "setup-submodules": "yarn setup-core-submodule && yarn setup-components-submodule",
     "setup-core-submodule": "git submodule update --init core",
     "setup-components-submodule": "git submodule update --init components",
+
     "update-submodules": "yarn update-core && yarn update-components",
     "update-core": "node update_submodule.mjs ohzi-core core",
     "update-components": "node update_submodule.mjs ohzi-components components",
+
     "config-hooks": "yarn config-boilerplate-hooks && yarn config-submodule-hooks",
     "config-boilerplate-hooks": "git config core.hooksPath git_hooks",
     "config-submodule-hooks": "yarn config-core-hooks && yarn config-components-hooks",
@@ -45,7 +47,7 @@
   "dependencies": {
     "lil-gui": "0.17.0",
     "ohzi-components": "2.3.1",
-    "ohzi-core": "9.5.0"
+    "ohzi-core": "9.5.2"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "2.4.1",
