@@ -18,28 +18,34 @@
     "config-submodule-hooks": "yarn config-core-hooks && yarn config-components-hooks",
     "config-core-hooks": "cd core && git config core.hooksPath git_hooks && cd ..",
     "config-components-hooks": "cd components && git config core.hooksPath git_hooks && cd ..",
-    "prestart": "yarn calculate_assets_sizes",
-    "start": "yarn remove_cache && yarn remove_dist && parcel app/index.pug",
-    "start_ssl": "yarn remove_cache && yarn remove_dist && parcel app/index.pug --https --port 443",
+
+    "prestart": "yarn calculate-assets-sizes",
+    "start": "yarn remove-cache && yarn remove-dist && parcel app/index.pug",
+    "start_ssl": "yarn remove-cache && yarn remove-dist && parcel app/index.pug --https --port 443",
+
     "build_api": "parcel build ./app/js/Api.js --no-cache",
-    "build": "yarn remove_cache && yarn remove_dist && yarn build_parcel && yarn copy_public",
+    "build": "yarn remove-cache && yarn remove-dist && yarn build_parcel && yarn copy-public",
     "build_parcel": "parcel build ./app/index.pug --no-source-maps --no-cache",
     "dist": "yarn build && yarn zip",
     "zip": "cross-var zip -r \"builds/$npm_package_name\"\"_v$npm_package_version\"\".zip\" dist/.",
-    "calculate_assets_sizes": "node ./tasks/assets/calculate_sizes.mjs",
-    "remove_cache": "rm -f -R .parcel-cache",
-    "remove_dist": "rm -f -R dist",
-    "copy_public": "cp -R public/* dist",
+
+    "remove-cache": "rm -f -R .parcel-cache",
+    "remove-dist": "rm -f -R dist",
+    "copy-public": "cp -R public/* dist",
+
     "basisu": "basisu",
     "build_textures": "yarn basisu ./original_assets/textures/* -individual -mipmap -max_endpoints 16128 -max_selectors 16128 -comp_level 4 -y_flip -output_path ./public/textures/",
-    "create-view": "node ./tasks/create_view/create_view.mjs",
-    "create-component": "node ./tasks/create_component/create_component.mjs",
+
+    "create-view": "cd core && yarn create-view",
+    "create-component": "cd core && yarn create-component",
+    "calculate-assets-sizes": "cd core && yarn calculate-assets-sizes",
+
     "fix-syntax": "standardx --fix || echo 'Done'"
   },
   "dependencies": {
     "lil-gui": "0.17.0",
-    "ohzi-components": "2.3.0",
-    "ohzi-core": "9.4.1"
+    "ohzi-components": "2.3.1",
+    "ohzi-core": "9.5.0"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "2.4.1",
