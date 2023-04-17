@@ -12,6 +12,7 @@ import { LoaderState } from './LoaderState';
 
 // APP
 import { MainApplication } from './MainApplication';
+import { Input } from './components/Input';
 
 class Api
 {
@@ -21,13 +22,20 @@ class Api
 
     this.loader = new LoaderState(this);
 
-    this.render_loop = new RenderLoop(this.loader, Graphics);
+    this.render_loop = new RenderLoop(this.loader, Graphics, Input);
     this.config = Configuration;
 
     const app_container = document.querySelector('.container');
     const canvas = document.querySelector('.main-canvas');
 
-    Initializer.init(canvas, app_container, { antialias: true, force_webgl2: true, xr_enabled: false });
+    const graphics_attributes = {
+      antialias: true,
+      force_webgl2: true,
+      xr_enabled: false
+    };
+
+    Input.init(app_container, document);
+    Initializer.init(canvas, graphics_attributes, Input);
     // Configuration.dpr = 1;
     Configuration.dpr = window.devicePixelRatio;
 
@@ -46,6 +54,7 @@ class Api
   {
     this.application.dispose();
     Initializer.dispose(this.render_loop);
+    Input.dispose();
   }
 
   // draw_debug_axis()

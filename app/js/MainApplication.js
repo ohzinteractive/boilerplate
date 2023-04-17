@@ -1,4 +1,4 @@
-import { BaseApplication, Input } from 'ohzi-core';
+import { BaseApplication } from 'ohzi-core';
 // import { HTMLUtilities, Time } from 'ohzi-core';
 import { NormalRender } from 'ohzi-core';
 import { Graphics } from 'ohzi-core';
@@ -18,6 +18,7 @@ import { sRGBEncoding } from 'three';
 import { Sections } from './views/Sections';
 // import { ModalComponent } from './view_components/modal/ModalComponent';
 // import { UICollisionLayer } from 'ohzi-components';
+import { Input } from './components/Input';
 // import { KeyboardInputController } from './components/KeyboardInputController';
 class MainApplication extends BaseApplication
 {

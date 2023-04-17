@@ -1,4 +1,4 @@
-import { Input } from 'ohzi-core';
+import { Input } from './Input';
 
 class KeyboardInputController
 {

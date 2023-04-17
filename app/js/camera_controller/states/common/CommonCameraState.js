@@ -1,10 +1,10 @@
 
-import { Input } from 'ohzi-core';
 import { CameraUtilities } from 'ohzi-core';
 
 import { Vector2 } from 'three';
 
 import { AbstractCameraState } from './AbstractCameraState';
+import { Input } from '../../../components/Input';
 
 class CommonCameraState extends AbstractCameraState
 {
