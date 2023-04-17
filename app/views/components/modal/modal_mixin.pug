@@ -1,0 +1,31 @@
+mixin modal({ classes, title, logo_url = "images/common/logo.svg", show_logo = false, upper_title = '', show_close_icon = false, close_action = "app.modal_component.hide()" })
+  - const slots = {}
+
+  mixin modal_header()
+    - slots.header = block
+
+  mixin modal_body()
+    - slots.body = block
+
+  mixin modal_footer()
+    - slots.footer = block
+
+  //- not used
+  block
+
+  .modal__container.hidden(class= classes)
+    .modal__header
+      - if (show_logo)
+        .modal__logo
+          img(data-src= logo_url)
+      - if(slots.header)
+          - slots.header()
+    .modal__body
+      - if(slots.body)
+        - slots.body()
+    .modal__footer
+      - if(slots.footer)
+        - slots.footer()
+      - if (show_close_icon)
+        .button.modal__close(onclick= close_action)
+          img(data-src="images/common/close.svg", alt="Close Icon")

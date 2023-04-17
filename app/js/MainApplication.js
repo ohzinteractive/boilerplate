@@ -1,4 +1,5 @@
 import { BaseApplication, Input } from 'ohzi-core';
+// import { HTMLUtilities, Time } from 'ohzi-core';
 import { NormalRender } from 'ohzi-core';
 import { Graphics } from 'ohzi-core';
 import { ResourceContainer } from 'ohzi-core';
@@ -15,6 +16,8 @@ import { sRGBEncoding } from 'three';
 // import { ACESFilmicToneMapping } from 'three';
 
 import { Sections } from './views/Sections';
+// import { ModalComponent } from './view_components/modal/ModalComponent';
+// import { UICollisionLayer } from 'ohzi-components';
 // import { KeyboardInputController } from './components/KeyboardInputController';
 class MainApplication extends BaseApplication
 {
@@ -33,6 +36,12 @@ class MainApplication extends BaseApplication
     // Graphics._renderer.physicallyCorrectLights = true;
     // Graphics._renderer.toneMapping = ACESFilmicToneMapping;
     // Graphics._renderer.toneMappingExposure = 0.7;
+
+    // this.ui_collision_layer = UICollisionLayer;
+    // this.ui_collision_layer.init(Input, Time);
+
+    // this.modal_component = ModalComponent;
+    // this.modal_component.init(UICollisionLayer, HTMLUtilities, Time);
 
     // addEventListener('contextmenu', (event) =>
     // {
@@ -60,9 +69,13 @@ class MainApplication extends BaseApplication
     // __COMPONENTS__
 
     // __SECTIONS__
+
     this.home_view = new HomeView();
     this.transition_view = new TransitionView();
     this.test_view = new TestView();
+
+    // this.modal_component.start();
+
     this.home_view.start();
     this.transition_view.start();
     this.test_view.start();
@@ -103,6 +116,8 @@ class MainApplication extends BaseApplication
   update()
   {
     this.scene_controller.update();
+    // this.ui_collision_layer.update();
+    // this.modal_component.update();
   }
 }
 

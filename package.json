@@ -40,13 +40,14 @@
 
     "create-view": "cd core && yarn create-view",
     "create-component": "cd core && yarn create-component",
+    "create-modal": "cd components && yarn create-modal",
     "calculate-assets-sizes": "cd core && yarn calculate-assets-sizes",
 
     "fix-syntax": "standardx --fix || echo 'Done'"
   },
   "dependencies": {
     "lil-gui": "0.17.0",
-    "ohzi-components": "2.3.1",
+    "ohzi-components": "2.4.0",
     "ohzi-core": "9.5.2"
   },
   "devDependencies": {
