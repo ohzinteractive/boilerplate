@@ -7,19 +7,22 @@
   "module_example": "dist/index.module.js",
   "scripts": {
     "preinstall": "yarn setup-submodules && yarn update-submodules && yarn config-hooks",
-    "setup-submodules": "yarn setup-core-submodule && yarn setup-components-submodule",
+    "setup-submodules": "yarn setup-core-submodule && yarn setup-components-submodule && yarn setup-pit-submodule",
     "setup-core-submodule": "git submodule update --init core",
     "setup-components-submodule": "git submodule update --init components",
+    "setup-pit-submodule": "git submodule update --init pit",
 
-    "update-submodules": "yarn update-core && yarn update-components",
+    "update-submodules": "yarn update-core && yarn update-components && yarn update-pit",
     "update-core": "node update_submodule.mjs ohzi-core core",
     "update-components": "node update_submodule.mjs ohzi-components components",
+    "update-pit": "node update_submodule.mjs pit-js pit",
 
     "config-hooks": "yarn config-boilerplate-hooks && yarn config-submodule-hooks",
     "config-boilerplate-hooks": "git config core.hooksPath git_hooks",
-    "config-submodule-hooks": "yarn config-core-hooks && yarn config-components-hooks",
+    "config-submodule-hooks": "yarn config-core-hooks && yarn config-components-hooks && yarn config-pit-hooks",
     "config-core-hooks": "cd core && git config core.hooksPath git_hooks && cd ..",
     "config-components-hooks": "cd components && git config core.hooksPath git_hooks && cd ..",
+    "config-pit-hooks": "cd pit && git config core.hooksPath git_hooks && cd ..",
 
     "prestart": "yarn calculate-assets-sizes",
     "start": "yarn remove-cache && yarn remove-dist && parcel app/index.pug",
