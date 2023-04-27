@@ -103,17 +103,17 @@ body {
     // position: fixed;
     margin: 0;
 
-    color: $primary-color;
+    color: $white;
 
     // font-family: $montserrat-font;
     font-family: Arial;
 
-    background-color: $background-color;
+    background-color: $black;
     overflow: hidden;
 }
 
 a {
-    color: $primary-color;
+    color: $white;
 
     text-decoration: none;
 }
@@ -166,5 +166,5 @@ input:focus, textarea:focus, select:focus {
 }
 
 ::placeholder { /* Firefox, Chrome, Opera */
-    color: $placeholder-color;
+    color: $dark-gray;
 }
