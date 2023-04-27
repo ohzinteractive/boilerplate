@@ -14,15 +14,16 @@ mixin modal({ classes, show_close_icon = false, close_action = "app.modal_compon
   block
 
   .modal__container.hidden(class= classes)
-    .modal__header
-      - if(slots.header)
-          - slots.header()
-    .modal__body
-      - if(slots.body)
-        - slots.body()
-    .modal__footer
-      - if(slots.footer)
-        - slots.footer()
-      - if (show_close_icon)
-        .button.modal__close(onclick= close_action)
-          img(data-src="images/common/close.svg", alt="Close Icon")
+    .modal__content
+      .modal__header
+        - if(slots.header)
+            - slots.header()
+      .modal__body
+        - if(slots.body)
+          - slots.body()
+      .modal__footer
+        - if(slots.footer)
+          - slots.footer()
+        - if (show_close_icon)
+          .button.modal__close(onclick= close_action)
+            img(data-src="images/common/close.svg", alt="Close Icon")
