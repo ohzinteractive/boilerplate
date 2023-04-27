@@ -2,7 +2,7 @@ const home_high_objects = [
   // {
   //   name: 'scene',
   //   url: 'models/high/scene.glb',
-  //   size: 2132800,
+  //   size: process.env['models-scene.glb'],
   //   draco: false
   // }
 ];
