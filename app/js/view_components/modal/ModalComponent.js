@@ -28,9 +28,9 @@ class ModalComponent extends AbstractModalComponent
     super.update(current_state_data);
   }
 
-  show_state(state_name)
+  show_state(state_name, collision)
   {
-    super.show_state(state_name);
+    super.show_state(state_name, collision);
   }
 
   hide(next_state_name)
