@@ -1,4 +1,4 @@
-import { BaseApplication } from 'ohzi-core';
+import { BaseApplication, EasingFunctions, OMath, OS, Time } from 'ohzi-core';
 // import { HTMLUtilities, Time } from 'ohzi-core';
 import { NormalRender } from 'ohzi-core';
 import { Graphics } from 'ohzi-core';
@@ -19,6 +19,7 @@ import { Sections } from './views/Sections';
 // import { ModalComponent } from './view_components/modal/ModalComponent';
 // import { UICollisionLayer } from 'ohzi-components';
 import { Input } from './components/Input';
+import { Scroll } from 'ohzi-components';
 // import { KeyboardInputController } from './components/KeyboardInputController';
 class MainApplication extends BaseApplication
 {
@@ -66,6 +67,9 @@ class MainApplication extends BaseApplication
     this.view_manager.set_browser_title_suffix('OHZI Interactive');
 
     this.scene_controller.start();
+
+    this.scroll = Scroll;
+    this.scroll.init(Input, OS, OMath, Time, EasingFunctions);
 
     // __COMPONENTS__
 
@@ -119,6 +123,8 @@ class MainApplication extends BaseApplication
     this.scene_controller.update();
     // this.ui_collision_layer.update();
     // this.modal_component.update();
+
+    this.scroll.update();
   }
 }
 

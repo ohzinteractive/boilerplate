@@ -1,8 +1,10 @@
+import { Scroll } from 'ohzi-components';
 import { CommonView } from '../common/CommonView';
 import { Sections, SectionsURLs } from '../Sections';
 
 import { HomeSceneController } from './HomeSceneController';
 import { HomeTransitionController } from './HomeTransitionController';
+import { OScreen } from 'ohzi-core';
 
 class HomeView extends CommonView
 {
@@ -39,6 +41,15 @@ class HomeView extends CommonView
 
     this.scene_controller.on_enter();
     this.transition_controller.on_enter();
+
+    // Scroll by steps
+    Scroll.set_step_scrolling([0, 1, 2, 3], true);
+
+    // Scroll free by steps
+    // Scroll.set_free_scrolling_by_steps([0, 1, 2, 3], true);
+
+    // Scroll free
+    // Scroll.set_free_scrolling(0, 3, true);
   }
 
   // This method is called one time before the transition to the next section is started.
@@ -62,6 +73,10 @@ class HomeView extends CommonView
   {
     this.scene_controller.update();
     this.transition_controller.update();
+
+    const y = Scroll.current * OScreen.height;
+
+    this.container.style.transform = `translate3d(0,${-y}px,0)`;
   }
 
   // This method is called in every frame when the site is transitioning to this section.

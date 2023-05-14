@@ -1,1 +1,30 @@
 .home {}
+
+    .home__box {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        width: 100%;
+        height: 100vh;
+
+        font-size: 40 * $ptr;
+
+        &--1 {
+            background-color: cadetblue;
+        }
+
+        &--2 {
+            background-color: coral;
+        }
+
+        &--3 {
+            background-color: tomato;
+        }
+
+        &--4 {
+            background-color: teal;
+        }
+    }
