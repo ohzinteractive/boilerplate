@@ -9,20 +9,43 @@
   color: $white;
 
   // background-color: #244F6880;
-  transform: scale(1);
   opacity: 1;
-  transition: transform 0.3s, opacity 0.3s, background-color 0.7s;
-  transition-timing-function: cubic-bezier(0.33, -1.37, 0.58, 0.99);
+
+  transition: opacity 0.3s, background-color 0.7s;
 
   &.hidden {
     display: grid;
-    transform: scale(0.5);
+
     opacity: 0;
 
     background-color: #fff0;
     pointer-events: none;
   }
+
+  // APP specific
+
 }
+
+  .modal__animation {
+    display: flex;
+
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    transform: scale(1);
+
+    transition: transform 0.3s;
+    transition-timing-function: cubic-bezier(0.33, -1.37, 0.58, 0.99);
+
+    &.hidden {
+      display: grid;
+      transform: scale(0.5);
+
+      pointer-events: none;
+    }
+  }
 
   .modal__container {
     display: flex;
@@ -31,8 +54,21 @@
 
     justify-content: center;
 
+    // position: absolute;
+
     width: 100%;
     height: 100%;
+
+    // opacity: 1;
+
+    // transition: opacity 0.1s;
+
+    // &.hidden {
+      // display: flex;
+      // pointer-events: none;
+
+      // opacity: 0;
+    // }
   }
 
     .modal__content {
@@ -79,12 +115,20 @@
         }
 
       .modal__body {
-        display: grid;
+        // display: grid;
 
         // justify-self: center;
 
         // row-gap: 10 * $ptr;
-        place-items: center;
+        // place-items: center;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
 
         width: 100%;
         height: 100%;
@@ -140,6 +184,14 @@
           &--3-columns {
             grid-template-columns: auto auto auto;
           }
+
+          &--space-between {
+            justify-content: space-between;
+          }
+        }
+
+        .modal__flex {
+          display: flex;
 
           &--space-between {
             justify-content: space-between;
@@ -206,7 +258,7 @@
           }
         }
 
-        .modal__button {
+        // .modal__button {
           // display: flex;
 
           // justify-content: center;
@@ -218,7 +270,7 @@
           // background-color: gray;
 
           // color: $off-black;
-        }
+        // }
 
         .modal__separator {
           margin: 20 * $ptr auto;
@@ -233,6 +285,8 @@
         display: grid;
 
         place-items: center;
+
+        width: 100%;
       }
 
         .modal__close {

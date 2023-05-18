@@ -16,6 +16,8 @@ class ModalComponent extends AbstractModalComponent
   on_enter()
   {
     super.on_enter();
+
+    this.load_html_videos();
   }
 
   on_exit()
@@ -33,9 +35,9 @@ class ModalComponent extends AbstractModalComponent
     super.show_state(state_name, collision);
   }
 
-  hide(next_state_name)
+  hide(next_state_name, next_state_collision)
   {
-    super.hide(next_state_name);
+    super.hide(next_state_name, next_state_collision);
   }
 }
 
