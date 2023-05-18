@@ -111,39 +111,39 @@ class CommonCameraState extends AbstractCameraState
   {
     const speed = 0.06;
 
-    if (Input.keyboard.is_key_down('w'))
+    if (Input.keyboard.is_key_down('KeyW'))
     {
       this.forward_dir = -speed;
     }
-    if (Input.keyboard.is_key_down('s'))
+    if (Input.keyboard.is_key_down('KeyS'))
     {
       this.forward_dir = speed;
     }
-    if (Input.keyboard.is_key_down('a'))
+    if (Input.keyboard.is_key_down('KeyA'))
     {
       this.right_dir = -speed;
     }
-    if (Input.keyboard.is_key_down('d'))
+    if (Input.keyboard.is_key_down('KeyD'))
     {
       this.right_dir = speed;
     }
-    if (Input.keyboard.is_key_down('q'))
+    if (Input.keyboard.is_key_down('KeyQ'))
     {
       this.azimuth_dir = speed * 4;
     }
-    if (Input.keyboard.is_key_down('e'))
+    if (Input.keyboard.is_key_down('KeyE'))
     {
       this.azimuth_dir = -speed * 4;
     }
-    if (Input.keyboard.is_key_down('z'))
+    if (Input.keyboard.is_key_down('KeyZ'))
     {
       this.y_dir = speed;
     }
-    if (Input.keyboard.is_key_down('c'))
+    if (Input.keyboard.is_key_down('KeyC'))
     {
       this.y_dir = -speed;
     }
-    if (Input.keyboard.is_key_down('Shift'))
+    if (Input.keyboard.is_key_down('ShiftLeft'))
     {
       this.shift_key = true;
     }
@@ -151,39 +151,39 @@ class CommonCameraState extends AbstractCameraState
 
   __check_key_up()
   {
-    if (Input.keyboard.is_key_released('w'))
+    if (Input.keyboard.is_key_released('KeyW'))
     {
       this.forward_dir = 0;
     }
-    if (Input.keyboard.is_key_released('s'))
+    if (Input.keyboard.is_key_released('KeyS'))
     {
       this.forward_dir = 0;
     }
-    if (Input.keyboard.is_key_released('a'))
+    if (Input.keyboard.is_key_released('KeyA'))
     {
       this.right_dir = 0;
     }
-    if (Input.keyboard.is_key_released('d'))
+    if (Input.keyboard.is_key_released('KeyD'))
     {
       this.right_dir = 0;
     }
-    if (Input.keyboard.is_key_released('q'))
+    if (Input.keyboard.is_key_released('KeyQ'))
     {
       this.azimuth_dir = 0;
     }
-    if (Input.keyboard.is_key_released('e'))
+    if (Input.keyboard.is_key_released('KeyE'))
     {
       this.azimuth_dir = 0;
     }
-    if (Input.keyboard.is_key_released('z'))
+    if (Input.keyboard.is_key_released('KeyZ'))
     {
       this.y_dir = 0;
     }
-    if (Input.keyboard.is_key_released('c'))
+    if (Input.keyboard.is_key_released('KeyC'))
     {
       this.y_dir = 0;
     }
-    if (Input.keyboard.is_key_released('Shift'))
+    if (Input.keyboard.is_key_released('ShiftLeft'))
     {
       this.shift_key = false;
     }
