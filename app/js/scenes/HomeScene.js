@@ -41,10 +41,10 @@ class HomeScene extends AbstractScene
 
   // add_lights()
   // {
-  //   const light = new AmbientLight('#FFFFFF', 1);
+  //   const light = new AmbientLight('#FFFFFF', 0.9);
   //   this.add(light);
 
-  //   const directional_light = new DirectionalLight('#FFFFFF', 1);
+  //   const directional_light = new DirectionalLight('#FFFFFF', 0.5);
   //   directional_light.position.set(0, 10, 20);
   //   this.add(directional_light);
   // }
