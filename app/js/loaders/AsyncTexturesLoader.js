@@ -50,6 +50,7 @@ class AsyncTexturesLoader extends AsyncAbstractLoader
         loaders.push(new CubemapLoader(
           asset_data.name,
           asset_data.url,
+          asset_data.extension,
           asset_data.size
         ));
 
