@@ -28,16 +28,26 @@ class Api
     const app_container = document.querySelector('.container');
     const canvas = document.querySelector('.main-canvas');
 
-    const graphics_attributes = {
-      antialias: true,
+    const core_attributes = {
       force_webgl2: true,
       xr_enabled: false
     };
 
+    const context_attributes = {
+      antialias: true,
+      preserveDrawingBuffer: true
+    };
+
+    const threejs_attributes = {
+      logarithmicDepthBuffer: true
+    };
+
     Input.init(app_container, document);
-    Initializer.init(canvas, graphics_attributes, Input);
-    // Configuration.dpr = 1;
-    Configuration.dpr = window.devicePixelRatio;
+    Initializer.init(Input);
+    Graphics.init(canvas, core_attributes, context_attributes, threejs_attributes);
+
+    Configuration.dpr = 1;
+    // Configuration.dpr = window.devicePixelRatio;
 
     this.application.init(Graphics);
 
