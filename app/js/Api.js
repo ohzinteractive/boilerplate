@@ -39,7 +39,7 @@ class Api
     };
 
     const threejs_attributes = {
-      logarithmicDepthBuffer: true
+      logarithmicDepthBuffer: false
     };
 
     Input.init(app_container, document);
