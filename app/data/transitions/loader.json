@@ -1,1 +1,13 @@
-{"animation_tracks":[{"type":"segment","from_time":0,"to_time":0.1,"to_value":1,"easing_function":"ease_in_out_cubic","attribute_name":"loader_opacity"}],"triggers":[]}
+{
+  "animation_tracks": [
+    {
+      "type": "segment",
+      "from_time": 0,
+      "to_time": 0.1,
+      "to_value": 1,
+      "easing_function": "ease_in_out_cubic",
+      "attribute_name": "loader_opacity"
+    }
+  ],
+  "triggers": []
+}
