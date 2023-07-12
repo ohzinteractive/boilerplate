@@ -7,11 +7,7 @@ import { SceneLoadingState } from './loading_states/SceneLoadingState';
 
 class AbstractScene extends Scene
 {
-  constructor({
-    name,
-    scene_objects, scene_textures, scene_sounds,
-    scene_high_objects, scene_high_textures, scene_high_sounds
-  })
+  constructor({ name })
   {
     super();
 
@@ -21,8 +17,8 @@ class AbstractScene extends Scene
     this.is_high_loaded = false;
 
     this.loading_states = {
-      regular: new RegularAssetsState(this, scene_objects, scene_textures, scene_sounds),
-      high: new HighQualityAssetsState(this, scene_high_objects, scene_high_textures, scene_high_sounds)
+      regular: new RegularAssetsState(this),
+      high: new HighQualityAssetsState(this)
     };
 
     this.current_loading_state = new SceneLoadingState();
@@ -54,10 +50,16 @@ class AbstractScene extends Scene
     {
       if (child.geometry)
       {
-        if (child.type === 'Mesh')
-        {
-          objects.push(child);
-        }
+        objects.push(child);
+
+        // if (child.name === 'pitch_floor')
+        // {
+        //   objects.push(child);
+        // }
+        // else
+        // {
+        //   child.visible = false;
+        // }
       }
     });
 
@@ -110,6 +112,16 @@ class AbstractScene extends Scene
     // AvatarSystem.component_container.component_instancer.data_texture.data = new Float32Array(4);
   }
 
+  set_assets(scene_objects, scene_textures, scene_sounds)
+  {
+    this.loading_states.regular.set_assets(scene_objects, scene_textures, scene_sounds);
+  }
+
+  set_high_assets(scene_objects, scene_textures, scene_sounds)
+  {
+    this.loading_states.high.set_assets(scene_objects, scene_textures, scene_sounds);
+  }
+
   set_loading_state(state)
   {
     this.current_loading_state.on_exit();
@@ -132,6 +144,11 @@ class AbstractScene extends Scene
   }
 
   on_assets_ready()
+  {
+
+  }
+
+  on_assets_compiled()
   {
     this.is_loaded = true;
 

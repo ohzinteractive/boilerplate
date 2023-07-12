@@ -7,6 +7,11 @@ class AudiosCompilator
     this.textures_names = textures_names;
   }
 
+  start()
+  {
+
+  }
+
   update()
   {
     this.finished = true;

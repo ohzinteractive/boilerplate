@@ -7,6 +7,11 @@ class TexturesCompilator
     this.textures_names = textures_names;
   }
 
+  start()
+  {
+
+  }
+
   update()
   {
     this.finished = true;

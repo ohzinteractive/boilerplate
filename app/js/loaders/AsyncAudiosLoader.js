@@ -8,7 +8,7 @@ class AsyncAudiosLoader extends AsyncAbstractLoader
     super(scene_name, assets, worker);
   }
 
-  // Called } from parent
+  // Called from parent
   __setup_loaders()
   {
     const loaders = [];

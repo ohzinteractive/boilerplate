@@ -2,10 +2,12 @@ import { SceneLoadingState } from './SceneLoadingState';
 
 class RegularAssetsState extends SceneLoadingState
 {
-  // constructor(scene_objects, scene_textures, scene_sounds)
-  // {
-  //   super(scene_objects, scene_textures, scene_sounds);
-  // }
+  constructor(scene)
+  {
+    super(scene);
+
+    this.on_assets_ready_called = false;
+  }
 
   on_enter()
   {
@@ -24,9 +26,15 @@ class RegularAssetsState extends SceneLoadingState
 
     if (this.is_loaded())
     {
-      if (this.is_compiled())
+      if (!this.on_assets_ready_called)
       {
         this.scene.on_assets_ready();
+        this.on_assets_ready_called = true;
+      }
+
+      if (this.is_compiled())
+      {
+        this.scene.on_assets_compiled();
       }
     }
   }

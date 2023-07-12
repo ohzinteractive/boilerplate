@@ -3,6 +3,7 @@ class CompilatorManager
   constructor(compilators)
   {
     this.compilators = compilators;
+    this.first_update = true;
 
     this.index = 0;
   }
@@ -14,10 +15,19 @@ class CompilatorManager
       if (this.compilators[this.index].finished)
       {
         this.index++;
+        this.first_update = true;
       }
       else
       {
-        this.compilators[this.index].update();
+        if (this.first_update)
+        {
+          this.compilators[this.index].start();
+          this.first_update = false;
+        }
+        else
+        {
+          this.compilators[this.index].update();
+        }
       }
     }
   }

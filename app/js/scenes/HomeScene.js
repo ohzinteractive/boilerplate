@@ -18,18 +18,14 @@ class HomeScene extends AbstractScene
   constructor()
   {
     super({
-      name: Sections.HOME,
-      scene_objects: home_objects,
-      scene_textures: home_textures,
-      scene_sounds: home_sounds,
-      scene_high_objects: home_high_objects,
-      scene_high_textures: home_high_textures,
-      scene_high_sounds: home_high_sounds
+      name: Sections.HOME
     });
   }
 
   init()
   {
+    this.set_assets(home_objects, home_textures, home_sounds);
+
     if (window.debug_mode)
     {
       this.add(Debug.draw_axis());
@@ -54,6 +50,8 @@ class HomeScene extends AbstractScene
 
   on_assets_ready()
   {
+    this.set_high_assets(home_high_objects, home_high_textures, home_high_sounds);
+
     super.on_assets_ready();
 
     // this.add_lights();
