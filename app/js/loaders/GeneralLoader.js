@@ -7,7 +7,6 @@ import { ResourceBatch } from 'ohzi-core';
 
 import home_data from '../../data/transitions/home.json';
 import transition_data from '../../data/transitions/transition.json';
-import test_data from '../../data/transitions/test.json';
 
 import { AsyncAbstractLoader } from './AsyncAbstractLoader';
 
@@ -46,7 +45,6 @@ class GeneralLoader
 
     // __SECTIONS_DATA__
     ResourceContainer.set_resource('transition_data', 'data/transition.json', transition_data);
-    ResourceContainer.set_resource('test_data', 'data/test.json', test_data);
     ResourceContainer.set_resource('home_data', 'data/home.json', home_data);
   }
 

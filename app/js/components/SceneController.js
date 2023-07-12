@@ -11,7 +11,6 @@ import { RGBFormat } from 'three';
 import { CameraController } from '../camera_controller/CameraController';
 
 import { HomeScene } from '../scenes/HomeScene';
-import { TestScene } from '../scenes/TestScene';
 
 class SceneController
 {
@@ -35,11 +34,9 @@ class SceneController
     ResourceContainer.set_resource('black_texture_linear', '/black_texture_linear.jpg', black_texture_linear);
 
     this.home_scene = new HomeScene();
-    this.test_scene = new TestScene();
 
     this.scenes = [
-      this.home_scene,
-      this.test_scene
+      this.home_scene
     ];
 
     SceneManager.current = this.home_scene;

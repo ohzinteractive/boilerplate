@@ -10,7 +10,6 @@ import { DatGUI } from './components/DatGUI';
 import { SceneController } from './components/SceneController';
 import { HomeView } from './views/home/HomeView';
 import { TransitionView } from './views/transition/TransitionView';
-import { TestView } from './views/test/TestView';
 
 import { sRGBEncoding } from 'three';
 // import { ACESFilmicToneMapping } from 'three';
@@ -73,13 +72,11 @@ class MainApplication extends BaseApplication
 
     this.home_view = new HomeView();
     this.transition_view = new TransitionView();
-    this.test_view = new TestView();
 
     // this.modal_component.start();
 
     this.home_view.start();
     this.transition_view.start();
-    this.test_view.start();
 
     DatGUI.start();
 
