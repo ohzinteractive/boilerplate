@@ -26,8 +26,6 @@ class HomeScene extends AbstractScene
       scene_high_textures: home_high_textures,
       scene_high_sounds: home_high_sounds
     });
-
-    this.name = Sections.HOME;
   }
 
   init()
