@@ -35,7 +35,6 @@ class SceneController
     ResourceContainer.set_resource('black_texture_linear', '/black_texture_linear.jpg', black_texture_linear);
 
     this.home_scene = new HomeScene();
-
     this.test_scene = new TestScene();
 
     this.scenes = [

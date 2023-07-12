@@ -42,6 +42,7 @@
     "build_textures": "yarn basisu ./original_assets/textures/* -individual -mipmap -max_endpoints 16128 -max_selectors 16128 -comp_level 4 -y_flip -output_path ./public/textures/",
 
     "create-view": "cd core && yarn create-view",
+    "create-scene": "cd core && yarn create-scene",
     "create-component": "cd core && yarn create-component",
     "create-modal": "cd components && yarn create-modal",
     "calculate-assets-sizes": "cd core && yarn calculate-assets-sizes",
@@ -50,8 +51,8 @@
   },
   "dependencies": {
     "lil-gui": "0.17.0",
-    "ohzi-components": "2.5.6",
-    "ohzi-core": "10.3.2",
+    "ohzi-components": "2.6.3",
+    "ohzi-core": "10.4.0",
     "pit-js": "2.2.0"
   },
   "devDependencies": {
