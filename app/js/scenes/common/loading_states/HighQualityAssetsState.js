@@ -19,10 +19,10 @@ class HighQualityAssetsState extends SceneLoadingState
 
     if (this.is_loaded())
     {
-      if (this.is_compiled())
-      {
-        this.scene.on_high_quality_assets_ready();
-      }
+      // if (this.is_compiled())
+      // {
+      this.scene.on_high_quality_assets_ready();
+      // }
     }
   }
 }
