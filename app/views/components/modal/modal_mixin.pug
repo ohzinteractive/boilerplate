@@ -1,4 +1,4 @@
-mixin modal({ classes, show_close_icon = false, close_action = "app.modal_component.hide()" })
+mixin modal({ classes, header_classes, content_classes, body_classes, footer_classes, show_close_icon = false, close_action = "app.modal_component.hide()" })
   - const slots = {}
 
   mixin modal_header()
@@ -14,16 +14,16 @@ mixin modal({ classes, show_close_icon = false, close_action = "app.modal_compon
   block
 
   .modal__container.hidden(class= classes)
-    .modal__content
-      .modal__header
+    .modal__content(class= content_classes)
+      .modal__header(class= header_classes)
         - if(slots.header)
             - slots.header()
-      .modal__body
+        - if (show_close_icon)
+          .button.modal__close(onclick= close_action, data-audio='button_click')
+            img(data-src="images/common/close.svg", alt="Close Icon")
+      .modal__body(class= body_classes)
         - if(slots.body)
           - slots.body()
-      .modal__footer
+      .modal__footer(class= footer_classes)
         - if(slots.footer)
           - slots.footer()
-        - if (show_close_icon)
-          .button.modal__close(onclick= close_action)
-            img(data-src="images/common/close.svg", alt="Close Icon")

@@ -1,4 +1,5 @@
 // __MODAL_STATES_IMPORTS__
+import { HTMLUtilities } from 'ohzi-core';
 
 import { AbstractModalComponent } from 'ohzi-components';
 
@@ -16,8 +17,6 @@ class ModalComponent extends AbstractModalComponent
   on_enter()
   {
     super.on_enter();
-
-    this.load_html_videos();
   }
 
   on_exit()
@@ -33,6 +32,11 @@ class ModalComponent extends AbstractModalComponent
   show_state(state_name, collision)
   {
     super.show_state(state_name, collision);
+
+    const container = this.states[state_name].container;
+
+    HTMLUtilities.load_images(container);
+    HTMLUtilities.load_videos(container);
   }
 
   hide(next_state_name, next_state_collision)
