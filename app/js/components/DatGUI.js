@@ -40,7 +40,7 @@ class DatGUI
       document.querySelector('.lil-gui.autoPlace').style.display = 'none';
     }
 
-    this.dat_gui.add(Settings.general, 'general', -20, 20);
+    this.dat_gui.add(Settings.general, 'value', -20, 20);
   }
 }
 
