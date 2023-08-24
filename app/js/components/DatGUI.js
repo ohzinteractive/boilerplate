@@ -1,4 +1,5 @@
 import GUI from 'lil-gui';
+import { Settings } from '../Settings';
 
 class DatGUI
 {
@@ -6,10 +7,6 @@ class DatGUI
   {
     this.dat_gui = undefined;
     this.hidden = false;
-
-    this.settings = {
-      camera_z: 0
-    };
   }
 
   init()
@@ -43,7 +40,7 @@ class DatGUI
       document.querySelector('.lil-gui.autoPlace').style.display = 'none';
     }
 
-    this.dat_gui.add(this.settings, 'camera_z', -20, 20);
+    this.dat_gui.add(Settings.general, 'general', -20, 20);
   }
 }
 
