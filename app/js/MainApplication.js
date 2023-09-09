@@ -1,10 +1,6 @@
 import { BaseApplication } from 'ohzi-core';
 // import { HTMLUtilities, Time } from 'ohzi-core';
-import { NormalRender } from 'ohzi-core';
-import { Graphics } from 'ohzi-core';
-import { ResourceContainer } from 'ohzi-core';
-import { ViewManager } from 'ohzi-core';
-import { ViewContext } from 'ohzi-core';
+import { Graphics, NormalRender, ResourceContainer, ViewContext, ViewManager } from 'ohzi-core';
 
 import { DatGUI } from './components/DatGUI';
 import { SceneController } from './components/SceneController';
@@ -18,6 +14,7 @@ import { Sections } from './views/Sections';
 // import { ModalComponent } from './view_components/modal/ModalComponent';
 // import { UICollisionLayer } from 'ohzi-components';
 import { Input } from './components/Input';
+import { KeyboardInputController } from './components/KeyboardInputController';
 // import { KeyboardInputController } from './components/KeyboardInputController';
 class MainApplication extends BaseApplication
 {
@@ -59,7 +56,7 @@ class MainApplication extends BaseApplication
 
     ViewContext.set_app(this);
 
-    // this.keyboard_input_controller = new KeyboardInputController();
+    this.keyboard_input_controller = new KeyboardInputController();
 
     this.view_manager = ViewManager;
     this.view_manager.set_browser_title_suffix('OHZI Interactive');
