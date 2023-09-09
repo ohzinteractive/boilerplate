@@ -1,7 +1,4 @@
-import { BaseApplication } from 'ohzi-core';
-import { ResourceContainer } from 'ohzi-core';
-import { ViewManager } from 'ohzi-core';
-import { OMath } from 'ohzi-core';
+import { BaseApplication, OMath, ResourceContainer, ViewManager } from 'ohzi-core';
 
 import { GeneralLoader } from './loaders/GeneralLoader';
 
@@ -10,8 +7,8 @@ import { LoaderView } from './views/loader/LoaderView';
 
 import loader_data from '../data/transitions/loader.json';
 
-import { SectionsURLs } from './views/Sections';
 import { default_state_data } from '../data/default_state_data';
+import { SectionsURLs } from './views/Sections';
 
 class LoaderState extends BaseApplication
 {
@@ -41,7 +38,18 @@ class LoaderState extends BaseApplication
     // this.check_resource_loading(batch, this.on_config_ready.bind(this), 10);
 
     this.on_config_ready();
-    this.__setup_debug_mode();
+
+    if (process.env.NODE_ENV === 'development')
+    {
+      this.__setup_debug_mode();
+    }
+    else
+    {
+      localStorage.removeItem('debug_mode');
+      localStorage.removeItem('skip_mode');
+
+      this.__remove_logs();
+    }
   }
 
   on_enter()
@@ -163,6 +171,23 @@ class LoaderState extends BaseApplication
     }
 
     return progress / this.loaders.length;
+  }
+
+  __remove_logs()
+  {
+    const url_params = new URLSearchParams(window.location.search);
+
+    const logs = url_params.get('logs');
+
+    if (!logs)
+    {
+      window.console.log = () =>
+      {};
+      window.console.warn = () =>
+      {};
+      window.console.error = () =>
+      {};
+    }
   }
 
   __redirect_invalid_url()
