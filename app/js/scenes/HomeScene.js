@@ -3,12 +3,12 @@ import { AbstractScene } from './common/AbstractScene';
 
 import { Sections } from '../views/Sections';
 
-import { home_objects } from '../../data/assets/home/home_objects';
-import { home_textures } from '../../data/assets/home/home_textures';
-import { home_sounds } from '../../data/assets/home/home_sounds';
 import { home_high_objects } from '../../data/assets/home/high/home_high_objects';
-import { home_high_textures } from '../../data/assets/home/high/home_high_textures';
 import { home_high_sounds } from '../../data/assets/home/high/home_high_sounds';
+import { home_high_textures } from '../../data/assets/home/high/home_high_textures';
+import { home_objects } from '../../data/assets/home/home_objects';
+import { home_sounds } from '../../data/assets/home/home_sounds';
+import { home_textures } from '../../data/assets/home/home_textures';
 
 import { Debug, Grid } from 'ohzi-core';
 

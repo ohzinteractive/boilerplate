@@ -82,7 +82,7 @@ class CommonCameraState extends AbstractCameraState
     camera_controller.set_rotation_delta(this.rotation_velocity.y, this.rotation_velocity.x);
     // camera_controller.set_rotation_delta(0, 0, this.azimuth_dir);
 
-    const blend = 1 - Math.exp(-5 * Time.__raw_delta_time);
+    const blend = 1 - Math.exp(-5 * Time.delta_time);
     this.rotation_velocity.lerp(new Vector2(0, 0), blend);
   }
 
