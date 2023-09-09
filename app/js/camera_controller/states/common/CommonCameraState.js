@@ -1,10 +1,10 @@
 
-import { CameraUtilities } from 'ohzi-core';
+import { CameraUtilities, Time } from 'ohzi-core';
 
 import { Vector2 } from 'three';
 
-import { AbstractCameraState } from './AbstractCameraState';
 import { Input } from '../../../components/Input';
+import { AbstractCameraState } from './AbstractCameraState';
 
 class CommonCameraState extends AbstractCameraState
 {
@@ -66,20 +66,24 @@ class CommonCameraState extends AbstractCameraState
 
   __zoom_camera(camera_controller)
   {
-    camera_controller.reference_zoom += Input.zoom_delta;
+    camera_controller.reference_zoom += Input.zoom_delta * 0.5;
   }
 
   __rotate_camera(camera_controller)
   {
     if (Input.left_mouse_button_down && Input.pointer_count === 1)
     {
-      this.rotation_velocity.add(new Vector2(Input.NDC_delta.x * -16, Input.NDC_delta.y * -4));
+      const delta = new Vector2(Input.NDC_delta.x * -16, Input.NDC_delta.y * -4);
+      delta.multiplyScalar(Time.delta_time * 60);
+
+      this.rotation_velocity.add(delta);
     }
 
     camera_controller.set_rotation_delta(this.rotation_velocity.y, this.rotation_velocity.x);
-    camera_controller.set_rotation_delta(0, 0, this.azimuth_dir);
+    // camera_controller.set_rotation_delta(0, 0, this.azimuth_dir);
 
-    this.rotation_velocity.multiplyScalar(0.9);
+    const blend = 1 - Math.exp(-5 * Time.__raw_delta_time);
+    this.rotation_velocity.lerp(new Vector2(0, 0), blend);
   }
 
   __move_camera(camera_controller)
@@ -109,7 +113,7 @@ class CommonCameraState extends AbstractCameraState
 
   __check_key_down()
   {
-    const speed = 0.06;
+    const speed = 0.12;
 
     if (Input.keyboard.is_key_down('KeyW'))
     {
