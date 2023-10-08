@@ -1,7 +1,4 @@
-import { Graphics } from 'ohzi-core';
-import { RenderLoop } from 'ohzi-core';
-import { Configuration } from 'ohzi-core';
-import { Initializer } from 'ohzi-core';
+import { Configuration, Graphics, Initializer, RenderLoop } from 'ohzi-core';
 
 // import { EventManager } from 'ohzi-core';
 // import { Debug } from 'ohzi-core';
