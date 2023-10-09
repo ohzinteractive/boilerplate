@@ -6,6 +6,8 @@ class RegularAssetsState extends SceneLoadingState
   {
     super(scene);
 
+    this.name = 'RegularAssetsState';
+
     this.on_assets_ready_called = false;
   }
 

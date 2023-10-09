@@ -1,6 +1,5 @@
 import { OScreen, ViewManager } from 'ohzi-core';
 import { Vector3 } from 'three';
-import { Sections } from '../Sections';
 
 import { SceneController } from '../../components/SceneController';
 
@@ -25,7 +24,6 @@ class SectionTransitionController
   // This method is called one time at the beginning of the app execution.
   start()
   {
-    this.loader_view = ViewManager.get(Sections.LOADER);
   }
 
   // This method is called one time before the transition to this section is started.

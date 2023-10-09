@@ -8,6 +8,7 @@ class Input extends InputController
     super();
 
     this.clicked = false;
+
     this.captured_NDC = { x: 0, y: 0 };
     this.current_NDC_delta = { x: 0, y: 0 };
 
@@ -60,6 +61,32 @@ class Input extends InputController
     this.clicked = false;
 
     this.keyboard.clear();
+  }
+
+  to_json()
+  {
+    const data = {
+      clicked: this.clicked,
+      NDC: this.NDC,
+      NDC_delta: this.NDC_delta,
+
+      left_mouse_button_pressed: this.left_mouse_button_pressed,
+      left_mouse_button_down: this.left_mouse_button_down,
+      left_mouse_button_released: this.left_mouse_button_released,
+
+      right_mouse_button_pressed: this.right_mouse_button_pressed,
+      right_mouse_button_down: this.right_mouse_button_down,
+      right_mouse_button_released: this.right_mouse_button_released,
+
+      pointer_count: this.pointer_count,
+
+      scroll_delta: this.scroll_delta,
+      zoom_delta: this.zoom_delta,
+
+      keyboard_keys: this.keyboard.keys
+    };
+
+    return data;
   }
 }
 

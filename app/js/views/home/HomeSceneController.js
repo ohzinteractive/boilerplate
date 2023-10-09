@@ -1,5 +1,5 @@
 import { SceneManager } from 'ohzi-core';
-import { SceneController } from '../../components/SceneController';
+import { HomeScene } from '../../scenes/HomeScene';
 
 class HomeSceneController
 {
@@ -10,7 +10,7 @@ class HomeSceneController
   // This method is called one time at the beginning of the app execution.
   start()
   {
-    this.scene = SceneController.home_scene;
+    this.scene = HomeScene;
   }
 
   // This method is called one time before the transition to this section is started.
@@ -43,6 +43,7 @@ class HomeSceneController
   // This method is called in every frame when the site is transitioning to this section.
   update_enter_transition(global_view_data, transition_progress, action_sequencer)
   {
+    this.scene.update();
   }
 
   // This method is called in every frame when the site is transitioning from this section.

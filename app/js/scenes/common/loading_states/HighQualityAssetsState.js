@@ -2,6 +2,13 @@ import { SceneLoadingState } from './SceneLoadingState';
 
 class HighQualityAssetsState extends SceneLoadingState
 {
+  constructor(scene)
+  {
+    super(scene);
+
+    this.name = 'HighQualityAssetsState';
+  }
+
   on_enter()
   {
     super.on_enter();

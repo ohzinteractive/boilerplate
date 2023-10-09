@@ -1,16 +1,16 @@
-import { SceneController } from '../../components/SceneController';
 
 class TransitionSceneController
 {
-  constructor()
+  constructor(debug_mode)
   {
     this.next_scene = undefined;
+    this.debug_mode = debug_mode;
   }
 
   // This method is called one time at the beginning of the app execution.
   start()
   {
-    this.scene = SceneController.home_scene;
+    // this.scene = HomeScene;
   }
 
   // This method is called one time before the transition to this section is started.
@@ -18,7 +18,7 @@ class TransitionSceneController
   {
     if (!this.next_scene.is_loaded)
     {
-      this.next_scene.load();
+      this.next_scene.load(this.debug_mode);
     }
   }
 

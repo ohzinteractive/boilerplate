@@ -1,21 +1,14 @@
-import { ResourceContainer } from 'ohzi-core';
-import { ResourceBatch } from 'ohzi-core';
+import { ResourceBatch, ResourceContainer } from 'ohzi-core';
 
 // import { Graphics } from 'ohzi-core';
 // import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 // import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
-import home_data from '../../data/transitions/home.json';
-import transition_data from '../../data/transitions/transition.json';
-
-import { AsyncAbstractLoader } from './AsyncAbstractLoader';
-
 class GeneralLoader
 {
-  constructor(resource_container)
+  constructor()
   {
-    this.batch = new ResourceBatch();
-    this.resource_container = resource_container;
+    this.batch = new ResourceBatch('general_loader', ResourceContainer);
 
     this.__setup_batch();
   }
@@ -30,7 +23,7 @@ class GeneralLoader
     // basis_loader.setTranscoderPath('libs/basis/');
     // basis_loader.detectSupport(renderer);
 
-    // this.resource_container.set_resource('basis_loader', '/basis_loader', basis_loader);
+    // ResourceContainer.set_resource('basis_loader', '/basis_loader', basis_loader);
 
     // Uncomment to use DRACO
     // const draco_loader = new DRACOLoader();
@@ -38,19 +31,16 @@ class GeneralLoader
     // draco_loader.setDecoderConfig({ type: 'js' });
     // draco_loader.setWorkerLimit(1);
 
-    // this.resource_container.set_resource('draco_loader', '/draco_loader', draco_loader);
+    // ResourceContainer.set_resource('draco_loader', '/draco_loader', draco_loader);
 
-    const assets_worker = AsyncAbstractLoader.create_worker();
-    this.resource_container.set_resource('assets_worker', '/assets_worker', assets_worker);
-
-    // __SECTIONS_DATA__
-    ResourceContainer.set_resource('transition_data', 'data/transition.json', transition_data);
-    ResourceContainer.set_resource('home_data', 'data/home.json', home_data);
+    // Uncomment if needed to load assets asynchronously
+    // const assets_worker = AsyncAbstractLoader.create_worker();
+    // ResourceContainer.set_resource('assets_worker', '/assets_worker', assets_worker);
   }
 
   load()
   {
-    this.batch.load(this.resource_container);
+    this.batch.load();
   }
 }
 

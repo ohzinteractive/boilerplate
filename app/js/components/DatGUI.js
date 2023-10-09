@@ -7,10 +7,13 @@ class DatGUI
   {
     this.dat_gui = undefined;
     this.hidden = false;
+    this.debug_mode = false;
   }
 
-  init()
+  init(debug_mode)
   {
+    this.debug_mode = debug_mode;
+
     document.addEventListener('keydown', event =>
     {
       if (event.shiftKey && event.key === 'H')
@@ -35,7 +38,7 @@ class DatGUI
 
     // document.querySelector('.lil-gui.autoPlace').style['z-index'] = 999;
 
-    if (!window.debug_mode)
+    if (!this.debug_mode)
     {
       document.querySelector('.lil-gui.autoPlace').style.display = 'none';
     }

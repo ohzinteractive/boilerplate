@@ -1,9 +1,9 @@
 
-import { CameraUtilities, Time } from 'ohzi-core';
-
 import { Vector2 } from 'three';
 
-import { Input } from '../../../components/Input';
+// import { Input } from '../../../components/Input';
+import { CameraUtilities, Time } from 'ohzi-core';
+import { OffScreenInput } from '../../../OffScreenInput';
 import { AbstractCameraState } from './AbstractCameraState';
 
 class CommonCameraState extends AbstractCameraState
@@ -49,7 +49,7 @@ class CommonCameraState extends AbstractCameraState
 
   __show_camera_position(camera_controller)
   {
-    if (Input.left_mouse_button_released)
+    if (OffScreenInput.left_mouse_button_released)
     {
       console.log({
         x: camera_controller.reference_position.x,
@@ -66,14 +66,14 @@ class CommonCameraState extends AbstractCameraState
 
   __zoom_camera(camera_controller)
   {
-    camera_controller.reference_zoom += Input.zoom_delta * 0.5;
+    camera_controller.reference_zoom += OffScreenInput.zoom_delta * 0.5;
   }
 
   __rotate_camera(camera_controller)
   {
-    if (Input.left_mouse_button_down && Input.pointer_count === 1)
+    if (OffScreenInput.left_mouse_button_down && OffScreenInput.pointer_count === 1)
     {
-      const delta = new Vector2(Input.NDC_delta.x * -16, Input.NDC_delta.y * -4);
+      const delta = new Vector2(OffScreenInput.NDC_delta.x * -16, OffScreenInput.NDC_delta.y * -4);
       delta.multiplyScalar(Time.delta_time * 60);
 
       this.rotation_velocity.add(delta);
@@ -93,61 +93,64 @@ class CommonCameraState extends AbstractCameraState
 
     camera_controller.reference_position.y -= this.y_dir;
 
-    if (Input.right_mouse_button_pressed)
+    if (OffScreenInput.right_mouse_button_pressed)
     {
-      this.last_point.copy(Input.NDC);
+      this.last_point.copy(OffScreenInput.NDC);
     }
 
-    if (Input.right_mouse_button_down) // || (Input.left_mouse_button_down && this.shift_key)
+    if (OffScreenInput.right_mouse_button_down) // || (OffScreenInput.left_mouse_button_down && this.shift_key)
     {
       const prev_point    = CameraUtilities.get_plane_intersection(camera_controller.reference_position, undefined, this.last_point).clone();
-      const current_point = CameraUtilities.get_plane_intersection(camera_controller.reference_position, undefined, Input.NDC).clone();
+      const current_point = CameraUtilities.get_plane_intersection(camera_controller.reference_position, undefined, OffScreenInput.NDC).clone();
       current_point.sub(prev_point);
 
       camera_controller.reference_position.x -= current_point.x;
       camera_controller.reference_position.y -= current_point.y;
       camera_controller.reference_position.z -= current_point.z;
-      this.last_point.copy(Input.NDC);
+      this.last_point.copy(OffScreenInput.NDC);
     }
+
+    // camera_controller.reference_position.x += 0.01666;
+    // camera_controller.reference_position.z = 5;
   }
 
   __check_key_down()
   {
     const speed = 0.12;
 
-    if (Input.keyboard.is_key_down('KeyW'))
+    if (OffScreenInput.is_key_down('KeyW'))
     {
       this.forward_dir = -speed;
     }
-    if (Input.keyboard.is_key_down('KeyS'))
+    if (OffScreenInput.is_key_down('KeyS'))
     {
       this.forward_dir = speed;
     }
-    if (Input.keyboard.is_key_down('KeyA'))
+    if (OffScreenInput.is_key_down('KeyA'))
     {
       this.right_dir = -speed;
     }
-    if (Input.keyboard.is_key_down('KeyD'))
+    if (OffScreenInput.is_key_down('KeyD'))
     {
       this.right_dir = speed;
     }
-    if (Input.keyboard.is_key_down('KeyQ'))
+    if (OffScreenInput.is_key_down('KeyQ'))
     {
       this.azimuth_dir = speed * 4;
     }
-    if (Input.keyboard.is_key_down('KeyE'))
+    if (OffScreenInput.is_key_down('KeyE'))
     {
       this.azimuth_dir = -speed * 4;
     }
-    if (Input.keyboard.is_key_down('KeyZ'))
+    if (OffScreenInput.is_key_down('KeyZ'))
     {
       this.y_dir = speed;
     }
-    if (Input.keyboard.is_key_down('KeyC'))
+    if (OffScreenInput.is_key_down('KeyC'))
     {
       this.y_dir = -speed;
     }
-    if (Input.keyboard.is_key_down('ShiftLeft'))
+    if (OffScreenInput.is_key_down('ShiftLeft'))
     {
       this.shift_key = true;
     }
@@ -155,39 +158,39 @@ class CommonCameraState extends AbstractCameraState
 
   __check_key_up()
   {
-    if (Input.keyboard.is_key_released('KeyW'))
+    if (OffScreenInput.is_key_released('KeyW'))
     {
       this.forward_dir = 0;
     }
-    if (Input.keyboard.is_key_released('KeyS'))
+    if (OffScreenInput.is_key_released('KeyS'))
     {
       this.forward_dir = 0;
     }
-    if (Input.keyboard.is_key_released('KeyA'))
+    if (OffScreenInput.is_key_released('KeyA'))
     {
       this.right_dir = 0;
     }
-    if (Input.keyboard.is_key_released('KeyD'))
+    if (OffScreenInput.is_key_released('KeyD'))
     {
       this.right_dir = 0;
     }
-    if (Input.keyboard.is_key_released('KeyQ'))
+    if (OffScreenInput.is_key_released('KeyQ'))
     {
       this.azimuth_dir = 0;
     }
-    if (Input.keyboard.is_key_released('KeyE'))
+    if (OffScreenInput.is_key_released('KeyE'))
     {
       this.azimuth_dir = 0;
     }
-    if (Input.keyboard.is_key_released('KeyZ'))
+    if (OffScreenInput.is_key_released('KeyZ'))
     {
       this.y_dir = 0;
     }
-    if (Input.keyboard.is_key_released('KeyC'))
+    if (OffScreenInput.is_key_released('KeyC'))
     {
       this.y_dir = 0;
     }
-    if (Input.keyboard.is_key_released('ShiftLeft'))
+    if (OffScreenInput.is_key_released('ShiftLeft'))
     {
       this.shift_key = false;
     }

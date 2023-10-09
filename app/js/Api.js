@@ -1,25 +1,26 @@
-import { Configuration, Graphics, Initializer, RenderLoop } from 'ohzi-core';
-
-// import { EventManager } from 'ohzi-core';
-// import { Debug } from 'ohzi-core';
-// import { ResourceContainer } from 'ohzi-core';
+import { Configuration, Graphics, Initializer } from 'ohzi-core';
 
 import package_json from '../../package.json';
 import { LoaderState } from './LoaderState';
 
 // APP
+import { GraphicsInitializer } from './GraphicsInitializer';
 import { MainApplication } from './MainApplication';
+import { OffscreenManager } from './OffscreenManager';
+import { ParamsHandler } from './ParamsHandler';
 import { Input } from './components/Input';
 
 class Api
 {
   init(settings)
   {
+    this.params_handler = new ParamsHandler();
+    this.debug_mode = this.params_handler.debug_mode;
+
     this.application = new MainApplication();
 
     this.loader = new LoaderState(this);
 
-    this.render_loop = new RenderLoop(this.loader, Graphics, Input);
     this.config = Configuration;
 
     const app_container = document.querySelector('.container');
@@ -40,13 +41,44 @@ class Api
     };
 
     Input.init(app_container, document);
-    Initializer.init(Input);
-    Graphics.init(canvas, core_attributes, context_attributes, threejs_attributes);
+
+    this.resize_observer = new ResizeObserver(this.on_canvas_resize.bind(this));
+    this.resize_observer.observe(canvas);
+
+    this.use_offscreen_canvas = !!canvas.transferControlToOffscreen;
+
+    const window_params = {
+      chrome: !!window.chrome,
+      opr: !!window.opr
+    };
+
+    if (this.use_offscreen_canvas)
+    {
+      const offscreen_canvas = canvas.transferControlToOffscreen();
+
+      OffscreenManager.init(this);
+
+      OffscreenManager.post('init', {
+        canvas: offscreen_canvas,
+        window_params,
+        core_attributes,
+        context_attributes,
+        threejs_attributes,
+        debug_mode: this.debug_mode
+      }, [offscreen_canvas]);
+    }
+    else
+    {
+      // TODO: Finish backward implementation
+      GraphicsInitializer.init(canvas, core_attributes, context_attributes, threejs_attributes);
+
+      Initializer.init(Input, window_params);
+    }
 
     Configuration.dpr = 1;
     // Configuration.dpr = window.devicePixelRatio;
 
-    this.application.init(Graphics);
+    this.application.init(this.debug_mode);
 
     window.app = this.application;
     window.ViewApi = this;
@@ -57,57 +89,61 @@ class Api
     this.loader.init();
   }
 
+  on_canvas_resize(entries)
+  {
+    if (this.use_offscreen_canvas)
+    {
+      OffscreenManager.on_canvas_resize(entries);
+    }
+    else
+    {
+      Graphics.on_resize(entries);
+    }
+  }
+
   dispose()
   {
     this.application.dispose();
-    Initializer.dispose(this.render_loop);
+    Initializer.dispose();
+
+    OffscreenManager.post('dispose');
     Input.dispose();
   }
-
-  // draw_debug_axis()
-  // {
-  //   Debug.draw_axis();
-  // }
-
-  // register_event(name, callback)
-  // {
-  //   EventManager.on(name, callback);
-  // }
-
-  // set_resource(name, resource)
-  // {
-  //   ResourceContainer.set_resource(name, resource);
-  // }
 
   set_settings(settings)
   {
     window.settings = settings;
   }
 
-  start_main_app()
-  {
-    this.render_loop.set_state(this.application);
-  }
-
   start()
   {
-    this.render_loop.start();
+    const data = { pathname: window.location.pathname, search: window.location.search };
+
+    OffscreenManager.post('start', data);
+
+    this.application.on_enter();
   }
 
   stop()
   {
-    this.render_loop.stop();
+    OffscreenManager.post('stop');
   }
 
-  take_screenshot(callback = (blob) => this.download_blob(blob))
+  // Called from worker
+  update()
   {
-    Graphics.take_screenshot(callback);
+    this.application.update();
   }
 
-  download_blob(blob)
-  {
-    Graphics.download_screenshot(blob);
-  }
+  // take_screenshot(callback = (blob) => this.download_blob(blob))
+  // {
+  //   Graphics.take_screenshot(callback);
+  // }
+
+  // download_blob(blob)
+  // {
+  //   Graphics.download_screenshot(blob);
+  // }
 }
 
 const api = new Api();

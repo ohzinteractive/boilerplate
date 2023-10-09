@@ -22,11 +22,11 @@ class HomeScene extends AbstractScene
     });
   }
 
-  init()
+  init(debug_mode)
   {
     this.set_assets(home_objects, home_textures, home_sounds);
 
-    if (window.debug_mode)
+    if (debug_mode)
     {
       this.add(Debug.draw_axis());
       this.add(new Grid());
@@ -63,4 +63,5 @@ class HomeScene extends AbstractScene
   }
 }
 
-export { HomeScene };
+const home_scene = new HomeScene();
+export { home_scene as HomeScene };

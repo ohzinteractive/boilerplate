@@ -2,8 +2,8 @@ import { ResourceContainer } from 'ohzi-core';
 import { AudiosCompilator } from '../../../compilators/AudiosCompilator';
 import { CompilatorManager } from '../../../compilators/CompilatorManager';
 // import { ObjectsCompilator } from '../../../compilators/ObjectsCompilator';
-import { TexturesCompilator } from '../../../compilators/TexturesCompilator';
 import { SceneCompilator } from '../../../compilators/SceneCompilator';
+import { TexturesCompilator } from '../../../compilators/TexturesCompilator';
 import { AsyncAudiosLoader } from '../../../loaders/AsyncAudiosLoader';
 import { AsyncObjectsLoader } from '../../../loaders/AsyncObjectsLoader';
 import { AsyncTexturesLoader } from '../../../loaders/AsyncTexturesLoader';
@@ -66,6 +66,7 @@ class SceneLoadingState
     const compilators = [];
 
     const assets_worker = ResourceContainer.get('assets_worker');
+
     assets_worker.postMessage({ type: 'reset', loader_name: this.scene.name });
 
     const object_loader = new AsyncObjectsLoader(this.scene.name, this.scene_objects, assets_worker);
