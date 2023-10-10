@@ -1,7 +1,11 @@
-
-class OffScreenInput
+// Formerly SharedInput
+class Input
 {
   constructor()
+  {
+  }
+
+  init()
   {
     this.clicked = false;
 
@@ -22,10 +26,6 @@ class OffScreenInput
     this.zoom_delta = 0;
 
     this.keyboard_keys = {};
-  }
-
-  init()
-  {
   }
 
   update(data)
@@ -86,7 +86,12 @@ class OffScreenInput
   {
     this.NDC = { x: 0, y: 0 };
   }
+
+  dispose()
+  {
+
+  }
 }
 
-const offscreen_input = new OffScreenInput();
-export { offscreen_input as OffScreenInput };
+const input = new Input();
+export { input as Input };

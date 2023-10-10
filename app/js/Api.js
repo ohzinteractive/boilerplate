@@ -1,15 +1,14 @@
-import { Configuration, Graphics, Initializer } from 'ohzi-core';
+import { Browser, Configuration } from 'ohzi-core';
 
 import package_json from '../../package.json';
 import { LoaderState } from './LoaderState';
 
 // APP
-import { GraphicsInitializer } from './GraphicsInitializer';
 import { MainApplication } from './MainApplication';
-import { OffscreenManager } from './OffscreenManager';
 import { ParamsHandler } from './ParamsHandler';
-import { Input } from './components/Input';
-
+import { MainThreadApiStrategy } from './api_strategies/MainThreadApiStrategy';
+import { OffscreenApiStrategy } from './api_strategies/OffscreenApiStrategy';
+import { MainInput } from './components/MainInput';
 class Api
 {
   init(settings)
@@ -23,8 +22,26 @@ class Api
 
     this.config = Configuration;
 
+    const window_params = {
+      chrome: !!window.chrome,
+      opr: !!window.opr
+    };
+
+    Browser.init(window_params.opr, window_params.chrome);
+
     const app_container = document.querySelector('.container');
     const canvas = document.querySelector('.main-canvas');
+
+    this.use_offscreen_canvas = !Browser.is_safari && !!canvas.transferControlToOffscreen;
+
+    MainInput.init(app_container, document, this.use_offscreen_canvas);
+
+    this.strategies = {
+      main_thread: new MainThreadApiStrategy(this),
+      offscreen: new OffscreenApiStrategy(this)
+    };
+
+    this.current_strategy = this.use_offscreen_canvas ? this.strategies.offscreen : this.strategies.main_thread;
 
     const core_attributes = {
       force_webgl2: true,
@@ -40,45 +57,12 @@ class Api
       logarithmicDepthBuffer: false
     };
 
-    Input.init(app_container, document);
-
-    this.resize_observer = new ResizeObserver(this.on_canvas_resize.bind(this));
-    this.resize_observer.observe(canvas);
-
-    this.use_offscreen_canvas = !!canvas.transferControlToOffscreen;
-
-    const window_params = {
-      chrome: !!window.chrome,
-      opr: !!window.opr
-    };
-
-    if (this.use_offscreen_canvas)
-    {
-      const offscreen_canvas = canvas.transferControlToOffscreen();
-
-      OffscreenManager.init(this);
-
-      OffscreenManager.post('init', {
-        canvas: offscreen_canvas,
-        window_params,
-        core_attributes,
-        context_attributes,
-        threejs_attributes,
-        debug_mode: this.debug_mode
-      }, [offscreen_canvas]);
-    }
-    else
-    {
-      // TODO: Finish backward implementation
-      GraphicsInitializer.init(canvas, core_attributes, context_attributes, threejs_attributes);
-
-      Initializer.init(Input, window_params);
-    }
+    this.current_strategy.init(canvas, window_params, core_attributes, context_attributes, threejs_attributes, this.application);
 
     Configuration.dpr = 1;
     // Configuration.dpr = window.devicePixelRatio;
 
-    this.application.init(this.debug_mode);
+    this.application.init(this.debug_mode, this.use_offscreen_canvas);
 
     window.app = this.application;
     window.ViewApi = this;
@@ -87,27 +71,29 @@ class Api
     window.version = package_json.version;
 
     this.loader.init();
+
+    this.resize_observer = new ResizeObserver(this.on_canvas_resize.bind(this));
+    this.resize_observer.observe(canvas);
   }
 
   on_canvas_resize(entries)
   {
-    if (this.use_offscreen_canvas)
-    {
-      OffscreenManager.on_canvas_resize(entries);
-    }
-    else
-    {
-      Graphics.on_resize(entries);
-    }
+    this.current_strategy.on_canvas_resize(entries);
   }
 
   dispose()
   {
     this.application.dispose();
-    Initializer.dispose();
 
-    OffscreenManager.post('dispose');
-    Input.dispose();
+    this.current_strategy.dispose();
+
+    MainInput.dispose();
+
+    const old_canvas = document.querySelector('.main-canvas');
+    const new_canvas = old_canvas.cloneNode(true);
+
+    old_canvas.parentElement.appendChild(new_canvas);
+    old_canvas.remove();
   }
 
   set_settings(settings)
@@ -119,14 +105,12 @@ class Api
   {
     const data = { pathname: window.location.pathname, search: window.location.search };
 
-    OffscreenManager.post('start', data);
-
-    this.application.on_enter();
+    this.current_strategy.start(data);
   }
 
   stop()
   {
-    OffscreenManager.post('stop');
+    this.current_strategy.stop();
   }
 
   // Called from worker
@@ -135,15 +119,10 @@ class Api
     this.application.update();
   }
 
-  // take_screenshot(callback = (blob) => this.download_blob(blob))
-  // {
-  //   Graphics.take_screenshot(callback);
-  // }
-
-  // download_blob(blob)
-  // {
-  //   Graphics.download_screenshot(blob);
-  // }
+  take_screenshot(callback)
+  {
+    this.current_strategy.take_screenshot(callback);
+  }
 }
 
 const api = new Api();

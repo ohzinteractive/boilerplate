@@ -66,7 +66,9 @@ class OffscreenManager
       const method_string = message.methods[i];
 
       const method_path = method_string.split('.');
-      let current_parent = this.api.application[method_path[0]];
+
+      // If length 1 we are trying to call a method from mainapp
+      let current_parent = method_path.length === 1 ? this.api.application : this.api.application[method_path[0]];
       let current_method = this.api.application[method_path[0]];
 
       // Go deep until find owner method

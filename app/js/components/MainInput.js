@@ -1,11 +1,16 @@
 import { KeyboardInput } from 'ohzi-core';
 import { InputController } from 'pit-js';
 
-class Input extends InputController
+class MainInput extends InputController
 {
   constructor()
   {
     super();
+  }
+
+  init(container, keyboard_input_container, use_offscreen_canvas)
+  {
+    super.init(container);
 
     this.clicked = false;
 
@@ -13,11 +18,6 @@ class Input extends InputController
     this.current_NDC_delta = { x: 0, y: 0 };
 
     this.keyboard = new KeyboardInput();
-  }
-
-  init(container, keyboard_input_container)
-  {
-    super.init(container);
 
     this.keyboard.init(keyboard_input_container);
   }
@@ -63,6 +63,21 @@ class Input extends InputController
     this.keyboard.clear();
   }
 
+  is_key_pressed(key_name)
+  {
+    return this.keyboard.is_key_pressed(key_name);
+  }
+
+  is_key_down(key_name)
+  {
+    return this.keyboard.is_key_down(key_name);
+  }
+
+  is_key_released(key_name)
+  {
+    return this.keyboard.is_key_released(key_name);
+  }
+
   to_json()
   {
     const data = {
@@ -90,5 +105,5 @@ class Input extends InputController
   }
 }
 
-const input = new Input();
-export { input as Input };
+const main_input = new MainInput();
+export { main_input as MainInput };

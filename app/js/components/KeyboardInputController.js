@@ -1,25 +1,25 @@
-import { Input } from './Input';
+import { MainInput } from './MainInput';
 
 class KeyboardInputController
 {
   constructor()
   {
-    Input.keyboard.register_key('KeyW');
-    Input.keyboard.register_key('ArrowUp');
-    Input.keyboard.register_key('KeyS');
-    Input.keyboard.register_key('ArrowDown');
-    Input.keyboard.register_key('KeyA');
-    Input.keyboard.register_key('ArrowLeft');
-    Input.keyboard.register_key('KeyD');
-    Input.keyboard.register_key('ArrowRight');
-    Input.keyboard.register_key('KeyQ');
-    Input.keyboard.register_key('KeyE');
-    Input.keyboard.register_key('KeyZ');
-    Input.keyboard.register_key('KeyC');
-    Input.keyboard.register_key('KeyK');
-    Input.keyboard.register_key('Enter');
-    Input.keyboard.register_key('ShiftRight');
-    Input.keyboard.register_key('Space');
+    MainInput.keyboard.register_key('KeyW');
+    MainInput.keyboard.register_key('ArrowUp');
+    MainInput.keyboard.register_key('KeyS');
+    MainInput.keyboard.register_key('ArrowDown');
+    MainInput.keyboard.register_key('KeyA');
+    MainInput.keyboard.register_key('ArrowLeft');
+    MainInput.keyboard.register_key('KeyD');
+    MainInput.keyboard.register_key('ArrowRight');
+    MainInput.keyboard.register_key('KeyQ');
+    MainInput.keyboard.register_key('KeyE');
+    MainInput.keyboard.register_key('KeyZ');
+    MainInput.keyboard.register_key('KeyC');
+    MainInput.keyboard.register_key('KeyK');
+    MainInput.keyboard.register_key('Enter');
+    MainInput.keyboard.register_key('ShiftRight');
+    MainInput.keyboard.register_key('Space');
   }
 }
 

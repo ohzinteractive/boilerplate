@@ -1,6 +1,6 @@
-import { Graphics, Initializer, RenderLoop, WorkerToMain } from 'ohzi-core';
+import { Browser, Graphics, Initializer, RenderLoop, WorkerToMain } from 'ohzi-core';
 import { GraphicsInitializer } from './GraphicsInitializer';
-import { OffScreenInput } from './OffScreenInput';
+import { Input } from './Input';
 import { OffscreenApplication } from './OffscreenApplication';
 
 class OffscreenWorker
@@ -15,6 +15,8 @@ class OffscreenWorker
       init: this.init.bind(this),
       start: this.start.bind(this),
       stop: this.stop.bind(this),
+      dispose: this.dispose.bind(this),
+      // take_screenshot: this.take_screenshot.bind(this),
       go_to_url_section: this.go_to_url_section.bind(this),
       on_resize: this.on_resize.bind(this),
       // on_frame_end: this.on_frame_end.bind(this),
@@ -31,7 +33,9 @@ class OffscreenWorker
   {
     this.canvas = canvas;
 
-    Initializer.init(OffScreenInput, window_params);
+    Input.init();
+    Browser.init(window_params.opr, window_params.chrome);
+    Initializer.init(Input);
 
     GraphicsInitializer.init(canvas, core_attributes, context_attributes, threejs_attributes);
 
@@ -42,7 +46,10 @@ class OffscreenWorker
   {
     this.render_loop.start();
 
-    this.application.go_to_url_section(pathname, search);
+    if (this.render_loop.frames_passed === 0)
+    {
+      this.application.go_to_url_section(pathname, search);
+    }
   }
 
   go_to_url_section({ pathname, search })
@@ -54,6 +61,28 @@ class OffscreenWorker
   {
     this.render_loop.stop();
   }
+
+  dispose()
+  {
+    this.application.dispose();
+
+    Initializer.dispose();
+
+    this.render_loop.dispose();
+
+    Input.dispose();
+  }
+
+  // TODO: Make Graphics compatible to take screenshot on worker
+  // take_screenshot()
+  // {
+  //   Graphics.take_screenshot((blob) => this.download_blob(blob));
+  // }
+
+  // download_blob(blob)
+  // {
+  //   Graphics.download_screenshot(blob);
+  // }
 
   on_resize({ rect })
   {
@@ -71,7 +100,7 @@ class OffscreenWorker
 
   on_input_update({ data })
   {
-    OffScreenInput.update(data);
+    Input.update(data);
   }
 
   // Called from OffscreenApplication

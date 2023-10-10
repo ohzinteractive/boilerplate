@@ -1,4 +1,5 @@
 const default_state_data = {
+  initial_opacity: 0,
   loader_opacity: 0,
   transition_opacity: 0,
   home_opacity: 0,
