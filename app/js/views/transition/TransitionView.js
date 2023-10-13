@@ -1,5 +1,5 @@
 import { OMath } from 'ohzi-core';
-import { OffscreenManager } from '../../OffscreenManager';
+import { MainToWorker } from '../../MainToWorker';
 import { Sections, SectionsURLs } from '../Sections';
 import { CommonView } from '../common/CommonView';
 
@@ -68,7 +68,7 @@ class TransitionView extends CommonView
 
   set_next_view_name(next_view_name)
   {
-    OffscreenManager.post('set_next_view_controller_name', { next_view_controller_name: next_view_name });
+    MainToWorker.post('set_next_view_controller_name', { next_view_controller_name: next_view_name });
   }
 
   __update_progress(loading_progress)

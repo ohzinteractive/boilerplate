@@ -1,4 +1,4 @@
-import { BaseApplication, ViewControllerManager, WorkerToMain } from 'ohzi-core';
+import { BaseApplication, WorkerToMain } from 'ohzi-core';
 
 import { SharedApplication } from './SharedApplication';
 
@@ -9,12 +9,18 @@ class OffscreenApplication extends BaseApplication
     super();
 
     this.worker = worker;
+
+    this.handlers = {
+      set_next_view_controller_name: this.set_next_view_controller_name.bind(this),
+      go_to_view_controller: this.go_to_view_controller.bind(this),
+      set_transitions_velocity: this.set_transitions_velocity.bind(this)
+    };
   }
 
   init(debug_mode)
   {
     this.debug_mode = debug_mode;
-    this.shared_application = new SharedApplication(this);
+    this.shared_application = new SharedApplication();
 
     this.shared_application.init();
   }
@@ -31,19 +37,31 @@ class OffscreenApplication extends BaseApplication
     this.shared_application.update();
   }
 
-  set_next_view_controller_name(next_view_controller_name)
+  handle_message(message)
   {
-    ViewControllerManager.get('transition').set_next_view_controller_name(next_view_controller_name);
+    const handler = this.handlers[message.type];
+
+    if (typeof handler !== 'function')
+    {
+      throw new Error('no handler for type: ' + message.type);
+    }
+
+    handler(message);
   }
 
-  set_transitions_velocity(transitions_velocity)
+  set_next_view_controller_name(data)
   {
-    this.shared_application.set_transitions_velocity(transitions_velocity);
+    this.shared_application.set_next_view_controller_name(data);
   }
 
-  go_to_view_controller(view_controller_name, skip)
+  set_transitions_velocity(data)
   {
-    ViewControllerManager.go_to_view_controller(view_controller_name, skip);
+    this.shared_application.set_transitions_velocity(data);
+  }
+
+  go_to_view_controller(data)
+  {
+    this.shared_application.go_to_view_controller(data);
   }
 
   on_frame_end()

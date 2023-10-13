@@ -1,4 +1,4 @@
-import { ResourceContainer, TransitionManager, ViewContext, ViewControllerManager } from 'ohzi-core';
+import { ResourceContainer, TransitionManager, ViewControllerManager } from 'ohzi-core';
 import { default_state_data } from '../data/default_state_data';
 import { SceneController } from './components/SceneController';
 import { AsyncAbstractLoader } from './loaders/AsyncAbstractLoader';
@@ -9,9 +9,8 @@ import { TransitionViewController } from './views/transition/TransitionViewContr
 // Instanciated by MainThread or Worker
 class SharedApplication
 {
-  constructor(app)
+  constructor()
   {
-    this.app = app;
   }
 
   init()
@@ -24,8 +23,6 @@ class SharedApplication
   on_enter()
   {
     this.scene_controller.start();
-
-    ViewContext.set_app(this);
 
     this.initial_view_controller = new InitialViewController();
 
@@ -45,7 +42,7 @@ class SharedApplication
     ResourceContainer.set_resource('assets_worker', '/assets_worker', assets_worker);
   }
 
-  set_transitions_velocity(search)
+  set_transitions_velocity({ search })
   {
     this.location_search = search;
 
@@ -54,6 +51,16 @@ class SharedApplication
     const transitions_velocity = Number(url_params.get('transitions_velocity')) || 1;
 
     TransitionManager.set_transitions_velocity(transitions_velocity);
+  }
+
+  set_next_view_controller_name({ next_view_controller_name })
+  {
+    ViewControllerManager.get('transition').set_next_view_controller_name(next_view_controller_name);
+  }
+
+  go_to_view_controller({ view_controller_name, skip })
+  {
+    ViewControllerManager.go_to_view_controller(view_controller_name, skip);
   }
 
   update()

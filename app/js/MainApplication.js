@@ -4,7 +4,7 @@ import { DatGUI } from './components/DatGUI';
 import { HomeView } from './views/home/HomeView';
 import { TransitionView } from './views/transition/TransitionView';
 
-import { OffscreenManager } from './OffscreenManager';
+import { MainToWorker } from './MainToWorker';
 import { MainThreadAppStrategy } from './app_strategies/MainThreadAppStrategy';
 import { OffScreenAppStrategy } from './app_strategies/OffScreenAppStrategy';
 import { KeyboardInputController } from './components/KeyboardInputController';
@@ -28,9 +28,11 @@ class MainApplication extends BaseApplication
     this.sections = Sections;
     this.debug_mode = debug_mode;
 
+    MainToWorker.init(this.strategies.main_thread.shared_application, use_offscreen_canvas);
+
     this.view_manager = ViewManager;
     this.view_manager.set_browser_title_suffix('OHZI Interactive');
-    this.view_manager.set_offscreen_manager(OffscreenManager);
+    this.view_manager.set_main_to_worker(MainToWorker);
 
     // this.ui_collision_layer = UICollisionLayer;
     // this.ui_collision_layer.init(Input, Time);

@@ -18,9 +18,6 @@ class OffscreenWorker
       stop: this.stop.bind(this),
       dispose: this.dispose.bind(this),
       // take_screenshot: this.take_screenshot.bind(this),
-      set_next_view_controller_name: this.set_next_view_controller_name.bind(this),
-      go_to_view_controller: this.go_to_view_controller.bind(this),
-      set_transitions_velocity: this.set_transitions_velocity.bind(this),
       on_resize: this.on_resize.bind(this),
       // on_frame_end: this.on_frame_end.bind(this),
       on_input_update: this.on_input_update.bind(this)
@@ -49,21 +46,6 @@ class OffscreenWorker
   start()
   {
     this.render_loop.start();
-  }
-
-  set_next_view_controller_name({ next_view_controller_name })
-  {
-    this.application.set_next_view_controller_name(next_view_controller_name);
-  }
-
-  go_to_view_controller({ view_controller_name, skip })
-  {
-    this.application.go_to_view_controller(view_controller_name, skip);
-  }
-
-  set_transitions_velocity({ search })
-  {
-    this.application.set_transitions_velocity(search);
   }
 
   stop()
@@ -140,6 +122,11 @@ class OffscreenWorker
     postMessage({ type: 'reload' });
   }
 
+  deliver_to_app(message)
+  {
+    this.application.handle_message(message);
+  }
+
   __bind_messages()
   {
     self.addEventListener('message', (e) =>
@@ -148,12 +135,14 @@ class OffscreenWorker
 
       const handler = this.handlers[message.type];
 
-      if (typeof handler !== 'function')
+      if (typeof handler === 'function')
       {
-        throw new Error('no handler for type: ' + message.type);
+        handler(message);
       }
-
-      handler(message);
+      else
+      {
+        this.deliver_to_app(message);
+      }
     });
   }
 

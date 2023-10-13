@@ -7,7 +7,7 @@ class MainThreadAppStrategy extends AppStrategy
 {
   init()
   {
-    this.shared_application = new SharedApplication(this.app);
+    this.shared_application = new SharedApplication();
 
     this.shared_application.init();
 
@@ -16,8 +16,9 @@ class MainThreadAppStrategy extends AppStrategy
 
   on_enter()
   {
-    this.shared_application.on_enter();
     this.shared_application.set_transitions_velocity(window.location.search);
+
+    this.shared_application.on_enter();
   }
 
   update()
