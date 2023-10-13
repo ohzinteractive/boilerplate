@@ -1,10 +1,10 @@
-import { BaseApplication } from 'ohzi-core';
+import { BaseApplication, ViewManager } from 'ohzi-core';
 
 import { DatGUI } from './components/DatGUI';
 import { HomeView } from './views/home/HomeView';
 import { TransitionView } from './views/transition/TransitionView';
 
-import { SharedApplication } from './SharedApplication';
+import { OffscreenManager } from './OffscreenManager';
 import { KeyboardInputController } from './components/KeyboardInputController';
 import { MainInput } from './components/MainInput';
 import { MainThreadMainAppStrategy } from './mainapp_strategies/MainThreadMainAppStrategy';
@@ -15,8 +15,6 @@ class MainApplication extends BaseApplication
 {
   init(debug_mode, use_offscreen_canvas)
   {
-    this.shared_application = new SharedApplication(this);
-
     this.strategies = {
       main_thread: new MainThreadMainAppStrategy(this),
       offscreen: new OffScreenMainAppStrategy(this)
@@ -29,6 +27,10 @@ class MainApplication extends BaseApplication
     this.main_input = MainInput;
     this.sections = Sections;
     this.debug_mode = debug_mode;
+
+    this.view_manager = ViewManager;
+    this.view_manager.set_browser_title_suffix('OHZI Interactive');
+    this.view_manager.set_offscreen_manager(OffscreenManager);
 
     // this.ui_collision_layer = UICollisionLayer;
     // this.ui_collision_layer.init(Input, Time);
@@ -66,23 +68,30 @@ class MainApplication extends BaseApplication
     DatGUI.start();
 
     window.onpopstate = this.go_to_url_section.bind(this);
+
+    this.go_to_url_section();
   }
 
   go_to_url_section()
   {
-    const data = { pathname: window.location.pathname, search: window.location.search };
+    const next_view = ViewManager.get_by_url(window.location.pathname) || this.home_view;
 
-    this.current_strategy.go_to_url_section(data);
+    this.go_to_scene(next_view.name);
   }
 
   go_to(section, change_url = true, skip = false)
   {
-    this.current_strategy.go_to(section, change_url, skip);
+    if (this.debug_mode)
+    {
+      skip = true;
+    }
+
+    ViewManager.go_to_view(section, change_url, skip);
   }
 
   go_to_scene(view_name)
   {
-    this.current_strategy.go_to_scene(view_name);
+    ViewManager.go_to_scene(view_name, false, false);
   }
 
   update()

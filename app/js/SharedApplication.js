@@ -1,9 +1,8 @@
-import { ResourceContainer, ViewContext, ViewManager } from 'ohzi-core';
+import { ResourceContainer, TransitionManager, ViewContext, ViewControllerManager } from 'ohzi-core';
 import { default_state_data } from '../data/default_state_data';
 import { SceneController } from './components/SceneController';
 import { AsyncAbstractLoader } from './loaders/AsyncAbstractLoader';
 import { InitialViewController } from './views/InitialViewController';
-import { Sections } from './views/Sections';
 import { HomeViewController } from './views/home/HomeViewController';
 import { TransitionViewController } from './views/transition/TransitionViewController';
 
@@ -28,13 +27,10 @@ class SharedApplication
 
     ViewContext.set_app(this);
 
-    this.view_manager = ViewManager;
-    this.view_manager.set_browser_title_suffix('OHZI Interactive');
+    this.initial_view_controller = new InitialViewController();
 
-    this.initial_view = new InitialViewController();
-
-    ViewManager.set_default_state_data(default_state_data);
-    ViewManager.set_view(this.initial_view.name);
+    TransitionManager.set_default_state_data(default_state_data);
+    ViewControllerManager.set_view_controller(this.initial_view_controller.name);
 
     // __SECTIONS__
 
@@ -49,38 +45,15 @@ class SharedApplication
     ResourceContainer.set_resource('assets_worker', '/assets_worker', assets_worker);
   }
 
-  go_to_url_section(pathname, search)
+  set_transitions_velocity(search)
   {
     this.location_search = search;
 
     const url_params = new URLSearchParams(this.location_search);
 
-    const transitions_velocity = url_params.get('transitions_velocity');
+    const transitions_velocity = Number(url_params.get('transitions_velocity')) || 1;
 
-    ViewManager.set_transitions_velocity(transitions_velocity);
-
-    const next_view = ViewManager.get_by_url(pathname) || this.home_view;
-
-    this.transition_view_controller.set_next_view(next_view);
-    this.go_to(Sections.TRANSITION, false, false);
-  }
-
-  go_to(section, change_url = true, skip = false)
-  {
-    if (this.debug_mode)
-    {
-      skip = true;
-    }
-
-    ViewManager.go_to_view(section, change_url, skip);
-  }
-
-  go_to_scene(view_name)
-  {
-    const next_view = ViewManager.get(view_name);
-
-    this.transition_view_controller.set_next_view(next_view);
-    this.go_to(Sections.TRANSITION, false, false);
+    TransitionManager.set_transitions_velocity(transitions_velocity);
   }
 
   update()

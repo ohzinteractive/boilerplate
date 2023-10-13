@@ -1,4 +1,5 @@
 import { Browser, Graphics, Initializer, RenderLoop, WorkerToMain } from 'ohzi-core';
+
 import { GraphicsInitializer } from './GraphicsInitializer';
 import { Input } from './Input';
 import { OffscreenApplication } from './OffscreenApplication';
@@ -17,7 +18,9 @@ class OffscreenWorker
       stop: this.stop.bind(this),
       dispose: this.dispose.bind(this),
       // take_screenshot: this.take_screenshot.bind(this),
-      go_to_url_section: this.go_to_url_section.bind(this),
+      set_next_view_controller_name: this.set_next_view_controller_name.bind(this),
+      go_to_view_controller: this.go_to_view_controller.bind(this),
+      set_transitions_velocity: this.set_transitions_velocity.bind(this),
       on_resize: this.on_resize.bind(this),
       // on_frame_end: this.on_frame_end.bind(this),
       on_input_update: this.on_input_update.bind(this)
@@ -37,24 +40,30 @@ class OffscreenWorker
     Browser.init(window_params.opr, window_params.chrome);
     Initializer.init(Input);
 
-    GraphicsInitializer.init(canvas, core_attributes, context_attributes, threejs_attributes);
+    const graphics_initializer = new GraphicsInitializer();
+    graphics_initializer.init(canvas, core_attributes, context_attributes, threejs_attributes);
 
     this.application.init(debug_mode);
   }
 
-  start({ pathname, search })
+  start()
   {
     this.render_loop.start();
-
-    if (this.render_loop.frames_passed === 0)
-    {
-      this.application.go_to_url_section(pathname, search);
-    }
   }
 
-  go_to_url_section({ pathname, search })
+  set_next_view_controller_name({ next_view_controller_name })
   {
-    this.application.go_to_url_section(pathname, search);
+    this.application.set_next_view_controller_name(next_view_controller_name);
+  }
+
+  go_to_view_controller({ view_controller_name, skip })
+  {
+    this.application.go_to_view_controller(view_controller_name, skip);
+  }
+
+  set_transitions_velocity({ search })
+  {
+    this.application.set_transitions_velocity(search);
   }
 
   stop()

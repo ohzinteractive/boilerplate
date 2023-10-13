@@ -103,9 +103,7 @@ class Api
 
   start()
   {
-    const data = { pathname: window.location.pathname, search: window.location.search };
-
-    this.current_strategy.start(data);
+    this.current_strategy.start();
   }
 
   stop()

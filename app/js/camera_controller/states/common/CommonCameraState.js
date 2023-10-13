@@ -1,7 +1,6 @@
 
 import { Vector2 } from 'three';
 
-// import { Input } from '../../../components/Input';
 import { CameraUtilities, Time } from 'ohzi-core';
 import { Input } from '../../../Input';
 import { AbstractCameraState } from './AbstractCameraState';

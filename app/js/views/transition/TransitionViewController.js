@@ -6,7 +6,7 @@ import { TransitionTransitionController } from './TransitionTransitionController
 import transition_data from '../../../data/transitions/transition.json';
 import { CommonViewController } from '../common/CommonViewController';
 
-import { ViewManager, WorkerToMain } from 'ohzi-core';
+import { ViewControllerManager, WorkerToMain } from 'ohzi-core';
 
 class TransitionViewController extends CommonViewController
 {
@@ -110,18 +110,12 @@ class TransitionViewController extends CommonViewController
     this.transition_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
   }
 
-  set_next_view(view, reload = false)
+  set_next_view_controller_name(view_controller_name)
   {
-    if (reload)
-    {
-      localStorage.setItem('next_view', view.name);
-      location.reload();
-    }
-    else
-    {
-      this.scene_controller.set_next_scene(view.scene_controller.scene);
-      this.next_view_name = view.name;
-    }
+    const next_view_controller = ViewControllerManager.get(view_controller_name);
+
+    this.scene_controller.set_next_scene(next_view_controller.scene_controller.scene);
+    this.next_view_name = next_view_controller.name;
   }
 
   __check_section_ready()
@@ -135,7 +129,7 @@ class TransitionViewController extends CommonViewController
         skip = true;
       }
 
-      ViewManager.go_to_view(this.next_view_name, false, skip);
+      WorkerToMain.push('go_to', [this.next_view_name, false, skip]);
     }
   }
 }

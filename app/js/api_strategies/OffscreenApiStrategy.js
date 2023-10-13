@@ -20,9 +20,9 @@ class OffscreenApiStrategy extends ApiStrategy
     }, [offscreen_canvas]);
   }
 
-  start(data, application)
+  start()
   {
-    OffscreenManager.post('start', data);
+    OffscreenManager.post('start');
   }
 
   stop()

@@ -1,4 +1,5 @@
 import { OMath } from 'ohzi-core';
+import { OffscreenManager } from '../../OffscreenManager';
 import { Sections, SectionsURLs } from '../Sections';
 import { CommonView } from '../common/CommonView';
 
@@ -71,6 +72,11 @@ class TransitionView extends CommonView
   update_exit_transition(global_view_data, transition_progress, loading_progress)
   {
     this.__update_progress(loading_progress);
+  }
+
+  set_next_view_name(next_view_name)
+  {
+    OffscreenManager.post('set_next_view_controller_name', { next_view_controller_name: next_view_name });
   }
 
   __update_progress(loading_progress)

@@ -11,22 +11,7 @@ class OffScreenMainAppStrategy extends MainAppStrategy
 
   on_enter()
   {
-
-  }
-
-  go_to_url_section(data)
-  {
-    OffscreenManager.post('go_to_url_section', data);
-  }
-
-  go_to(section, change_url, skip)
-  {
-    OffscreenManager.post('go_to', { section, change_url, skip });
-  }
-
-  go_to_scene(view_name)
-  {
-    OffscreenManager.post('go_to_scene', { view_name });
+    OffscreenManager.post('set_transitions_velocity', { search: window.location.search });
   }
 
   update()

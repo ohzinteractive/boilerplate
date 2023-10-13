@@ -9,20 +9,17 @@ class MainThreadApiStrategy extends ApiStrategy
   {
     console.log('Using Main Thread');
     Initializer.init(MainInput);
-    GraphicsInitializer.init(canvas, core_attributes, context_attributes, threejs_attributes);
+
+    const graphics_initializer = new GraphicsInitializer();
+    graphics_initializer.init(canvas, core_attributes, context_attributes, threejs_attributes);
 
     this.application = application;
     this.render_loop = new RenderLoop(application, Graphics);
   }
 
-  start({ pathname, search })
+  start()
   {
     this.render_loop.start();
-
-    if (this.render_loop.frames_passed === 0)
-    {
-      this.application.go_to_url_section(pathname, search);
-    }
   }
 
   stop()

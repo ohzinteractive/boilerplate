@@ -1,4 +1,4 @@
-import { BaseApplication, WorkerToMain } from 'ohzi-core';
+import { BaseApplication, ViewControllerManager, WorkerToMain } from 'ohzi-core';
 
 import { SharedApplication } from './SharedApplication';
 
@@ -31,19 +31,19 @@ class OffscreenApplication extends BaseApplication
     this.shared_application.update();
   }
 
-  go_to_url_section(pathname, search)
+  set_next_view_controller_name(next_view_controller_name)
   {
-    this.shared_application.go_to_url_section(pathname, search);
+    ViewControllerManager.get('transition').set_next_view_controller_name(next_view_controller_name);
   }
 
-  go_to(section, change_url = true, skip = false)
+  set_transitions_velocity(transitions_velocity)
   {
-    this.shared_application.go_to(section, change_url, skip);
+    this.shared_application.set_transitions_velocity(transitions_velocity);
   }
 
-  go_to_scene(view_name)
+  go_to_view_controller(view_controller_name, skip)
   {
-    this.shared_application.go_to_scene(view_name);
+    ViewControllerManager.go_to_view_controller(view_controller_name, skip);
   }
 
   on_frame_end()

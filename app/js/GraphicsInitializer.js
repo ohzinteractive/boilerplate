@@ -19,5 +19,4 @@ class GraphicsInitializer
   }
 }
 
-const graphics_initializer = new GraphicsInitializer();
-export { graphics_initializer as GraphicsInitializer };
+export { GraphicsInitializer };
