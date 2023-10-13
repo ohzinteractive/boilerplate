@@ -1,4 +1,4 @@
-class MainAppStrategy
+class AppStrategy
 {
   constructor(app)
   {
@@ -6,4 +6,4 @@ class MainAppStrategy
   }
 }
 
-export { MainAppStrategy };
+export { AppStrategy };

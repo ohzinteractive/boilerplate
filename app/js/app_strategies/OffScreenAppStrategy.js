@@ -1,8 +1,8 @@
 import { OffscreenManager } from '../OffscreenManager';
 import { MainInput } from '../components/MainInput';
-import { MainAppStrategy } from './MainAppStrategy';
+import { AppStrategy } from './AppStrategy';
 
-class OffScreenMainAppStrategy extends MainAppStrategy
+class OffScreenAppStrategy extends AppStrategy
 {
   init()
   {
@@ -22,4 +22,4 @@ class OffScreenMainAppStrategy extends MainAppStrategy
   }
 }
 
-export { OffScreenMainAppStrategy };
+export { OffScreenAppStrategy };

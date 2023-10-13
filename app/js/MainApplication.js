@@ -5,10 +5,10 @@ import { HomeView } from './views/home/HomeView';
 import { TransitionView } from './views/transition/TransitionView';
 
 import { OffscreenManager } from './OffscreenManager';
+import { MainThreadAppStrategy } from './app_strategies/MainThreadAppStrategy';
+import { OffScreenAppStrategy } from './app_strategies/OffScreenAppStrategy';
 import { KeyboardInputController } from './components/KeyboardInputController';
 import { MainInput } from './components/MainInput';
-import { MainThreadMainAppStrategy } from './mainapp_strategies/MainThreadMainAppStrategy';
-import { OffScreenMainAppStrategy } from './mainapp_strategies/OffScreenMainAppStrategy';
 import { InitialView } from './views/InitialView';
 import { Sections } from './views/Sections';
 class MainApplication extends BaseApplication
@@ -16,8 +16,8 @@ class MainApplication extends BaseApplication
   init(debug_mode, use_offscreen_canvas)
   {
     this.strategies = {
-      main_thread: new MainThreadMainAppStrategy(this),
-      offscreen: new OffScreenMainAppStrategy(this)
+      main_thread: new MainThreadAppStrategy(this),
+      offscreen: new OffScreenAppStrategy(this)
     };
 
     this.current_strategy = use_offscreen_canvas ? this.strategies.offscreen : this.strategies.main_thread;

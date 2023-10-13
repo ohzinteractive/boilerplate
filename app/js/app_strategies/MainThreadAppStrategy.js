@@ -1,9 +1,9 @@
 import { Input } from '../Input';
 import { SharedApplication } from '../SharedApplication';
 import { MainInput } from '../components/MainInput';
-import { MainAppStrategy } from './MainAppStrategy';
+import { AppStrategy } from './AppStrategy';
 
-class MainThreadMainAppStrategy extends MainAppStrategy
+class MainThreadAppStrategy extends AppStrategy
 {
   init()
   {
@@ -30,4 +30,4 @@ class MainThreadMainAppStrategy extends MainAppStrategy
   }
 }
 
-export { MainThreadMainAppStrategy };
+export { MainThreadAppStrategy };
