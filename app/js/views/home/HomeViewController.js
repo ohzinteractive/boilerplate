@@ -20,12 +20,24 @@ class HomeViewController extends CommonViewController
     this.transition_controller = new HomeTransitionController();
   }
 
+  get scene()
+  {
+    return this.scene_controller.scene;
+  }
+
   start()
   {
     super.start();
 
     this.scene_controller.start();
     this.transition_controller.start();
+  }
+
+  show()
+  {
+    super.show();
+
+    this.transition_controller.show();
   }
 
   before_enter()

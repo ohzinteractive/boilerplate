@@ -1,4 +1,4 @@
-import { ResourceContainer, TransitionManager, ViewControllerManager } from 'ohzi-core';
+import { ResourceContainer, TransitionManager, VCManager } from 'ohzi-core';
 import { default_state_data } from '../data/default_state_data';
 import { SceneController } from './components/SceneController';
 import { AsyncAbstractLoader } from './loaders/AsyncAbstractLoader';
@@ -7,6 +7,7 @@ import { HomeViewController } from './views/home/HomeViewController';
 import { TransitionViewController } from './views/transition/TransitionViewController';
 
 // Instanciated by MainThread or Worker
+// Runs at the same thread of the RenderLoop
 class SharedApplication
 {
   constructor()
@@ -27,9 +28,11 @@ class SharedApplication
     this.initial_view_controller = new InitialViewController();
 
     TransitionManager.set_default_state_data(default_state_data);
-    ViewControllerManager.set_view_controller(this.initial_view_controller.name);
+    VCManager.set_view_controller(this.initial_view_controller.name);
 
-    // __SECTIONS__
+    // __COMPONENT_CONTROLLERS__
+
+    // __SECTION_CONTROLLERS__
 
     this.transition_view_controller = new TransitionViewController(this.debug_mode);
     this.home_view_controller = new HomeViewController();
@@ -55,12 +58,12 @@ class SharedApplication
 
   set_next_view_controller_name({ next_view_controller_name })
   {
-    ViewControllerManager.get('transition').set_next_view_controller_name(next_view_controller_name);
+    VCManager.get('transition').set_next_view_controller_name(next_view_controller_name);
   }
 
   go_to_view_controller({ view_controller_name, skip })
   {
-    ViewControllerManager.go_to_view_controller(view_controller_name, skip);
+    VCManager.go_to_view_controller(view_controller_name, skip);
   }
 
   update()

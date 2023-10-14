@@ -9,7 +9,6 @@ class TransitionSceneController
 
   start()
   {
-    // this.scene = HomeScene;
   }
 
   before_enter()

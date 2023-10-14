@@ -9,7 +9,7 @@ class HomeSceneController
 
   start()
   {
-    this.scene = HomeScene;
+    this.scene = new HomeScene();
   }
 
   before_enter()

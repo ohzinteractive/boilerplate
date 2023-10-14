@@ -6,7 +6,7 @@ import { TransitionTransitionController } from './TransitionTransitionController
 import transition_data from '../../../data/transitions/transition.json';
 import { CommonViewController } from '../common/CommonViewController';
 
-import { ViewControllerManager, WorkerToMain } from 'ohzi-core';
+import { VCManager, WorkerToMain } from 'ohzi-core';
 
 class TransitionViewController extends CommonViewController
 {
@@ -104,7 +104,7 @@ class TransitionViewController extends CommonViewController
 
   set_next_view_controller_name(view_controller_name)
   {
-    const next_view_controller = ViewControllerManager.get(view_controller_name);
+    const next_view_controller = VCManager.get(view_controller_name);
 
     this.scene_controller.set_next_scene(next_view_controller.scene_controller.scene);
     this.next_view_name = next_view_controller.name;

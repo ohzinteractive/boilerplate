@@ -63,5 +63,4 @@ class HomeScene extends AbstractScene
   }
 }
 
-const home_scene = new HomeScene();
-export { home_scene as HomeScene };
+export { HomeScene };
