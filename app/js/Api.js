@@ -62,14 +62,13 @@ class Api
     Configuration.dpr = 1;
     // Configuration.dpr = window.devicePixelRatio;
 
-    this.application.init(this.debug_mode, this.use_offscreen_canvas);
-
     window.app = this.application;
     window.ViewApi = this;
     window.settings = settings;
     window.author = 'OHZI INTERACTIVE';
     window.version = package_json.version;
 
+    this.application.init(this.debug_mode, this.use_offscreen_canvas);
     this.loader.init();
 
     this.resize_observer = new ResizeObserver(this.on_canvas_resize.bind(this));

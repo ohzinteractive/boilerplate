@@ -1,4 +1,6 @@
+import { WorkerToMain } from 'ohzi-core';
 import { Input } from '../Input';
+import { OffscreenManager } from '../OffscreenManager';
 import { SharedApplication } from '../SharedApplication';
 import { MainInput } from '../components/MainInput';
 import { AppStrategy } from './AppStrategy';
@@ -12,6 +14,9 @@ class MainThreadAppStrategy extends AppStrategy
     this.shared_application.init();
 
     Input.init();
+
+    // Pseudo patch to use OffscreenManager on main thread strategy
+    OffscreenManager.set_api(ViewApi);
   }
 
   on_enter()
@@ -23,6 +28,9 @@ class MainThreadAppStrategy extends AppStrategy
 
   update()
   {
+    OffscreenManager.call_methods_before_update({ methods: WorkerToMain.methods, args: WorkerToMain.args });
+    WorkerToMain.clear();
+
     Input.update(MainInput.to_json());
 
     this.shared_application.update();

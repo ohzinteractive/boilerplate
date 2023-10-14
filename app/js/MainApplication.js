@@ -99,10 +99,11 @@ class MainApplication extends BaseApplication
   update()
   {
     this.main_input.update();
-    // this.ui_collision_layer.update();
-    // this.modal_component.update();
 
     this.current_strategy.update();
+
+    // this.ui_collision_layer.update();
+    // this.modal_component.update();
   }
 
   on_frame_end()

@@ -56,14 +56,14 @@ class OffscreenManager
     location.reload();
   }
 
-  call_methods_before_update(message)
+  call_methods_before_update({ methods, args })
   {
-    message.methods = message.methods || [];
-    message.args = message.args || [];
+    methods = methods || [];
+    args = args || [];
 
-    for (let i = 0; i < message.methods.length; i++)
+    for (let i = 0; i < methods.length; i++)
     {
-      const method_string = message.methods[i];
+      const method_string = methods[i];
 
       const method_path = method_string.split('.');
 
@@ -89,8 +89,14 @@ class OffscreenManager
 
       const method_to_call = current_method.bind(current_parent);
 
-      method_to_call(...message.args[i]);
+      method_to_call(...args[i]);
     }
+  }
+
+  // Should be user only by MainThreadAppStrategy
+  set_api(api)
+  {
+    this.api = api;
   }
 
   // From Worker to Main
