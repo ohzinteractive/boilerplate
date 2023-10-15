@@ -12,9 +12,13 @@ class HomeSceneController
     this.scene = new HomeScene();
   }
 
-  before_enter()
+  show()
   {
     SceneManager.current = this.scene;
+  }
+
+  before_enter()
+  {
   }
 
   on_enter()

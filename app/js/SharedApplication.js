@@ -1,6 +1,5 @@
 import { ResourceContainer, TransitionManager, VCManager } from 'ohzi-core';
 import { default_state_data } from '../data/default_state_data';
-import { SceneController } from './components/SceneController';
 import { AsyncAbstractLoader } from './loaders/AsyncAbstractLoader';
 import { InitialViewController } from './views/InitialViewController';
 import { HomeViewController } from './views/home/HomeViewController';
@@ -16,15 +15,11 @@ class SharedApplication
 
   init()
   {
-    this.scene_controller = SceneController;
 
-    this.scene_controller.init();
   }
 
   on_enter()
   {
-    this.scene_controller.start();
-
     this.initial_view_controller = new InitialViewController();
 
     TransitionManager.set_default_state_data(default_state_data);
@@ -33,8 +28,7 @@ class SharedApplication
     // __COMPONENT_CONTROLLERS__
 
     // __SECTION_CONTROLLERS__
-
-    this.transition_view_controller = new TransitionViewController(this.debug_mode);
+    this.transition_view_controller = new TransitionViewController();
     this.home_view_controller = new HomeViewController();
 
     this.transition_view_controller.start();
@@ -68,7 +62,6 @@ class SharedApplication
 
   update()
   {
-    this.scene_controller.update();
   }
 }
 

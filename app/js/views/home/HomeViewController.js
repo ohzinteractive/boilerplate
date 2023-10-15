@@ -37,6 +37,7 @@ class HomeViewController extends CommonViewController
   {
     super.show();
 
+    this.scene_controller.show();
     this.transition_controller.show();
   }
 
