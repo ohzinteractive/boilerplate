@@ -14,6 +14,8 @@ class HomeSceneController
 
   show()
   {
+    this.scene.setup_camera();
+
     SceneManager.current = this.scene;
   }
 

@@ -29,8 +29,7 @@ class HomeScene extends AbstractScene
   {
     this.camera_controller = new CameraController();
 
-    this.__init_camera();
-    this.__init_camera_controller();
+    this.init_camera();
 
     this.set_assets(home_objects, home_textures, home_sounds);
 
@@ -78,26 +77,28 @@ class HomeScene extends AbstractScene
     super.on_high_quality_assets_ready();
   }
 
-  __init_camera()
+  init_camera()
   {
-    const camera = new PerspectiveCamera(60, OScreen.aspect_ratio, 0.1, 200);
-    camera.updateProjectionMatrix();
-    camera.position.z = 10;
+    this.camera = new PerspectiveCamera(60, OScreen.aspect_ratio, 0.1, 200);
+    this.camera.updateProjectionMatrix();
+    this.camera.position.z = 10;
 
-    camera.clear_color.copy(new Color('#181818'));
-    camera.clear_alpha = 1;
-    CameraManager.current = camera;
+    this.camera.clear_color.copy(new Color('#181818'));
+    this.camera.clear_alpha = 1;
   }
 
-  __init_camera_controller()
+  setup_camera()
   {
-    this.camera_controller.set_camera(CameraManager.current);
+    CameraManager.current = this.camera;
+
+    this.camera_controller.set_camera(this.camera);
     // this.camera_controller.set_idle();
     this.camera_controller.set_simple_mode();
 
     this.camera_controller.min_zoom = 1;
     this.camera_controller.max_zoom = 40;
     this.camera_controller.reference_zoom = 10;
+
     this.camera_controller.reference_position.set(0, 0, 0);
     this.camera_controller.set_rotation(0, 0);
   }
