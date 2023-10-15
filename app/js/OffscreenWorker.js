@@ -88,7 +88,7 @@ class OffscreenWorker
       }
     }];
 
-    Graphics.on_resize(entries);
+    Graphics.on_resize(entries, Settings.dpr);
   }
 
   on_input_update({ data })

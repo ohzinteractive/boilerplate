@@ -1,4 +1,4 @@
-import { Browser, Configuration } from 'ohzi-core';
+import { Browser } from 'ohzi-core';
 
 import package_json from '../../package.json';
 import { LoaderState } from './LoaderState';
@@ -29,6 +29,8 @@ class Api
 
     Settings.set_debug_mode(this.params_handler.debug_mode);
     Settings.set_use_offscreen_canvas(use_offscreen_canvas);
+    Settings.set_dpr(1);
+    // Settings.set_dpr(window.devicePixelRatio);
 
     this.application = new MainApplication();
     this.loader = new LoaderState(this);
@@ -64,9 +66,6 @@ class Api
       threejs_attributes,
       application: this.application
     });
-
-    Configuration.dpr = 1;
-    // Configuration.dpr = window.devicePixelRatio;
 
     window.app = this.application;
     window.ViewApi = this;

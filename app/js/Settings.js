@@ -4,6 +4,7 @@ class Settings
   constructor()
   {
     this.debug_mode = false;
+    this.dpr = 1;
     this.use_offscreen_canvas = true;
 
     this.general = {
@@ -18,6 +19,7 @@ class Settings
   {
     this.debug_mode = data.debug_mode;
     this.use_offscreen_canvas = data.use_offscreen_canvas;
+    this.dpr = data.dpr;
 
     this.general = data.general;
   }
@@ -28,6 +30,12 @@ class Settings
     this.debug_mode = debug_mode;
 
     this.needs_update = true;
+  }
+
+  // Called in Main thread
+  set_dpr(dpr)
+  {
+    this.dpr = dpr;
   }
 
   // Called in Main thread
@@ -55,6 +63,7 @@ class Settings
   {
     const data = {
       debug_mode: this.debug_mode,
+      dpr: this.dpr,
       general: this.general,
       use_offscreen_canvas: this.use_offscreen_canvas
     };

@@ -1,5 +1,6 @@
 import { Graphics, Initializer, RenderLoop } from 'ohzi-core';
 import { GraphicsInitializer } from '../GraphicsInitializer';
+import { Settings } from '../Settings';
 import { MainInput } from '../components/MainInput';
 import { ApiStrategy } from './ApiStrategy';
 
@@ -48,7 +49,7 @@ class MainThreadApiStrategy extends ApiStrategy
 
   on_canvas_resize(entries)
   {
-    Graphics.on_resize(entries);
+    Graphics.on_resize(entries, Settings.dpr);
   }
 }
 

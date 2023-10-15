@@ -1,5 +1,6 @@
 import { Graphics, NormalRender } from 'ohzi-core';
 import { sRGBEncoding } from 'three';
+import { Settings } from './Settings';
 
 class GraphicsInitializer
 {
@@ -7,7 +8,13 @@ class GraphicsInitializer
   {
     this.normal_render_mode = new NormalRender();
 
-    Graphics.init(canvas, core_attributes, context_attributes, threejs_attributes);
+    Graphics.init({
+      canvas,
+      core_attributes,
+      context_attributes,
+      threejs_attributes,
+      dpr: Settings.dpr
+    });
 
     Graphics.set_state(this.normal_render_mode);
     Graphics._renderer.outputEncoding = sRGBEncoding;
