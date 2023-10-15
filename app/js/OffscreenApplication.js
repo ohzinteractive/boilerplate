@@ -17,9 +17,8 @@ class OffscreenApplication extends BaseApplication
     };
   }
 
-  init(debug_mode)
+  init()
   {
-    this.debug_mode = debug_mode;
     this.shared_application = new SharedApplication();
 
     this.shared_application.init();

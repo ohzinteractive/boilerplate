@@ -30,13 +30,13 @@ class AbstractScene extends Scene
     return this.current_loading_state.loading_progress;
   }
 
-  init(debug_mode)
+  init()
   {
   }
 
-  load(debug_mode)
+  load()
   {
-    this.init(debug_mode);
+    this.init();
 
     this.set_loading_state(this.loading_states.regular);
     this.current_loading_state.load();

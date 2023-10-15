@@ -7,10 +7,11 @@ import transition_data from '../../../data/transitions/transition.json';
 import { CommonViewController } from '../common/CommonViewController';
 
 import { VCManager, WorkerToMain } from 'ohzi-core';
+import { Settings } from '../../Settings';
 
 class TransitionViewController extends CommonViewController
 {
-  constructor(debug_mode)
+  constructor()
   {
     super({
       name: Sections.TRANSITION,
@@ -18,9 +19,7 @@ class TransitionViewController extends CommonViewController
       transition_data: transition_data
     });
 
-    this.debug_mode = debug_mode;
-
-    this.scene_controller = new TransitionSceneController(debug_mode);
+    this.scene_controller = new TransitionSceneController();
     this.transition_controller = new TransitionTransitionController();
 
     this.next_view_name = '';
@@ -116,7 +115,7 @@ class TransitionViewController extends CommonViewController
     {
       let skip = false;
 
-      if (this.debug_mode)
+      if (Settings.debug_mode)
       {
         skip = true;
       }

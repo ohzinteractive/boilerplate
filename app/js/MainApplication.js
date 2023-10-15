@@ -5,6 +5,7 @@ import { HomeView } from './views/home/HomeView';
 import { TransitionView } from './views/transition/TransitionView';
 
 import { MainToWorker } from './MainToWorker';
+import { Settings } from './Settings';
 import { MainThreadAppStrategy } from './app_strategies/MainThreadAppStrategy';
 import { OffScreenAppStrategy } from './app_strategies/OffScreenAppStrategy';
 import { KeyboardInputController } from './components/KeyboardInputController';
@@ -13,22 +14,21 @@ import { InitialView } from './views/InitialView';
 import { Sections } from './views/Sections';
 class MainApplication extends BaseApplication
 {
-  init(debug_mode, use_offscreen_canvas)
+  init()
   {
     this.strategies = {
       main_thread: new MainThreadAppStrategy(this),
       offscreen: new OffScreenAppStrategy(this)
     };
 
-    this.current_strategy = use_offscreen_canvas ? this.strategies.offscreen : this.strategies.main_thread;
+    this.current_strategy = Settings.use_offscreen_canvas ? this.strategies.offscreen : this.strategies.main_thread;
 
     this.current_strategy.init();
 
     this.main_input = MainInput;
     this.sections = Sections;
-    this.debug_mode = debug_mode;
 
-    MainToWorker.init(this.strategies.main_thread.shared_application, use_offscreen_canvas);
+    MainToWorker.init(this.strategies.main_thread.shared_application);
 
     this.view_manager = ViewManager;
     this.view_manager.set_browser_title_suffix('OHZI Interactive');
@@ -45,7 +45,7 @@ class MainApplication extends BaseApplication
     //   event.preventDefault();
     // });
 
-    DatGUI.init(this.debug_mode);
+    DatGUI.init();
   }
 
   on_enter()
@@ -83,7 +83,7 @@ class MainApplication extends BaseApplication
 
   go_to(section, change_url = true, skip = false)
   {
-    if (this.debug_mode)
+    if (Settings.debug_mode)
     {
       skip = true;
     }

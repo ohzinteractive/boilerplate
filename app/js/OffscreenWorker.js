@@ -3,6 +3,7 @@ import { Browser, Graphics, Initializer, RenderLoop, WorkerToMain } from 'ohzi-c
 import { GraphicsInitializer } from './GraphicsInitializer';
 import { Input } from './Input';
 import { OffscreenApplication } from './OffscreenApplication';
+import { Settings } from './Settings';
 
 class OffscreenWorker
 {
@@ -20,7 +21,8 @@ class OffscreenWorker
       // take_screenshot: this.take_screenshot.bind(this),
       on_resize: this.on_resize.bind(this),
       // on_frame_end: this.on_frame_end.bind(this),
-      on_input_update: this.on_input_update.bind(this)
+      on_input_update: this.on_input_update.bind(this),
+      on_settings_update: this.on_settings_update.bind(this)
     };
 
     this.__bind_messages();
@@ -29,7 +31,7 @@ class OffscreenWorker
     this.__create_fake_window();
   }
 
-  init({ canvas, window_params, core_attributes, context_attributes, threejs_attributes, debug_mode })
+  init({ canvas, window_params, core_attributes, context_attributes, threejs_attributes })
   {
     this.canvas = canvas;
 
@@ -40,7 +42,7 @@ class OffscreenWorker
     const graphics_initializer = new GraphicsInitializer();
     graphics_initializer.init(canvas, core_attributes, context_attributes, threejs_attributes);
 
-    this.application.init(debug_mode);
+    this.application.init();
   }
 
   start()
@@ -92,6 +94,11 @@ class OffscreenWorker
   on_input_update({ data })
   {
     Input.update(data);
+  }
+
+  on_settings_update({ data })
+  {
+    Settings.update(data);
   }
 
   // Called from OffscreenApplication

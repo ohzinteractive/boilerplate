@@ -1,10 +1,9 @@
 
 class TransitionSceneController
 {
-  constructor(debug_mode)
+  constructor()
   {
     this.next_scene = undefined;
-    this.debug_mode = debug_mode;
   }
 
   start()
@@ -15,7 +14,7 @@ class TransitionSceneController
   {
     if (!this.next_scene.is_loaded)
     {
-      this.next_scene.load(this.debug_mode);
+      this.next_scene.load();
     }
   }
 
