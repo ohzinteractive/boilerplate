@@ -6,6 +6,7 @@ import { LoaderState } from './LoaderState';
 // APP
 import { MainApplication } from './MainApplication';
 import { ParamsHandler } from './ParamsHandler';
+import { Settings } from './Settings';
 import { MainThreadApiStrategy } from './api_strategies/MainThreadApiStrategy';
 import { OffscreenApiStrategy } from './api_strategies/OffscreenApiStrategy';
 import { MainInput } from './components/MainInput';
@@ -14,34 +15,32 @@ class Api
   init(settings)
   {
     this.params_handler = new ParamsHandler();
-    this.debug_mode = this.params_handler.debug_mode;
-
-    this.application = new MainApplication();
-
-    this.loader = new LoaderState(this);
-
-    this.config = Configuration;
 
     const window_params = {
       chrome: !!window.chrome,
       opr: !!window.opr
     };
 
-    Browser.init(window_params.opr, window_params.chrome);
-
     const app_container = document.querySelector('.container');
     const canvas = document.querySelector('.main-canvas');
 
-    this.use_offscreen_canvas = !Browser.is_safari && !!canvas.transferControlToOffscreen;
+    Browser.init(window_params.opr, window_params.chrome);
+    const use_offscreen_canvas = !Browser.is_safari && !!canvas.transferControlToOffscreen;
 
-    MainInput.init(app_container, document, this.use_offscreen_canvas);
+    Settings.set_debug_mode(this.params_handler.debug_mode);
+    Settings.set_use_offscreen_canvas(use_offscreen_canvas);
+
+    this.application = new MainApplication();
+    this.loader = new LoaderState(this);
+
+    MainInput.init(app_container, document);
 
     this.strategies = {
       main_thread: new MainThreadApiStrategy(this),
       offscreen: new OffscreenApiStrategy(this)
     };
 
-    this.current_strategy = this.use_offscreen_canvas ? this.strategies.offscreen : this.strategies.main_thread;
+    this.current_strategy = use_offscreen_canvas ? this.strategies.offscreen : this.strategies.main_thread;
 
     const core_attributes = {
       force_webgl2: true,
@@ -57,7 +56,14 @@ class Api
       logarithmicDepthBuffer: false
     };
 
-    this.current_strategy.init(canvas, window_params, core_attributes, context_attributes, threejs_attributes, this.application);
+    this.current_strategy.init({
+      canvas,
+      window_params,
+      core_attributes,
+      context_attributes,
+      threejs_attributes,
+      application: this.application
+    });
 
     Configuration.dpr = 1;
     // Configuration.dpr = window.devicePixelRatio;
@@ -68,7 +74,7 @@ class Api
     window.author = 'OHZI INTERACTIVE';
     window.version = package_json.version;
 
-    this.application.init(this.debug_mode, this.use_offscreen_canvas);
+    this.application.init();
     this.loader.init();
 
     this.resize_observer = new ResizeObserver(this.on_canvas_resize.bind(this));

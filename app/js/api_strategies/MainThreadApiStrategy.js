@@ -5,7 +5,7 @@ import { ApiStrategy } from './ApiStrategy';
 
 class MainThreadApiStrategy extends ApiStrategy
 {
-  init(canvas, window_params, core_attributes, context_attributes, threejs_attributes, application)
+  init({ canvas, core_attributes, context_attributes, threejs_attributes, application })
   {
     console.log('Using Main Thread');
     Initializer.init(MainInput);

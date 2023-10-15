@@ -6,9 +6,12 @@ class MainInput extends InputController
   constructor()
   {
     super();
+
+    // TODO: set needs_update to true only if input was changed
+    this.needs_update = true;
   }
 
-  init(container, keyboard_input_container, use_offscreen_canvas)
+  init(container, keyboard_input_container)
   {
     super.init(container);
 
@@ -59,6 +62,7 @@ class MainInput extends InputController
     super.clear();
 
     this.clicked = false;
+    // this.needs_update = false;
 
     this.keyboard.clear();
   }

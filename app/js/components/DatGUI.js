@@ -7,13 +7,10 @@ class DatGUI
   {
     this.dat_gui = undefined;
     this.hidden = false;
-    this.debug_mode = false;
   }
 
-  init(debug_mode)
+  init()
   {
-    this.debug_mode = debug_mode;
-
     document.addEventListener('keydown', event =>
     {
       if (event.shiftKey && event.key === 'H')
@@ -38,12 +35,22 @@ class DatGUI
 
     // document.querySelector('.lil-gui.autoPlace').style['z-index'] = 999;
 
-    if (!this.debug_mode)
+    if (!Settings.debug_mode)
     {
       document.querySelector('.lil-gui.autoPlace').style.display = 'none';
     }
 
     this.dat_gui.add(Settings.general, 'value', -20, 20);
+
+    this.dat_gui.onChange(event =>
+    {
+      // event.object;     // object that was modified
+      // event.property;   // string, name of property
+      // event.value;      // new value of controller
+      // event.controller; // controller that was modified
+
+      Settings.set_needs_update(true);
+    });
   }
 }
 
