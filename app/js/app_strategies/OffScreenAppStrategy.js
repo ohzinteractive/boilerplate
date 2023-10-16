@@ -1,3 +1,4 @@
+import { MainToWorker } from '../MainToWorker';
 import { OffscreenManager } from '../OffscreenManager';
 import { Settings } from '../Settings';
 import { MainInput } from '../components/MainInput';
@@ -8,6 +9,8 @@ class OffScreenAppStrategy extends AppStrategy
   init()
   {
     OffscreenManager.post('on_settings_update', { data: Settings.to_json() });
+
+    MainToWorker.init();
   }
 
   on_enter()

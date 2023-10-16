@@ -28,8 +28,6 @@ class MainApplication extends BaseApplication
     this.main_input = MainInput;
     this.sections = Sections;
 
-    MainToWorker.init(this.strategies.main_thread.shared_application);
-
     this.view_manager = ViewManager;
     this.view_manager.set_browser_title_suffix('OHZI Interactive');
     this.view_manager.set_main_to_worker(MainToWorker);

@@ -8,8 +8,8 @@ class MainToWorker
   init(main_app)
   {
     this.strategies = {
-      main_thread: new MainMTWStrategy(main_app, OffscreenManager),
-      offscreen: new OffscreenMTWStrategy(main_app, OffscreenManager)
+      main_thread: new MainMTWStrategy(main_app),
+      offscreen: new OffscreenMTWStrategy(OffscreenManager)
     };
 
     this.current_strategy = Settings.use_offscreen_canvas ? this.strategies.offscreen : this.strategies.main_thread;

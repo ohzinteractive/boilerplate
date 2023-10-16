@@ -1,9 +1,8 @@
 class MTWStrategy
 {
-  constructor(app, offscreen_manager)
+  constructor()
   {
-    this.app = app;
-    this.offscreen_manager = offscreen_manager;
+
   }
 }
 
