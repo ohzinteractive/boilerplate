@@ -83,7 +83,7 @@ class HomeScene extends AbstractScene
     this.camera.updateProjectionMatrix();
     this.camera.position.z = 10;
 
-    this.camera.clear_color.copy(new Color('#181818').convertSRGBToLinear());
+    this.camera.clear_color.copy(new Color('#181818'));
     this.camera.clear_alpha = 1;
   }
 
