@@ -1,5 +1,4 @@
 import { Graphics, NormalRender } from 'ohzi-core';
-import { sRGBEncoding } from 'three';
 import { Settings } from './Settings';
 
 class GraphicsInitializer
@@ -17,7 +16,7 @@ class GraphicsInitializer
     });
 
     Graphics.set_state(this.normal_render_mode);
-    Graphics._renderer.outputEncoding = sRGBEncoding;
+    // Graphics._renderer.outputColorSpace = LinearSRGBColorSpace;
     Graphics._renderer.debug.checkShaderErrors = process.env.NODE_ENV === 'development';
 
     // Graphics._renderer.physicallyCorrectLights = true;

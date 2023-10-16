@@ -38,7 +38,7 @@ class MainApplication extends BaseApplication
     // this.ui_collision_layer.init(Input, Time);
 
     // this.modal_component = ModalComponent;
-    // this.modal_component.init(UICollisionLayer, HTMLUtilities, Time);
+    // this.modal_component.init(UICollisionLayer, Time);
 
     // addEventListener('contextmenu', (event) =>
     // {
