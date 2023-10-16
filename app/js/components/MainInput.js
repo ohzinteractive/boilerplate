@@ -89,13 +89,30 @@ class MainInput extends InputController
       NDC: this.NDC,
       NDC_delta: this.NDC_delta,
 
+      // html_NDC: this.html_NDC,
+
       left_mouse_button_pressed: this.left_mouse_button_pressed,
       left_mouse_button_down: this.left_mouse_button_down,
       left_mouse_button_released: this.left_mouse_button_released,
 
+      // middle_mouse_button_pressed: this.middle_mouse_button_pressed,
+      // middle_mouse_button_down: this.middle_mouse_button_down,
+      // middle_mouse_button_released: this.middle_mouse_button_released,
+
       right_mouse_button_pressed: this.right_mouse_button_pressed,
       right_mouse_button_down: this.right_mouse_button_down,
       right_mouse_button_released: this.right_mouse_button_released,
+
+      // is_touchscreen: this.is_touchscreen,
+      // pointer_is_within_bounds: this.pointer_is_within_bounds,
+
+      // pointer_pos: this.pointer_pos,
+      // html_pointer_pos: this.html_pointer_pos,
+      pointer_pos_delta: this.pointer_pos_delta,
+
+      // pointer_center: this.pointer_center,
+      // pointer_center_delta: this.pointer_center_delta,
+      // pointer_center_NDC: this.pointer_center_NDC,
 
       pointer_count: this.pointer_count,
 

@@ -17,11 +17,7 @@ class Settings
   // Called in Worker
   update(data)
   {
-    this.debug_mode = data.debug_mode;
-    this.use_offscreen_canvas = data.use_offscreen_canvas;
-    this.dpr = data.dpr;
-
-    this.general = data.general;
+    Object.assign(this, data);
   }
 
   // Called in Main thread
@@ -61,12 +57,9 @@ class Settings
   // Called in Main thread
   to_json()
   {
-    const data = {
-      debug_mode: this.debug_mode,
-      dpr: this.dpr,
-      general: this.general,
-      use_offscreen_canvas: this.use_offscreen_canvas
-    };
+    const data = {};
+
+    Object.assign(data, this);
 
     return data;
   }

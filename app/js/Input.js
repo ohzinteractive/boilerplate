@@ -30,25 +30,7 @@ class Input
 
   update(data)
   {
-    this.clicked = data.clicked;
-
-    this.NDC = data.NDC;
-    this.NDC_delta = data.NDC_delta;
-
-    this.left_mouse_button_pressed = data.left_mouse_button_pressed;
-    this.left_mouse_button_down = data.left_mouse_button_down;
-    this.left_mouse_button_released = data.left_mouse_button_released;
-
-    this.right_mouse_button_pressed = data.right_mouse_button_pressed;
-    this.right_mouse_button_down = data.right_mouse_button_down;
-    this.right_mouse_button_released = data.right_mouse_button_released;
-
-    this.pointer_count = data.pointer_count;
-
-    this.scroll_delta = data.scroll_delta;
-    this.zoom_delta = data.zoom_delta;
-
-    this.keyboard_keys = data.keyboard_keys;
+    Object.assign(this, data);
   }
 
   is_key_pressed(key_name)
