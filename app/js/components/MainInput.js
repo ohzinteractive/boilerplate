@@ -85,9 +85,13 @@ class MainInput extends InputController
   to_json()
   {
     const data = {
-      clicked: this.clicked,
+
       NDC: this.NDC,
       NDC_delta: this.NDC_delta,
+
+      clicked: this.clicked,
+      // captured_NDC: this.captured_NDC,
+      // captured_NDC_delta: this.captured_NDC_delta,
 
       // html_NDC: this.html_NDC,
 
