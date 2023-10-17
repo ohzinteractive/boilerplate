@@ -1,4 +1,3 @@
-
 class OffscreenManager
 {
   constructor()

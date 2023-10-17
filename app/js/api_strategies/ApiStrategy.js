@@ -1,8 +1,7 @@
 class ApiStrategy
 {
-  constructor(api)
+  constructor()
   {
-    this.api = api;
   }
 
   init()

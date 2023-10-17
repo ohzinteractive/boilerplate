@@ -1,3 +1,4 @@
 import { PreLoader } from './js/PreLoader';
 
-PreLoader.init();
+const preloader = new PreLoader();
+preloader.init();

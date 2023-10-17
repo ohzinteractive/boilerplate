@@ -3,8 +3,9 @@ import { ApiStrategy } from './ApiStrategy';
 
 class OffscreenApiStrategy extends ApiStrategy
 {
-  init({ canvas, window_params, core_attributes, context_attributes, threejs_attributes })
+  init({ api, canvas, window_params, core_attributes, context_attributes, threejs_attributes })
   {
+    this.api = api;
     console.log('Using OffscreenCanvas');
     const offscreen_canvas = canvas.transferControlToOffscreen();
 

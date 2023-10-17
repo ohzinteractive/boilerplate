@@ -156,10 +156,29 @@ class OffscreenWorker
   __create_fake_window()
   {
     self.window = {
+      dispatchEvent: (event) =>
+      {
+        console.log(event);
+      },
       location: {
         reload: this.reload.bind(this)
       }
     };
+
+    if (module.hot)
+    {
+      module.hot.accept((data) =>
+      {
+        // module or one of its dependencies was just updated.
+        this.reload();
+      });
+
+      module.hot.dispose((data) =>
+      {
+        // module is about to be replaced.
+        this.reload();
+      });
+    }
   }
 }
 

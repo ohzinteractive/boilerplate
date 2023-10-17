@@ -27,5 +27,4 @@ class PreLoader
   }
 }
 
-const pre_loader = new PreLoader();
-export { pre_loader as PreLoader };
+export { PreLoader };

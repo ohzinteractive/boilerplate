@@ -6,6 +6,13 @@ import { AppStrategy } from './AppStrategy';
 
 class OffScreenAppStrategy extends AppStrategy
 {
+  constructor(app)
+  {
+    super();
+
+    this.app = app;
+  }
+
   init()
   {
     OffscreenManager.post('on_settings_update', { data: Settings.to_json() });

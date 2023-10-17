@@ -1,5 +1,5 @@
-import { Browser } from 'ohzi-core';
 
+import { Browser } from 'ohzi-core';
 import package_json from '../../package.json';
 import { LoaderState } from './LoaderState';
 
@@ -7,12 +7,12 @@ import { LoaderState } from './LoaderState';
 import { MainApplication } from './MainApplication';
 import { ParamsHandler } from './ParamsHandler';
 import { Settings } from './Settings';
-import { MainThreadApiStrategy } from './api_strategies/MainThreadApiStrategy';
+import { MainThreadApiStrategyWrapper } from './api_strategies/MainThreadApiStrategyWrapper';
 import { OffscreenApiStrategy } from './api_strategies/OffscreenApiStrategy';
 import { MainInput } from './components/MainInput';
 class Api
 {
-  init(settings)
+  async init(settings)
   {
     this.params_handler = new ParamsHandler();
 
@@ -38,8 +38,8 @@ class Api
     MainInput.init(app_container, document);
 
     this.strategies = {
-      main_thread: new MainThreadApiStrategy(this),
-      offscreen: new OffscreenApiStrategy(this)
+      main_thread: new MainThreadApiStrategyWrapper(),
+      offscreen: new OffscreenApiStrategy()
     };
 
     this.current_strategy = use_offscreen_canvas ? this.strategies.offscreen : this.strategies.main_thread;
@@ -58,7 +58,8 @@ class Api
       logarithmicDepthBuffer: false
     };
 
-    this.current_strategy.init({
+    await this.current_strategy.init({
+      api: this,
       canvas,
       window_params,
       core_attributes,
@@ -73,11 +74,13 @@ class Api
     window.author = 'OHZI INTERACTIVE';
     window.version = package_json.version;
 
-    this.application.init();
+    await this.application.init();
     this.loader.init();
 
     this.resize_observer = new ResizeObserver(this.on_canvas_resize.bind(this));
     this.resize_observer.observe(canvas);
+
+    this.__bind_parcel_events();
   }
 
   on_canvas_resize(entries)
@@ -124,6 +127,25 @@ class Api
   take_screenshot(callback)
   {
     this.current_strategy.take_screenshot(callback);
+  }
+
+  __bind_parcel_events()
+  {
+    // Parcel stuff
+    if (module.hot)
+    {
+      module.hot.accept((data) =>
+      {
+        // module or one of its dependencies was just updated.
+        location.reload();
+      });
+
+      module.hot.dispose((data) =>
+      {
+        // module is about to be replaced.
+        location.reload();
+      });
+    }
   }
 }
 

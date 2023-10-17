@@ -6,7 +6,7 @@ import { TransitionView } from './views/transition/TransitionView';
 
 import { MainToWorker } from './MainToWorker';
 import { Settings } from './Settings';
-import { MainThreadAppStrategy } from './app_strategies/MainThreadAppStrategy';
+import { MainThreadAppStrategyWrapper } from './app_strategies/MainThreadAppStrategyWrapper';
 import { OffScreenAppStrategy } from './app_strategies/OffScreenAppStrategy';
 import { KeyboardInputController } from './components/KeyboardInputController';
 import { MainInput } from './components/MainInput';
@@ -14,16 +14,16 @@ import { InitialView } from './views/InitialView';
 import { Sections } from './views/Sections';
 class MainApplication extends BaseApplication
 {
-  init()
+  async init()
   {
     this.strategies = {
-      main_thread: new MainThreadAppStrategy(this),
+      main_thread: new MainThreadAppStrategyWrapper(),
       offscreen: new OffScreenAppStrategy(this)
     };
 
     this.current_strategy = Settings.use_offscreen_canvas ? this.strategies.offscreen : this.strategies.main_thread;
 
-    this.current_strategy.init();
+    await this.current_strategy.init();
 
     this.main_input = MainInput;
     this.sections = Sections;

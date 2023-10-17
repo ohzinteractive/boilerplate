@@ -1,8 +1,7 @@
 class AppStrategy
 {
-  constructor(app)
+  constructor()
   {
-    this.app = app;
   }
 }
 
