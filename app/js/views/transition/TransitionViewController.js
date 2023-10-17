@@ -31,13 +31,6 @@ class TransitionViewController extends CommonViewController
     this.transition_controller.start();
   }
 
-  show()
-  {
-    super.show();
-
-    this.transition_controller.show();
-  }
-
   before_enter()
   {
     super.before_enter();

@@ -48,7 +48,7 @@
   "dependencies": {
     "lil-gui": "0.17.0",
     "ohzi-components": "2.6.8",
-    "ohzi-core": "11.0.2",
+    "ohzi-core": "11.0.3",
     "pit-js": "2.2.1"
   },
   "devDependencies": {

@@ -100,6 +100,7 @@ class HomeScene extends AbstractScene
     this.camera_controller.reference_zoom = 10;
 
     this.camera_controller.reference_position.set(0, 0, 0);
+
     this.camera_controller.set_rotation(0, 0);
   }
 }

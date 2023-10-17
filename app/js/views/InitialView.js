@@ -12,14 +12,6 @@ class InitialView
   {
   }
 
-  show()
-  {
-  }
-
-  hide()
-  {
-  }
-
   before_enter()
   {
   }

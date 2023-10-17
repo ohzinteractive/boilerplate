@@ -23,7 +23,6 @@ class LoaderView extends CommonView
 
   set_opacity()
   {
-
   }
 }
 

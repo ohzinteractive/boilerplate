@@ -67,7 +67,7 @@ class LoaderState extends BaseApplication
 
     this.finished = true;
 
-    this.loader_view.hide();
+    this.loader_view.on_exit();
     this.api.start();
   }
 

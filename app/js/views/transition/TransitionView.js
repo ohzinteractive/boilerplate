@@ -24,11 +24,6 @@ class TransitionView extends CommonView
     this.progress_bar = document.querySelector('.transition__progress-bar-fill');
   }
 
-  show()
-  {
-    super.show();
-  }
-
   before_enter()
   {
     this.current_progress = 0;
