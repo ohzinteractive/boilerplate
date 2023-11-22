@@ -113,7 +113,10 @@ class TransitionViewController extends CommonViewController
         skip = true;
       }
 
-      WorkerToMain.push('go_to', [this.next_view_name, false, skip]);
+      if (this.next_view_name !== Sections.TRANSITION)
+      {
+        WorkerToMain.push('go_to', [this.next_view_name, false, skip]);
+      }
     }
   }
 }
