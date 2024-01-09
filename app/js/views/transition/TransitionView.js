@@ -1,6 +1,6 @@
 import { OMath, ViewManager } from 'ohzi-core';
-import { CommonView } from '../common/CommonView';
 import { Sections, SectionsURLs } from '../Sections';
+import { CommonView } from '../common/CommonView';
 
 import { TransitionSceneController } from './TransitionSceneController';
 import { TransitionTransitionController } from './TransitionTransitionController';
@@ -130,7 +130,10 @@ class TransitionView extends CommonView
         skip = true;
       }
 
-      ViewManager.go_to_view(this.next_view_name, false, skip);
+      if (this.next_view_name !== Sections.TRANSITION)
+      {
+        ViewManager.go_to_view(this.next_view_name, false, skip);
+      }
     }
   }
 
