@@ -10,7 +10,7 @@ module.exports = {
     ViewApi: 'readonly'
   },
   parserOptions: {
-    ecmaVersion: 2020,
+    ecmaVersion: 2022,
     sourceType: 'module'
   },
   rules: {
