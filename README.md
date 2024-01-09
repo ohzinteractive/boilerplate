@@ -4,7 +4,7 @@
 
 Before you begin, ensure you have met the following requirements:
 * You have installed the following version of
-    1. Node.js: `16.x.x`
+    1. Node.js: `18.x.x`
     2. Git: `2.x.x`
     3. Yarn: `1.22.x`
 
