@@ -7,11 +7,12 @@
   "module_example": "dist/index.module.js",
   "scripts": {
     "preinstall": "yarn setup-git && yarn setup-submodules && yarn update-submodules && yarn config-hooks",
+    "postinstall": "yarn setup-submodules && yarn update-submodules",
     "setup-git": "git init",
     "setup-submodules": "yarn setup-core-submodule && yarn setup-components-submodule && yarn setup-pit-submodule",
-    "setup-core-submodule": "node tasks/app/link_submodule.mjs core",
-    "setup-components-submodule": "node tasks/app/link_submodule.mjs components",
-    "setup-pit-submodule": "node tasks/app/link_submodule.mjs pit",
+    "setup-core-submodule": "node tasks/app/setup_submodule.mjs core",
+    "setup-components-submodule": "node tasks/app/setup_submodule.mjs components",
+    "setup-pit-submodule": "node tasks/app/setup_submodule.mjs pit",
 
     "update-submodules": "yarn update-core && yarn update-components && yarn update-pit",
     "update-core": "node tasks/app/update_submodule.mjs ohzi-core core",
