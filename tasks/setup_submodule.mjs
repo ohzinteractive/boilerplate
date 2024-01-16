@@ -1,7 +1,7 @@
 import { execSync } from 'child_process';
 import fs from 'fs';
 
-class LinkSubmodule
+class SetupSubmodule
 {
   async read_folder(folder)
   {
@@ -24,5 +24,5 @@ class LinkSubmodule
   }
 }
 
-const link_submodule = new LinkSubmodule();
-link_submodule.read_folder(`./${process.argv[2]}`);
+const setup_submodule = new SetupSubmodule();
+setup_submodule.read_folder(`./${process.argv[2]}`);
