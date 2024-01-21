@@ -11,7 +11,7 @@ import { home_sounds } from '../../data/assets/home/home_sounds';
 import { home_textures } from '../../data/assets/home/home_textures';
 
 import { CameraManager, Debug, Grid, OScreen, PerspectiveCamera } from 'ohzi-core';
-import { Color, Vector3 } from 'three';
+import { Color } from 'three';
 import { Settings } from '../Settings';
 import { CameraController } from '../camera_controller/CameraController';
 
@@ -63,11 +63,11 @@ class HomeScene extends AbstractScene
 
     super.on_assets_ready();
 
-    for (let i = 0; i < 10; i++)
-    {
-      const cube = Debug.draw_cube(new Vector3(i * 2, 0, 0));
-      this.add(cube);
-    }
+    // for (let i = 0; i < 10; i++)
+    // {
+    //   const cube = Debug.draw_cube(new Vector3(i * 2, 0, 0));
+    //   this.add(cube);
+    // }
 
     // this.add_lights();
   }
