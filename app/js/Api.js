@@ -136,14 +136,20 @@ class Api
     {
       module.hot.accept((data) =>
       {
+        // setTimeout(() =>
+        // {
+        //   location.reload();
+        // }, 200);
         // module or one of its dependencies was just updated.
-        location.reload();
       });
 
       module.hot.dispose((data) =>
       {
-        // module is about to be replaced.
-        location.reload();
+        setTimeout(() =>
+        {
+          // module is about to be replaced.
+          location.reload();
+        }, 200);
       });
     }
   }

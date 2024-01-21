@@ -2,7 +2,7 @@
   "name": "ohzi-boilerplate",
   "description": "OHZI Boilerplate.",
   "author": "OHZI Interactive",
-  "version": "11.0.4",
+  "version": "11.1.1",
   "license": "MIT",
   "module_example": "dist/index.module.js",
   "scripts": {
@@ -53,23 +53,26 @@
   },
   "dependencies": {
     "lil-gui": "0.17.0",
-    "ohzi-components": "3.0.0",
-    "ohzi-core": "11.0.4",
-    "pit-js": "3.0.0"
+    "ohzi-components": "3.1.1",
+    "ohzi-core": "11.1.1",
+    "pit-js": "3.1.1"
   },
   "devDependencies": {
-    "@parcel/packager-raw-url": "2.8.3",
-    "@parcel/packager-xml": "2.8.3",
-    "@parcel/transformer-glsl": "2.8.3",
-    "@parcel/transformer-image": "2.8.3",
-    "@parcel/transformer-inline-string": "2.8.3",
-    "@parcel/transformer-pug": "2.8.3",
-    "@parcel/transformer-sass": "2.8.3",
-    "@parcel/transformer-webmanifest": "2.8.3",
-    "@parcel/transformer-xml": "2.8.3",
+    "@parcel/config-default": "2.11.0",
+    "@parcel/core": "2.11.0",
+    "@parcel/packager-raw-url": "2.11.0",
+    "@parcel/packager-xml": "2.11.0",
+    "@parcel/plugin": "2.11.0",
+    "@parcel/transformer-glsl": "2.11.0",
+    "@parcel/transformer-image": "2.11.0",
+    "@parcel/transformer-inline-string": "2.11.0",
+    "@parcel/transformer-pug": "2.11.0",
+    "@parcel/transformer-sass": "2.11.0",
+    "@parcel/transformer-webmanifest": "2.11.0",
+    "@parcel/transformer-xml": "2.11.0",
     "archiver": "^6.0.1",
-    "parcel": "2.8.3",
-    "parcel-resolver-ignore": "^2.1.3",
+    "parcel": "2.11.0",
+    "parcel-resolver-ignore": "2.2.0",
     "replace-in-file": "^6.2.0",
     "serve-static": "^1.14.1",
     "standardx": "^7.0.0",
@@ -80,7 +83,10 @@
   },
   "standardx": {
     "ignore": [
-      "/public/"
+      "/components/",
+      "/core/",
+      "/public/",
+      "/pit/"
     ]
   },
   "parcelIgnore": [

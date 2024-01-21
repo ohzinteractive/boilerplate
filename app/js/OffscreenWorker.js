@@ -169,14 +169,21 @@ class OffscreenWorker
     {
       module.hot.accept((data) =>
       {
-        // module or one of its dependencies was just updated.
-        this.reload();
+        // setTimeout(() =>
+        // {
+        //   module or one of its dependencies was just updated.
+        //   this.reload();
+        // }, 200);
       });
 
       module.hot.dispose((data) =>
       {
+        console.log('dispose');
+        setTimeout(() =>
+        {
         // module is about to be replaced.
-        this.reload();
+          this.reload();
+        }, 200);
       });
     }
   }
