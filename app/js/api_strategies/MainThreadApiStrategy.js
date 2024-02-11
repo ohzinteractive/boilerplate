@@ -1,4 +1,6 @@
 import { Graphics, Initializer, RenderLoop } from 'ohzi-core';
+// import { BASISInitializer } from '../BASISInitializer';
+// import { DracoInitializer } from '../DracoInitializer';
 import { GraphicsInitializer } from '../GraphicsInitializer';
 import { Settings } from '../Settings';
 import { MainInput } from '../components/MainInput';
@@ -13,6 +15,12 @@ class MainThreadApiStrategy extends ApiStrategy
 
     const graphics_initializer = new GraphicsInitializer();
     graphics_initializer.init(canvas, core_attributes, context_attributes, threejs_attributes);
+
+    // const draco_initializer = new DracoInitializer();
+    // draco_initializer.init();
+
+    // const basis_initializer = new BASISInitializer();
+    // basis_initializer.init();
 
     this.application = application;
     this.render_loop = new RenderLoop(application, Graphics);

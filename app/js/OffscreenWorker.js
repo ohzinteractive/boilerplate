@@ -4,6 +4,8 @@ import { GraphicsInitializer } from './GraphicsInitializer';
 import { Input } from './Input';
 import { OffscreenApplication } from './OffscreenApplication';
 import { Settings } from './Settings';
+// import { DracoInitializer } from './DracoInitializer';
+// import { BASISInitializer } from './BASISInitializer';
 
 class OffscreenWorker
 {
@@ -41,6 +43,12 @@ class OffscreenWorker
 
     const graphics_initializer = new GraphicsInitializer();
     graphics_initializer.init(canvas, core_attributes, context_attributes, threejs_attributes);
+
+    // const draco_initializer = new DracoInitializer();
+    // draco_initializer.init();
+
+    // const basis_initializer = new BASISInitializer();
+    // basis_initializer.init();
 
     this.application.init();
   }
