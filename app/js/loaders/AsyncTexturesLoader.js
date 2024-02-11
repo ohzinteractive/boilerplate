@@ -1,5 +1,4 @@
-import { CubemapLoader } from 'ohzi-core';
-import { AsyncTextureLoader, BasisLoader, ResourceContainer, RGBETextureLoader } from 'ohzi-core';
+import { AsyncTextureLoader, BasisLoader, CubemapLoader, ResourceContainer, RGBETextureLoader } from 'ohzi-core';
 
 import { AsyncAbstractLoader } from './AsyncAbstractLoader';
 
@@ -25,7 +24,10 @@ class AsyncTexturesLoader extends AsyncAbstractLoader
         loaders.push(new AsyncTextureLoader(
           asset_data.name,
           asset_data.url,
-          asset_data.size
+          asset_data.size,
+          asset_data.flipY,
+          asset_data.premultiplyAlpha,
+          asset_data.colorSpaceConversion
         ));
 
         break;
