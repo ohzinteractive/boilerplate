@@ -4,16 +4,13 @@ import { OScreen } from 'ohzi-core';
 // import { Debug } from 'ohzi-core';
 import { OMath } from 'ohzi-core';
 // import { SceneManager } from 'ohzi-core';
-import { PerspectiveFrustumPointFitter } from 'ohzi-core';
-import { OrthographicFrustumPointFitter } from 'ohzi-core';
+import { OrthographicFrustumPointFitter, PerspectiveFrustumPointFitter } from 'ohzi-core';
 
-import { Vector3 } from 'three';
-import { Quaternion } from 'three';
+import { Quaternion, Vector3 } from 'three';
 // import { PlaneHelper } from 'three';
 import { Plane } from 'three';
 // import { Sphere } from 'three';
-import { Box3 } from 'three';
-import { Ray } from 'three';
+import { Box3, Ray } from 'three';
 
 import { SimpleCameraState } from './states/SimpleCameraState';
 import { AbstractCameraState } from './states/common/AbstractCameraState';
@@ -104,7 +101,6 @@ class CameraController
   set_normalized_zoom(zoom)
   {
     this.normalized_zoom = OMath.clamp(zoom, 0, 1);
-    // EventManager.fire_zoom_changed(this.normalized_zoom);
   }
 
   update_normalized_zoom(min_zoom, max_zoom)
@@ -112,8 +108,6 @@ class CameraController
     const zoom = this.camera.position.distanceTo(this.reference_position);
     this.normalized_zoom = OMath.linear_map(zoom, min_zoom, max_zoom, 1, 0);
     this.normalized_zoom = OMath.clamp(this.normalized_zoom, 0, 1);
-
-    // EventManager.fire_zoom_changed(this.normalized_zoom);
   }
 
   update_initial_rotation()

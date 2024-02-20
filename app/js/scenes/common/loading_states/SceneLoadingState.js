@@ -1,10 +1,8 @@
 import { ResourceContainer } from 'ohzi-core';
-import { AudiosCompilator } from '../../../compilators/AudiosCompilator';
 import { CompilatorManager } from '../../../compilators/CompilatorManager';
 // import { ObjectsCompilator } from '../../../compilators/ObjectsCompilator';
 import { SceneCompilator } from '../../../compilators/SceneCompilator';
 import { TexturesCompilator } from '../../../compilators/TexturesCompilator';
-import { AsyncAudiosLoader } from '../../../loaders/AsyncAudiosLoader';
 import { AsyncObjectsLoader } from '../../../loaders/AsyncObjectsLoader';
 import { AsyncTexturesLoader } from '../../../loaders/AsyncTexturesLoader';
 
@@ -20,11 +18,10 @@ class SceneLoadingState
     this.callback_called = false;
   }
 
-  set_assets(scene_objects, scene_textures, scene_sounds)
+  set_assets(scene_objects, scene_textures)
   {
     this.scene_objects = scene_objects;
     this.scene_textures = scene_textures;
-    this.scene_sounds = scene_sounds;
   }
 
   get loading_progress()
@@ -76,10 +73,6 @@ class SceneLoadingState
     const textures_loader = new AsyncTexturesLoader(this.scene.name, this.scene_textures, assets_worker);
     this.loaders.push(textures_loader);
     compilators.push(new TexturesCompilator(textures_loader.get_assets_names()));
-
-    const audios_loader = new AsyncAudiosLoader(this.scene.name, this.scene_sounds, assets_worker);
-    this.loaders.push(audios_loader);
-    compilators.push(new AudiosCompilator(audios_loader.get_assets_names()));
 
     this.compilator_manager = new CompilatorManager(compilators);
   }

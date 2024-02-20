@@ -4,10 +4,9 @@ import { AbstractScene } from './common/AbstractScene';
 import { Sections } from '../views/Sections';
 
 import { home_high_objects } from '../../data/assets/home/high/home_high_objects';
-import { home_high_sounds } from '../../data/assets/home/high/home_high_sounds';
+// import { home_high_sounds } from '../../data/assets/home/high/home_high_sounds';
 import { home_high_textures } from '../../data/assets/home/high/home_high_textures';
 import { home_objects } from '../../data/assets/home/home_objects';
-import { home_sounds } from '../../data/assets/home/home_sounds';
 import { home_textures } from '../../data/assets/home/home_textures';
 
 import { CameraManager, Debug, Grid, OScreen, PerspectiveCamera } from 'ohzi-core';
@@ -31,7 +30,7 @@ class HomeScene extends AbstractScene
 
     this.init_camera();
 
-    this.set_assets(home_objects, home_textures, home_sounds);
+    this.set_assets(home_objects, home_textures);
 
     if (Settings.debug_mode)
     {
@@ -59,7 +58,7 @@ class HomeScene extends AbstractScene
 
   on_assets_ready()
   {
-    this.set_high_assets(home_high_objects, home_high_textures, home_high_sounds);
+    this.set_high_assets(home_high_objects, home_high_textures);
 
     super.on_assets_ready();
 
