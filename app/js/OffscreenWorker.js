@@ -1,11 +1,12 @@
 import { Browser, Graphics, Initializer, RenderLoop, WorkerToMain } from 'ohzi-core';
 
+// import { BASISInitializer } from './BASISInitializer';
+import { Bifrost } from './Bifrost';
+// import { DracoInitializer } from './DracoInitializer';
 import { GraphicsInitializer } from './GraphicsInitializer';
 import { Input } from './Input';
 import { OffscreenApplication } from './OffscreenApplication';
 import { Settings } from './Settings';
-// import { DracoInitializer } from './DracoInitializer';
-// import { BASISInitializer } from './BASISInitializer';
 
 class OffscreenWorker
 {
@@ -99,14 +100,14 @@ class OffscreenWorker
     Graphics.on_resize(entries, Settings.dpr);
   }
 
-  on_input_update({ data })
+  on_input_update({ args })
   {
-    Input.update(data);
+    Input.update(args[0]);
   }
 
-  on_settings_update({ data })
+  on_settings_update({ args })
   {
-    Settings.update(data);
+    Settings.update(args[0]);
   }
 
   // Called from OffscreenApplication
@@ -139,7 +140,7 @@ class OffscreenWorker
 
   deliver_to_app(message)
   {
-    this.application.handle_message(message);
+    Bifrost.run(this.application.shared_application, message.type, message.args);
   }
 
   __bind_messages()

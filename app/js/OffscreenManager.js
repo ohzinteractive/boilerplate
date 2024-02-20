@@ -1,3 +1,5 @@
+import { Bifrost } from './Bifrost';
+
 class OffscreenManager
 {
   constructor()
@@ -18,11 +20,11 @@ class OffscreenManager
     this.__setup_worker();
   }
 
-  post(type, data = {}, reference_data = [])
+  post(type, data = {}, transferable_data = [])
   {
     data.type = type;
 
-    this.worker.postMessage(data, reference_data);
+    this.worker.postMessage(data, transferable_data);
   }
 
   on_canvas_resize(entries)
@@ -62,37 +64,11 @@ class OffscreenManager
 
     for (let i = 0; i < methods.length; i++)
     {
-      const method_string = methods[i];
-
-      const method_path = method_string.split('.');
-
-      // If length 1 we are trying to call a method from mainapp
-      let current_parent = method_path.length === 1 ? this.api.application : this.api.application[method_path[0]];
-      let current_method = this.api.application[method_path[0]];
-
-      // Go deep until find owner method
-      for (let j = 1; j < method_path.length - 1; j++)
-      {
-        const parent = method_path[j];
-
-        current_parent = current_method[parent];
-      }
-
-      // Go deep until find method to call
-      for (let j = 1; j < method_path.length; j++)
-      {
-        const method = method_path[j];
-
-        current_method = current_method[method];
-      }
-
-      const method_to_call = current_method.bind(current_parent);
-
-      method_to_call(...args[i]);
+      Bifrost.run(this.api.application, methods[i], args[i]);
     }
   }
 
-  // Should be user only by MainThreadAppStrategy
+  // Should be used only by MainThreadAppStrategy
   set_api(api)
   {
     this.api = api;
@@ -128,5 +104,5 @@ class OffscreenManager
   }
 }
 
-const request_manager = new OffscreenManager();
-export { request_manager as OffscreenManager };
+const offscreen_manager = new OffscreenManager();
+export { offscreen_manager as OffscreenManager };

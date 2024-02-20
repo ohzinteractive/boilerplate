@@ -8,6 +8,7 @@ class Input
   init()
   {
     this.clicked = false;
+    this.over_ui = false;
 
     this.NDC = { x: 0, y: 0 };
     this.NDC_delta = { x: 0, y: 0 };

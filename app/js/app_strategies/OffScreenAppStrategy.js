@@ -1,3 +1,4 @@
+import { Input } from '../Input';
 import { MainToWorker } from '../MainToWorker';
 import { OffscreenManager } from '../OffscreenManager';
 import { Settings } from '../Settings';
@@ -15,26 +16,29 @@ class OffScreenAppStrategy extends AppStrategy
 
   init()
   {
-    OffscreenManager.post('on_settings_update', { data: Settings.to_json() });
+    OffscreenManager.post('on_settings_update', { args: [Settings.to_json()] });
 
     MainToWorker.init();
   }
 
   on_enter()
   {
-    OffscreenManager.post('set_transitions_velocity', { search: window.location.search });
+    OffscreenManager.post('set_transitions_velocity', { args: [window.location.search] });
   }
 
   update()
   {
     if (MainInput.needs_update)
     {
-      OffscreenManager.post('on_input_update', { data: MainInput.to_json() });
+      OffscreenManager.post('on_input_update', { args: [MainInput.to_json()] });
+
+      // Update input on main thread side
+      Input.update(MainInput.to_json());
     }
 
     if (Settings.needs_update)
     {
-      OffscreenManager.post('on_settings_update', { data: Settings.to_json() });
+      OffscreenManager.post('on_settings_update', { args: [Settings.to_json()] });
       Settings.clear();
     }
 

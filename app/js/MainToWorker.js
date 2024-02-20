@@ -15,9 +15,10 @@ class MainToWorker
     this.current_strategy = Settings.use_offscreen_canvas ? this.strategies.offscreen : this.strategies.main_thread;
   }
 
-  post(method, args)
+  // Method to call funtions on SharedApplication (or MainApplication if offscreen canvas is not used)
+  push(method, args)
   {
-    this.current_strategy.post(method, args);
+    this.current_strategy.post(method, { args });
   }
 }
 

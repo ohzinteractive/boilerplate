@@ -15,6 +15,7 @@ class MainInput extends InputController
   {
     super.init(container);
 
+    this.over_ui = false;
     this.clicked = false;
 
     this.captured_NDC = { x: 0, y: 0 };
@@ -90,7 +91,7 @@ class MainInput extends InputController
       NDC_delta: this.NDC_delta,
 
       clicked: this.clicked,
-      // captured_NDC: this.captured_NDC,
+      captured_NDC: this.captured_NDC,
       // captured_NDC_delta: this.captured_NDC_delta,
 
       // html_NDC: this.html_NDC,
@@ -111,8 +112,10 @@ class MainInput extends InputController
       // pointer_is_within_bounds: this.pointer_is_within_bounds,
 
       // pointer_pos: this.pointer_pos,
-      // html_pointer_pos: this.html_pointer_pos,
+      html_pointer_pos: this.html_pointer_pos,
       pointer_pos_delta: this.pointer_pos_delta,
+
+      over_ui: this.over_ui,
 
       // pointer_center: this.pointer_center,
       // pointer_center_delta: this.pointer_center_delta,

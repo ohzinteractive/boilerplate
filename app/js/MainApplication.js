@@ -1,4 +1,4 @@
-import { BaseApplication, ViewManager } from 'ohzi-core';
+import { BaseApplication, ResourceContainer, ViewManager } from 'ohzi-core';
 
 import { DatGUI } from './components/DatGUI';
 import { HomeView } from './views/home/HomeView';
@@ -6,10 +6,12 @@ import { TransitionView } from './views/transition/TransitionView';
 
 import { MainToWorker } from './MainToWorker';
 import { Settings } from './Settings';
+import { Time } from './Time';
 import { MainThreadAppStrategyWrapper } from './app_strategies/MainThreadAppStrategyWrapper';
 import { OffScreenAppStrategy } from './app_strategies/OffScreenAppStrategy';
 import { KeyboardInputController } from './components/KeyboardInputController';
 import { MainInput } from './components/MainInput';
+import { AsyncAbstractLoader } from './loaders/AsyncAbstractLoader';
 import { InitialView } from './views/InitialView';
 import { Sections } from './views/Sections';
 class MainApplication extends BaseApplication
@@ -25,6 +27,7 @@ class MainApplication extends BaseApplication
 
     await this.current_strategy.init();
 
+    this.time = Time;
     this.main_input = MainInput;
     this.sections = Sections;
 
@@ -33,7 +36,7 @@ class MainApplication extends BaseApplication
     this.view_manager.set_main_to_worker(MainToWorker);
 
     // this.ui_collision_layer = UICollisionLayer;
-    // this.ui_collision_layer.init(Input, Time);
+    // this.ui_collision_layer.init(this.main_input, Time);
 
     // this.modal_component = ModalComponent;
     // this.modal_component.init(UICollisionLayer, Time);
@@ -49,6 +52,10 @@ class MainApplication extends BaseApplication
   on_enter()
   {
     this.current_strategy.on_enter();
+
+    const assets_worker = AsyncAbstractLoader.create_worker();
+    ResourceContainer.init();
+    ResourceContainer.set_resource('assets_worker', '/assets_worker', assets_worker);
 
     this.keyboard_input_controller = new KeyboardInputController();
 

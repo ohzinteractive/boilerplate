@@ -39,7 +39,7 @@ class SharedApplication
     ResourceContainer.set_resource('assets_worker', '/assets_worker', assets_worker);
   }
 
-  set_transitions_velocity({ search })
+  set_transitions_velocity(search)
   {
     this.location_search = search;
 
@@ -50,12 +50,12 @@ class SharedApplication
     TransitionManager.set_transitions_velocity(transitions_velocity);
   }
 
-  set_next_view_controller_name({ next_view_controller_name })
+  set_next_view_controller_name(next_view_controller_name)
   {
     VCManager.get('transition').set_next_view_controller_name(next_view_controller_name);
   }
 
-  go_to_view_controller({ view_controller_name, skip })
+  go_to_view_controller(view_controller_name, skip)
   {
     VCManager.go_to_view_controller(view_controller_name, skip);
   }

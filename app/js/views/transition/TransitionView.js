@@ -63,7 +63,7 @@ class TransitionView extends CommonView
 
   set_next_view_name(next_view_name)
   {
-    MainToWorker.post('set_next_view_controller_name', { next_view_controller_name: next_view_name });
+    MainToWorker.push('set_next_view_controller_name', [next_view_name]);
   }
 
   __update_progress(loading_progress)

@@ -1,3 +1,4 @@
+import { Bifrost } from '../Bifrost';
 import { MTWStrategy } from './MTWStrategy';
 
 class MainMTWStrategy extends MTWStrategy
@@ -9,9 +10,9 @@ class MainMTWStrategy extends MTWStrategy
     this.app = app;
   }
 
-  post(method, args)
+  post(method, { args })
   {
-    this.app[method](args);
+    Bifrost.run(this.app, method, args);
   }
 }
 
