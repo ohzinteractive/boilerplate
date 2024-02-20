@@ -32,7 +32,7 @@ class MainApplication extends BaseApplication
     this.sections = Sections;
 
     this.view_manager = ViewManager;
-    this.view_manager.set_browser_title_suffix('OHZI Interactive');
+    this.view_manager.set_browser_title_suffix('OHZI Interactive Studio');
     this.view_manager.set_main_to_worker(MainToWorker);
 
     // this.ui_collision_layer = UICollisionLayer;

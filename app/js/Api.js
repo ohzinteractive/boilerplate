@@ -71,7 +71,7 @@ class Api
     window.app = this.application;
     window.ViewApi = this;
     window.settings = settings;
-    window.author = 'OHZI INTERACTIVE';
+    window.author = 'OHZI Interactive Studio';
     window.version = package_json.version;
 
     await this.application.init();
