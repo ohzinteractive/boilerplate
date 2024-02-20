@@ -2,7 +2,7 @@
   "name": "ohzi-boilerplate",
   "description": "OHZI Boilerplate.",
   "author": "OHZI Interactive Studio",
-  "version": "11.2.0",
+  "version": "11.2.2",
   "license": "MIT",
   "module_example": "dist/index.module.js",
   "scripts": {
@@ -53,8 +53,8 @@
   },
   "dependencies": {
     "lil-gui": "0.17.0",
-    "ohzi-components": "3.1.2",
-    "ohzi-core": "11.1.2",
+    "ohzi-components": "3.2.0",
+    "ohzi-core": "11.2.2",
     "pit-js": "3.1.2"
   },
   "devDependencies": {
@@ -79,7 +79,7 @@
     "stylelint": "^15.3.0",
     "stylelint-config-standard-scss": "^7.0.1",
     "stylelint-order": "^6.0.3",
-    "three": "0.157.0"
+    "three": "0.161.0"
   },
   "standardx": {
     "ignore": [
