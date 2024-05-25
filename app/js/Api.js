@@ -56,7 +56,7 @@ class Api
 
     this.loader.init();
 
-    this.__bind_parcel_events()
+    this.__bind_parcel_events();
   }
 
   dispose()

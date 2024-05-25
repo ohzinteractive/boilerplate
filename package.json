@@ -42,6 +42,7 @@
     "create-view": "cd core && yarn create-view",
     "create-scene": "cd core && yarn create-scene",
     "create-component": "cd core && yarn create-component",
+    "create-transition": "cd core && yarn create-transition",
     "create-modal": "cd components && yarn create-modal",
     "calculate-assets-sizes": "cd core && yarn calculate-assets-sizes",
 
