@@ -17,9 +17,9 @@ export default {
   ],
   build: {
     target: 'esnext', // browsers can handle the latest ES features
-    // rollupOptions: {
-    //   input: ['index.pug.html']
-    // }
+    rollupOptions: {
+      input: ['index.pug.html']
+    }
   },
   resolve: {
     // preserveSymlinks: true // this is the fix!
