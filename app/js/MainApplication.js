@@ -7,7 +7,6 @@ import { SceneController } from './components/SceneController';
 import { HomeView } from './views/home/HomeView';
 import { TransitionView } from './views/transition/TransitionView';
 
-import { sRGBEncoding } from 'three';
 // import { ACESFilmicToneMapping } from 'three';
 
 import { Sections } from './views/Sections';
@@ -27,7 +26,7 @@ class MainApplication extends BaseApplication
     this.scene_controller.init();
 
     Graphics.set_state(this.normal_render_mode);
-    Graphics._renderer.outputEncoding = sRGBEncoding;
+    // Graphics._renderer.outputColorSpace = LinearSRGBColorSpace;
     Graphics._renderer.debug.checkShaderErrors = process.env.NODE_ENV === 'development';
 
     // Graphics._renderer.physicallyCorrectLights = true;

@@ -1,12 +1,7 @@
-import { OScreen, PerspectiveCamera, ResourceContainer, SceneManager } from 'ohzi-core';
-import { CameraManager } from 'ohzi-core';
+import { CameraManager, OScreen, PerspectiveCamera, SceneManager } from 'ohzi-core';
 // import { Graphics } from 'ohzi-core';
 
 import { Color } from 'three';
-import { sRGBEncoding } from 'three';
-import { LinearEncoding } from 'three';
-import { DataTexture } from 'three';
-import { RGBFormat } from 'three';
 
 import { CameraController } from '../camera_controller/CameraController';
 
@@ -23,15 +18,6 @@ class SceneController
   {
     this.__init_camera();
     this.__init_camera_controller();
-
-    const black_texture = new DataTexture(new Uint8Array(3), 1, 1, RGBFormat);
-    black_texture.encoding = sRGBEncoding;
-
-    const black_texture_linear = new DataTexture(new Uint8Array(3), 1, 1, RGBFormat);
-    black_texture_linear.encoding = LinearEncoding;
-
-    ResourceContainer.set_resource('black_texture_srgb', '/black_texture.jpg', black_texture);
-    ResourceContainer.set_resource('black_texture_linear', '/black_texture_linear.jpg', black_texture_linear);
 
     this.home_scene = new HomeScene();
 

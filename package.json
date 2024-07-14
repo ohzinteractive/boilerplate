@@ -44,9 +44,9 @@
   },
   "dependencies": {
     "lil-gui": "0.17.0",
-    "ohzi-components": "2.6.8",
-    "ohzi-core": "10.6.7",
-    "pit-js": "2.2.0-p1"
+    "ohzi-components": "3.2.1",
+    "ohzi-core": "10.7.2",
+    "pit-js": "3.1.2"
   },
   "devDependencies": {
     "@vituum/vite-plugin-pug": "^1.1.0",
