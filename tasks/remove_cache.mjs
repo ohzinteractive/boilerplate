@@ -7,7 +7,6 @@ class RemoveCache
     try
     {
       // Remove cache and dist folders to prevent chaching issues
-      fs.rmSync('.parcel-cache', { recursive: true, force: true });
       fs.rmSync('dist', { recursive: true, force: true });
     }
     catch (e)

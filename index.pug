@@ -7,42 +7,42 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0")
     //- base(target="_blank")
 
-    include views/common/meta
+    include app/views/common/meta
 
     title OHZI Interactive
 
     link(rel="icon", type="image/x-icon", href="images/common/favicon_white.png", media= "(prefers-color-scheme:dark)")
     link(rel="icon", type="image/x-icon", href="images/common/favicon_black.png", media= "(prefers-color-scheme:light)")
 
-    include views/common/fonts
+    include app/views/common/fonts
 
-    include views/common/ios_icon
-    include views/common/android_icon
+    include app/views/common/ios_icon
+    include app/views/common/android_icon
 
-    link(href='css/application.scss', rel="stylesheet")
+    link(href='app/css/application.scss', rel="stylesheet")
 
     if (process.env.NODE_ENV !== 'development')
-      include views/common/conversions.html
+      include app/views/common/conversions.html
 
   body
-    include views/common/seo_titles
+    include app/views/common/seo_titles
 
     .container
       .canvas-container
         canvas.main-canvas
 
       //- __SECTIONS__
-      include views/transition/transition
-      include views/home/home
+      include app/views/transition/transition
+      include app/views/home/home
 
       //- __COMPONENTS__
-      //- include views/components/modal/modal
+      //- include app/views/components/modal/modal
 
       .reusable-elements
 
-      include views/loader/loader
+      include app/views/loader/loader
 
-    script(type='module', src='init.js')
+    script(type='module', src='app/init.js')
 
     if (process.env.NODE_ENV !== 'development')
-      include views/common/conversions_body.html
+      include app/views/common/conversions_body.html

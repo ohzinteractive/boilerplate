@@ -4,7 +4,7 @@
   "author": "OHZI Interactive",
   "version": "10.7.0",
   "license": "MIT",
-  "module_example": "dist/index.module.js",
+  "type": "module",
   "scripts": {
     "preinstall": "yarn setup-git && yarn setup-submodules && yarn update-submodules && yarn config-hooks",
     "postinstall": "yarn setup-submodules && yarn update-submodules",
@@ -13,39 +13,33 @@
     "setup-core-submodule": "node tasks/setup_submodule.mjs core",
     "setup-components-submodule": "node tasks/setup_submodule.mjs components",
     "setup-pit-submodule": "node tasks/setup_submodule.mjs pit",
-
     "update-submodules": "yarn update-core && yarn update-components && yarn update-pit",
     "update-core": "node tasks/update_submodule.mjs ohzi-core core",
     "update-components": "node tasks/update_submodule.mjs ohzi-components components",
     "update-pit": "node tasks/update_submodule.mjs pit-js pit",
-
     "config-hooks": "yarn config-boilerplate-hooks && yarn config-submodule-hooks",
     "config-boilerplate-hooks": "git config core.hooksPath git_hooks",
     "config-submodule-hooks": "yarn config-core-hooks && yarn config-components-hooks && yarn config-pit-hooks",
     "config-core-hooks": "cd core && git config core.hooksPath git_hooks && cd ..",
     "config-components-hooks": "cd components && git config core.hooksPath git_hooks && cd ..",
     "config-pit-hooks": "cd pit && git config core.hooksPath git_hooks && cd ..",
-
     "prestart": "yarn calculate-assets-sizes",
     "start": "node tasks/remove_cache.mjs && node tasks/start_app.mjs false",
     "start-ssl": "node tasks/remove_cache.mjs && node tasks/start_app.mjs true",
-    "start-parcel": "parcel app/index.pug",
-    "start-parcel-ssl": "parcel app/index.pug --https --port 443",
-
-    "build-api": "parcel build ./app/js/Api.js --no-cache",
-    "build": "node tasks/remove_cache.mjs && yarn build-parcel && yarn copy-public",
-    "build-parcel": "parcel build ./app/index.pug --no-source-maps --no-cache",
+    "start-vite": "vite --port 1234",
+    "start-vite-ssl": "vite --port 443",
+    "build-api": "vite build --force",
+    "build": "node tasks/remove_cache.mjs && yarn build-vite && yarn copy-public",
+    "build-vite": "vite build --force",
     "dist": "yarn build && yarn zip",
     "zip": "node tasks/zip_app.mjs",
     "copy-public": "node tasks/copy_folder.mjs public dist",
-
     "create-view": "cd core && yarn create-view",
     "create-scene": "cd core && yarn create-scene",
     "create-component": "cd core && yarn create-component",
     "create-transition": "cd core && yarn create-transition",
     "create-modal": "cd components && yarn create-modal",
     "calculate-assets-sizes": "cd core && yarn calculate-assets-sizes",
-
     "fix-syntax": "standardx --fix || echo 'Done'"
   },
   "dependencies": {
@@ -55,35 +49,25 @@
     "pit-js": "2.2.0-p1"
   },
   "devDependencies": {
-    "@parcel/packager-raw-url": "2.8.3",
-    "@parcel/packager-xml": "2.8.3",
-    "@parcel/transformer-glsl": "2.8.3",
-    "@parcel/transformer-image": "2.8.3",
-    "@parcel/transformer-inline-string": "2.8.3",
-    "@parcel/transformer-pug": "2.8.3",
-    "@parcel/transformer-sass": "2.8.3",
-    "@parcel/transformer-webmanifest": "2.8.3",
-    "@parcel/transformer-xml": "2.8.3",
+    "@vituum/vite-plugin-pug": "^1.1.0",
     "archiver": "^6.0.1",
-    "parcel": "2.8.3",
-    "parcel-resolver-ignore": "^2.1.3",
+    "pug": "^3.0.3",
     "replace-in-file": "^6.2.0",
+    "sass": "^1.77.6",
     "serve-static": "^1.14.1",
     "standardx": "^7.0.0",
     "stylelint": "^15.3.0",
     "stylelint-config-standard-scss": "^7.0.1",
     "stylelint-order": "^6.0.3",
-    "three": "0.148.0"
+    "three": "0.148.0",
+    "vite": "^5.2.0"
   },
   "standardx": {
     "ignore": [
-      "/public/"
+      "/public/",
+      "vite.config.js"
     ]
   },
-  "parcelIgnore": [
-    "fonts/.+",
-    "images/.+"
-  ],
   "private": true,
   "workspaces": [
     "core",

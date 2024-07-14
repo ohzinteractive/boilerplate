@@ -55,8 +55,6 @@ class Api
     window.version = package_json.version;
 
     this.loader.init();
-
-    this.__bind_parcel_events();
   }
 
   dispose()
@@ -109,25 +107,6 @@ class Api
   download_blob(blob)
   {
     Graphics.download_screenshot(blob);
-  }
-
-  __bind_parcel_events()
-  {
-    // Parcel stuff
-    if (module.hot)
-    {
-      module.hot.accept((data) =>
-      {
-        // module or one of its dependencies was just updated.
-        location.reload();
-      });
-
-      module.hot.dispose((data) =>
-      {
-        // module is about to be replaced.
-        location.reload();
-      });
-    }
   }
 }
 
