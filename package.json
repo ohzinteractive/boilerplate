@@ -44,8 +44,8 @@
   },
   "dependencies": {
     "lil-gui": "0.17.0",
-    "ohzi-components": "3.2.1",
-    "ohzi-core": "10.7.2",
+    "ohzi-components": "3.3.0",
+    "ohzi-core": "10.8.0",
     "pit-js": "3.1.2"
   },
   "devDependencies": {
@@ -59,13 +59,14 @@
     "stylelint": "^15.3.0",
     "stylelint-config-standard-scss": "^7.0.1",
     "stylelint-order": "^6.0.3",
-    "three": "0.148.0",
+    "three": "0.166.0",
     "vite": "^5.2.0"
   },
   "standardx": {
     "ignore": [
       "/public/",
-      "vite.config.js"
+      "vite.config.mjs",
+      "rollup.config.mjs"
     ]
   },
   "private": true,
