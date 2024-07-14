@@ -66,7 +66,8 @@
     "ignore": [
       "/public/",
       "vite.config.mjs",
-      "rollup.config.mjs"
+      "rollup.config.mjs",
+      "three.js"
     ]
   },
   "private": true,
