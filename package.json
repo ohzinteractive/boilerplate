@@ -29,7 +29,7 @@
     "start-vite": "vite --port 1234",
     "start-vite-ssl": "vite --port 443",
     "build-api": "vite build",
-    "build": "node tasks/remove_cache.mjs && yarn build-vite && yarn copy-public",
+    "build": "node tasks/remove_cache.mjs && node tasks/build_app.mjs && yarn copy-public",
     "build-vite": "vite build",
     "dist": "yarn build && yarn zip",
     "zip": "node tasks/zip_app.mjs",
@@ -45,7 +45,7 @@
   "dependencies": {
     "lil-gui": "0.17.0",
     "ohzi-components": "3.3.0",
-    "ohzi-core": "10.8.0",
+    "ohzi-core": "10.8.3",
     "pit-js": "3.1.2"
   },
   "devDependencies": {
