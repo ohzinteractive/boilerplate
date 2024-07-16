@@ -46,7 +46,7 @@
     "lil-gui": "0.17.0",
     "ohzi-components": "3.3.0",
     "ohzi-core": "10.8.3",
-    "pit-js": "3.1.2"
+    "pit-js": "3.2.0"
   },
   "devDependencies": {
     "@vituum/vite-plugin-pug": "^1.1.0",
@@ -60,7 +60,8 @@
     "stylelint-config-standard-scss": "^7.0.1",
     "stylelint-order": "^6.0.3",
     "three": "0.166.0",
-    "vite": "^5.2.0"
+    "vite": "^5.2.0",
+    "vite-plugin-glsl": "^1.3.0"
   },
   "standardx": {
     "ignore": [

@@ -1,4 +1,4 @@
-import { exec, execSync } from 'child_process';
+import { execSync } from 'child_process';
 
 class StartApp
 {
@@ -11,9 +11,9 @@ class StartApp
 
       Object.assign(env_variables, process.env);
 
-      exec('cd core && yarn start', { stdio: 'inherit' });
-      exec('cd components && yarn start', { stdio: 'inherit' });
-      exec('cd pit && yarn start', { stdio: 'inherit' });
+      // exec('cd core && yarn start', { stdio: 'inherit' });
+      // exec('cd components && yarn start', { stdio: 'inherit' });
+      // exec('cd pit && yarn start', { stdio: 'inherit' });
       execSync(`${vite_command}`, { env: env_variables, stdio: 'inherit' });
     }
     catch (e)

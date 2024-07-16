@@ -10,9 +10,9 @@ class BuildApp
 
       Object.assign(env_variables, process.env);
 
-      execSync('cd core && yarn build', { stdio: 'inherit' });
-      execSync('cd components && yarn build', { stdio: 'inherit' });
-      execSync('cd pit && yarn build', { stdio: 'inherit' });
+      // execSync('cd core && yarn build', { stdio: 'inherit' });
+      // execSync('cd components && yarn build', { stdio: 'inherit' });
+      // execSync('cd pit && yarn build', { stdio: 'inherit' });
       execSync('yarn build-vite', { env: env_variables, stdio: 'inherit' });
     }
     catch (e)
