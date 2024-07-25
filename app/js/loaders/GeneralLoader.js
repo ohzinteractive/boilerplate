@@ -1,5 +1,4 @@
-import { ResourceContainer } from 'ohzi-core';
-import { ResourceBatch } from 'ohzi-core';
+import { ResourceBatch, ResourceContainer } from 'ohzi-core';
 
 // import { Graphics } from 'ohzi-core';
 // import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
@@ -8,7 +7,7 @@ import { ResourceBatch } from 'ohzi-core';
 import home_data from '../../data/transitions/home.json';
 import transition_data from '../../data/transitions/transition.json';
 
-import { AsyncAbstractLoader } from './AsyncAbstractLoader';
+import { AsyncAbstractLoader } from 'ohzi-core';
 
 class GeneralLoader
 {
