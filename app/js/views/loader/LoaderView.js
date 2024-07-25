@@ -29,7 +29,6 @@ class LoaderView extends CommonView
     this.transition_controller = new LoaderTransitionController();
   }
 
-  // This method is called one time at the beginning of the app execution.
   start()
   {
     this.scene_controller.start();
@@ -41,14 +40,12 @@ class LoaderView extends CommonView
     this.set_progress(0);
   }
 
-  // This method is called one time before the transition to this section is started.
   before_enter()
   {
     this.scene_controller.before_enter();
     this.transition_controller.before_enter();
   }
 
-  // This method is called one time after the transition to this section is finished.
   on_enter()
   {
     super.on_enter();
@@ -57,7 +54,6 @@ class LoaderView extends CommonView
     this.transition_controller.on_enter();
   }
 
-  // This method is called one time before the transition to the next section is started.
   before_exit()
   {
     super.before_exit();
@@ -66,7 +62,6 @@ class LoaderView extends CommonView
     this.transition_controller.before_exit();
   }
 
-  // This method is called one time after this section is completely hidden.
   on_exit()
   {
     super.on_exit();
@@ -75,7 +70,6 @@ class LoaderView extends CommonView
     this.transition_controller.on_exit();
   }
 
-  // This method is called in every frame right after on_enter is called.
   update()
   {
     this.scene_controller.update();
@@ -90,7 +84,6 @@ class LoaderView extends CommonView
     }
   }
 
-  // This method is called in every frame when the site is transitioning to this section.
   update_enter_transition(global_view_data, transition_progress, action_sequencer)
   {
     this.scene_controller.update_enter_transition(global_view_data, transition_progress, action_sequencer);
@@ -99,7 +92,6 @@ class LoaderView extends CommonView
     this.__update_progress();
   }
 
-  // This method is called in every frame when the site is transitioning from this section.
   update_exit_transition(global_view_data, transition_progress, action_sequencer)
   {
     this.scene_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);

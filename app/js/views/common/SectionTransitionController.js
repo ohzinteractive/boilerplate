@@ -20,13 +20,11 @@ class SectionTransitionController
     this.current_camera_fov_mobile = 40;
   }
 
-  // This method is called one time at the beginning of the app execution.
   start()
   {
     this.loader_view = ViewManager.get(Sections.LOADER);
   }
 
-  // This method is called one time before the transition to this section is started.
   before_enter()
   {
     this.__set_keyframes_offset('camera_x', this.camera_position.x);
@@ -93,27 +91,22 @@ class SectionTransitionController
     // this.starting_azimuth = SceneManager.current.camera_controller.current_azimuth;
   }
 
-  // This method is called one time after the transition to this section is finished.
   on_enter()
   {
   }
 
-  // This method is called one time before the transition to the next section is started.
   before_exit()
   {
   }
 
-  // This method is called one time after this section is completely hidden.
   on_exit()
   {
   }
 
-  // This method is called in every frame right after on_enter is called.
   update()
   {
   }
 
-  // This method is called in every frame when the site is transitioning to this section.
   update_enter_transition(global_view_data, transition_progress, action_sequencer)
   {
     this.current_camera_pos.set(global_view_data.camera_x, global_view_data.camera_y, global_view_data.camera_z);
@@ -133,7 +126,6 @@ class SectionTransitionController
     // DatGUI.galaxy.opacity = Math.pow(global_view_data.galaxy_scale, 5)
   }
 
-  // This method is called in every frame when the site is transitioning from this section.
   update_exit_transition(global_view_data, transition_progress, action_sequencer)
   {
   }

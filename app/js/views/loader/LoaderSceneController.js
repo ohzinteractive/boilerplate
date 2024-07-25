@@ -1,11 +1,7 @@
 
-import { Graphics } from 'ohzi-core';
-import { OMath } from 'ohzi-core';
-import { Time } from 'ohzi-core';
+import { Graphics, OMath, Time } from 'ohzi-core';
 
-import { Mesh } from 'three';
-import { OrthographicCamera } from 'three';
-import { Scene } from 'three';
+import { Mesh, OrthographicCamera, Scene } from 'three';
 
 class LoaderSceneController
 {
@@ -24,44 +20,36 @@ class LoaderSceneController
     this.compilation_t = 0;
   }
 
-  // This method is called one time at the beginning of the app execution.
   start()
   {
   }
 
-  // This method is called one time before the transition to this section is started.
   before_enter()
   {
   }
 
-  // This method is called one time after the transition to this section is finished.
   on_enter()
   {
   }
 
-  // This method is called one time before the transition to the next section is started.
   before_exit()
   {
   }
 
-  // This method is called one time after this section is completely hidden.
   on_exit()
   {
   }
 
-  // This method is called in every frame right after on_enter is called.
   update()
   {
     this.__compile_objects();
   }
 
-  // This method is called in every frame when the site is transitioning to this section.
   update_enter_transition(global_view_data, transition_progress, action_sequencer)
   {
     this.__compile_objects();
   }
 
-  // This method is called in every frame when the site is transitioning from this section.
   update_exit_transition(global_view_data, transition_progress, action_sequencer)
   {
   }
