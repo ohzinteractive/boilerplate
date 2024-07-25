@@ -1,4 +1,4 @@
-import { Configuration, Graphics, Initializer, RenderLoop } from 'ohzi-core';
+import { Graphics, Initializer, RenderLoop } from 'ohzi-core';
 
 // import { EventManager } from 'ohzi-core';
 // import { Debug } from 'ohzi-core';
@@ -8,19 +8,20 @@ import package_json from '../../package.json';
 import { LoaderState } from './LoaderState';
 
 // APP
-import { MainApplication } from './MainApplication';
 import { Input } from './components/Input';
+import { GraphicsInitializer } from './GraphicsInitializer';
+import { MainApplication } from './MainApplication';
+import { Settings } from './Settings';
 
 class Api
 {
-  init(settings)
+  init()
   {
     this.application = new MainApplication();
 
     this.loader = new LoaderState(this);
 
     this.render_loop = new RenderLoop(this.loader, Graphics, Input);
-    this.config = Configuration;
 
     const app_container = document.querySelector('.container');
     const canvas = document.querySelector('.main-canvas');
@@ -41,20 +42,29 @@ class Api
 
     Input.init(app_container, document);
     Initializer.init(Input);
-    Graphics.init(canvas, core_attributes, context_attributes, threejs_attributes);
 
-    Configuration.dpr = 1;
-    // Configuration.dpr = window.devicePixelRatio;
+    Settings.dpr = 1;
+    // Settings.dpr = window.devicePixelRatio;
+
+    const graphics_initializer = new GraphicsInitializer();
+    graphics_initializer.init(canvas, core_attributes, context_attributes, threejs_attributes);
 
     this.application.init(Graphics);
 
     window.app = this.application;
     window.ViewApi = this;
-    window.settings = settings;
     window.author = 'OHZI INTERACTIVE';
     window.version = package_json.version;
 
     this.loader.init();
+
+    this.resize_observer = new ResizeObserver(this.on_canvas_resize.bind(this));
+    this.resize_observer.observe(canvas);
+  }
+
+  on_canvas_resize(entries)
+  {
+    Graphics.on_resize(entries, Settings.dpr);
   }
 
   dispose()
@@ -62,26 +72,6 @@ class Api
     this.application.dispose();
     Initializer.dispose(this.render_loop);
     Input.dispose();
-  }
-
-  // draw_debug_axis()
-  // {
-  //   Debug.draw_axis();
-  // }
-
-  // register_event(name, callback)
-  // {
-  //   EventManager.on(name, callback);
-  // }
-
-  // set_resource(name, resource)
-  // {
-  //   ResourceContainer.set_resource(name, resource);
-  // }
-
-  set_settings(settings)
-  {
-    window.settings = settings;
   }
 
   start_main_app()
