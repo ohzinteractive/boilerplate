@@ -2,6 +2,7 @@ import { OMath, ViewManager } from 'ohzi-core';
 import { Sections, SectionsURLs } from '../Sections';
 import { CommonView } from '../common/CommonView';
 
+import { Settings } from '../../Settings';
 import { TransitionSceneController } from './TransitionSceneController';
 import { TransitionTransitionController } from './TransitionTransitionController';
 
@@ -125,7 +126,7 @@ class TransitionView extends CommonView
     {
       let skip = false;
 
-      if (window.debug_mode || window.skip_mode)
+      if (Settings.debug_mode)
       {
         skip = true;
       }

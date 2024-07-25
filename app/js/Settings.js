@@ -2,6 +2,8 @@ class Settings
 {
   constructor()
   {
+    this.debug_mode = false;
+
     this.general = {
       value: 0
     };

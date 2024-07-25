@@ -14,6 +14,7 @@ import { Sections } from './views/Sections';
 // import { UICollisionLayer } from 'ohzi-components';
 import { Input } from './components/Input';
 import { KeyboardInputController } from './components/KeyboardInputController';
+import { Settings } from './Settings';
 // import { KeyboardInputController } from './components/KeyboardInputController';
 class MainApplication extends BaseApplication
 {
@@ -91,7 +92,7 @@ class MainApplication extends BaseApplication
 
   go_to(section, change_url = true, skip = false)
   {
-    if (window.debug_mode || window.skip_mode)
+    if (Settings.debug_mode)
     {
       skip = true;
     }

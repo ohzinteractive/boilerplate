@@ -8,6 +8,7 @@ import { LoaderView } from './views/loader/LoaderView';
 import loader_data from '../data/transitions/loader.json';
 
 import { default_state_data } from '../data/default_state_data';
+import { Settings } from './Settings';
 import { SectionsURLs } from './views/Sections';
 
 class LoaderState extends BaseApplication
@@ -203,10 +204,7 @@ class LoaderState extends BaseApplication
   __setup_debug_mode()
   {
     let debug_mode = localStorage.getItem('debug_mode');
-    window.debug_mode = debug_mode === 'true';
-
-    let skip_mode = localStorage.getItem('skip_mode');
-    window.skip_mode = skip_mode === 'true';
+    Settings.debug_mode = debug_mode === 'true';
 
     if (debug_mode === 'true')
     {
@@ -235,21 +233,6 @@ class LoaderState extends BaseApplication
         }
 
         localStorage.setItem('debug_mode', debug_mode);
-        location.reload();
-      }
-
-      if (event.shiftKey && event.key === 'S')
-      {
-        if (skip_mode === 'true')
-        {
-          skip_mode = 'false';
-        }
-        else
-        {
-          skip_mode = 'true';
-        }
-
-        localStorage.setItem('skip_mode', skip_mode);
         location.reload();
       }
     });

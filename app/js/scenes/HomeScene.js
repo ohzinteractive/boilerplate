@@ -11,6 +11,7 @@ import { home_sounds } from '../../data/assets/home/home_sounds';
 import { home_textures } from '../../data/assets/home/home_textures';
 
 import { Debug, Grid } from 'ohzi-core';
+import { Settings } from '../Settings';
 
 // import { AmbientLight, DirectionalLight } from 'three';
 class HomeScene extends AbstractScene
@@ -26,7 +27,7 @@ class HomeScene extends AbstractScene
   {
     this.set_assets(home_objects, home_textures, home_sounds);
 
-    if (window.debug_mode)
+    if (Settings.debug_mode)
     {
       this.add(Debug.draw_axis());
       this.add(new Grid());
