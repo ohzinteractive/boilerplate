@@ -1,6 +1,4 @@
 
-import { AbstractScene } from './common/AbstractScene';
-
 import { Sections } from '../views/Sections';
 
 import { home_high_objects } from '../../data/assets/home/high/home_high_objects';
@@ -12,9 +10,10 @@ import { home_textures } from '../../data/assets/home/home_textures';
 
 import { Debug, Grid } from 'ohzi-core';
 import { Settings } from '../Settings';
+import { CommonScene } from './common/CommonScene';
 
 // import { AmbientLight, DirectionalLight } from 'three';
-class HomeScene extends AbstractScene
+class HomeScene extends CommonScene
 {
   constructor()
   {
