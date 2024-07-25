@@ -1,4 +1,5 @@
-import { SceneController } from '../../components/SceneController';
+import { ViewManager } from 'ohzi-core';
+import { Sections } from '../Sections';
 
 class TransitionSceneController
 {
@@ -10,7 +11,7 @@ class TransitionSceneController
   // This method is called one time at the beginning of the app execution.
   start()
   {
-    this.scene = SceneController.home_scene;
+    this.scene = ViewManager.get(Sections.HOME).scene;
   }
 
   // This method is called one time before the transition to this section is started.

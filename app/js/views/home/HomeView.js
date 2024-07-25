@@ -18,11 +18,24 @@ class HomeView extends CommonView
     this.transition_controller = new HomeTransitionController();
   }
 
+  get scene()
+  {
+    return this.scene_controller.scene;
+  }
+
   // This method is called one time at the beginning of the app execution.
   start()
   {
     this.scene_controller.start();
     this.transition_controller.start();
+  }
+
+  show()
+  {
+    super.show();
+
+    this.scene_controller.show();
+    this.transition_controller.show();
   }
 
   // This method is called one time before the transition to this section is started.

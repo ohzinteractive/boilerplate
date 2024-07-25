@@ -3,7 +3,6 @@ import { BaseApplication } from 'ohzi-core';
 import { Graphics, NormalRender, ResourceContainer, ViewContext, ViewManager } from 'ohzi-core';
 
 import { DatGUI } from './components/DatGUI';
-import { SceneController } from './components/SceneController';
 import { HomeView } from './views/home/HomeView';
 import { TransitionView } from './views/transition/TransitionView';
 
@@ -21,10 +20,7 @@ class MainApplication extends BaseApplication
   init()
   {
     this.input = Input;
-    this.scene_controller = SceneController;
     this.normal_render_mode = new NormalRender();
-
-    this.scene_controller.init();
 
     Graphics.set_state(this.normal_render_mode);
     // Graphics._renderer.outputColorSpace = LinearSRGBColorSpace;
@@ -60,8 +56,6 @@ class MainApplication extends BaseApplication
 
     this.view_manager = ViewManager;
     this.view_manager.set_browser_title_suffix('OHZI Interactive');
-
-    this.scene_controller.start();
 
     // __COMPONENTS__
 
@@ -110,7 +104,6 @@ class MainApplication extends BaseApplication
 
   update()
   {
-    this.scene_controller.update();
     // this.ui_collision_layer.update();
     // this.modal_component.update();
   }
