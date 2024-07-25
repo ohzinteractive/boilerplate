@@ -12,15 +12,11 @@ class HomeSceneController
     this.scene = new HomeScene();
   }
 
-  show()
+  before_enter()
   {
     this.scene.setup_camera();
 
     SceneManager.current = this.scene;
-  }
-
-  before_enter()
-  {
   }
 
   on_enter()

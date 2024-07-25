@@ -1,4 +1,4 @@
-import { BaseApplication, OMath, ResourceContainer, ViewManager } from 'ohzi-core';
+import { BaseApplication, OMath, ResourceContainer, TransitionManager, ViewManager } from 'ohzi-core';
 
 import { GeneralLoader } from './loaders/GeneralLoader';
 
@@ -65,7 +65,7 @@ class LoaderState extends BaseApplication
     this.initial_view = new InitialView();
     this.loader_view = new LoaderView(this.api);
 
-    ViewManager.set_default_state_data(default_state_data);
+    TransitionManager.set_default_state_data(default_state_data);
     ViewManager.set_view(this.initial_view.name);
 
     // Start render loop

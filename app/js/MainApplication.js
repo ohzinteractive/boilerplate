@@ -1,6 +1,6 @@
 import { BaseApplication } from 'ohzi-core';
 // import { HTMLUtilities, Time } from 'ohzi-core';
-import { Graphics, NormalRender, ResourceContainer, ViewContext, ViewManager } from 'ohzi-core';
+import { ResourceContainer, ViewContext, ViewManager } from 'ohzi-core';
 
 import { DatGUI } from './components/DatGUI';
 import { HomeView } from './views/home/HomeView';
@@ -20,15 +20,6 @@ class MainApplication extends BaseApplication
   init()
   {
     this.input = Input;
-    this.normal_render_mode = new NormalRender();
-
-    Graphics.set_state(this.normal_render_mode);
-    // Graphics._renderer.outputColorSpace = LinearSRGBColorSpace;
-    Graphics._renderer.debug.checkShaderErrors = process.env.NODE_ENV === 'development';
-
-    // Graphics._renderer.physicallyCorrectLights = true;
-    // Graphics._renderer.toneMapping = ACESFilmicToneMapping;
-    // Graphics._renderer.toneMappingExposure = 0.7;
 
     // this.ui_collision_layer = UICollisionLayer;
     // this.ui_collision_layer.init(Input, Time);

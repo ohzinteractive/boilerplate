@@ -8,10 +8,6 @@ class TransitionTransitionController
   {
   }
 
-  show()
-  {
-  }
-
   on_enter()
   {
   }

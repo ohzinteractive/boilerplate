@@ -21,9 +21,6 @@ class InitialView extends ApplicationView
   {
   }
 
-  show()
-  {}
-
   on_enter()
   {
   }
@@ -31,9 +28,6 @@ class InitialView extends ApplicationView
   before_exit()
   {
   }
-
-  hide()
-  {}
 
   on_exit()
   {

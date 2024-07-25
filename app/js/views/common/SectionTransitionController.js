@@ -1,4 +1,4 @@
-import { OScreen, SceneManager, ViewManager } from 'ohzi-core';
+import { OScreen, SceneManager, TransitionManager, ViewManager } from 'ohzi-core';
 import { Vector3 } from 'three';
 import { Sections } from '../Sections';
 
@@ -44,7 +44,7 @@ class SectionTransitionController
 
   __set_keyframes_offset(channel_name, offset)
   {
-    const action_sequencer = ViewManager.transition_handler.action_sequencer;
+    const action_sequencer = TransitionManager.action_sequencer;
 
     const keyframes = action_sequencer.get_keyframes(channel_name);
 
@@ -63,28 +63,28 @@ class SectionTransitionController
 
   show()
   {
-    ViewManager.transition_handler.current_state_data.camera_x = SceneManager.current.camera_controller.reference_position.x;
-    ViewManager.transition_handler.current_state_data.camera_y = SceneManager.current.camera_controller.reference_position.y;
-    ViewManager.transition_handler.current_state_data.camera_z = SceneManager.current.camera_controller.reference_position.z;
+    TransitionManager.current_state_data.camera_x = SceneManager.current.camera_controller.reference_position.x;
+    TransitionManager.current_state_data.camera_y = SceneManager.current.camera_controller.reference_position.y;
+    TransitionManager.current_state_data.camera_z = SceneManager.current.camera_controller.reference_position.z;
 
-    ViewManager.transition_handler.current_state_data.camera_orientation = SceneManager.current.camera_controller.current_orientation;
-    ViewManager.transition_handler.current_state_data.camera_tilt = SceneManager.current.camera_controller.current_tilt;
-    ViewManager.transition_handler.current_state_data.camera_azimuth = SceneManager.current.camera_controller.current_azimuth;
+    TransitionManager.current_state_data.camera_orientation = SceneManager.current.camera_controller.current_orientation;
+    TransitionManager.current_state_data.camera_tilt = SceneManager.current.camera_controller.current_tilt;
+    TransitionManager.current_state_data.camera_azimuth = SceneManager.current.camera_controller.current_azimuth;
 
-    ViewManager.transition_handler.current_state_data.camera_zoom = SceneManager.current.camera_controller.reference_zoom;
-    ViewManager.transition_handler.current_state_data.camera_fov = SceneManager.current.camera_controller.camera.fov;
+    TransitionManager.current_state_data.camera_zoom = SceneManager.current.camera_controller.reference_zoom;
+    TransitionManager.current_state_data.camera_fov = SceneManager.current.camera_controller.camera.fov;
 
     // Mobile
-    ViewManager.transition_handler.current_state_data.camera_x_mobile = SceneManager.current.camera_controller.reference_position.x;
-    ViewManager.transition_handler.current_state_data.camera_y_mobile = SceneManager.current.camera_controller.reference_position.y;
-    ViewManager.transition_handler.current_state_data.camera_z_mobile = SceneManager.current.camera_controller.reference_position.z;
+    TransitionManager.current_state_data.camera_x_mobile = SceneManager.current.camera_controller.reference_position.x;
+    TransitionManager.current_state_data.camera_y_mobile = SceneManager.current.camera_controller.reference_position.y;
+    TransitionManager.current_state_data.camera_z_mobile = SceneManager.current.camera_controller.reference_position.z;
 
-    ViewManager.transition_handler.current_state_data.camera_orientation_mobile = SceneManager.current.camera_controller.current_orientation;
-    ViewManager.transition_handler.current_state_data.camera_tilt_mobile = SceneManager.current.camera_controller.current_tilt;
-    ViewManager.transition_handler.current_state_data.camera_azimuth_mobile = SceneManager.current.camera_controller.current_azimuth;
+    TransitionManager.current_state_data.camera_orientation_mobile = SceneManager.current.camera_controller.current_orientation;
+    TransitionManager.current_state_data.camera_tilt_mobile = SceneManager.current.camera_controller.current_tilt;
+    TransitionManager.current_state_data.camera_azimuth_mobile = SceneManager.current.camera_controller.current_azimuth;
 
-    ViewManager.transition_handler.current_state_data.camera_zoom_mobile = SceneManager.current.camera_controller.reference_zoom;
-    ViewManager.transition_handler.current_state_data.camera_fov_mobile = SceneManager.current.camera_controller.camera.fov;
+    TransitionManager.current_state_data.camera_zoom_mobile = SceneManager.current.camera_controller.reference_zoom;
+    TransitionManager.current_state_data.camera_fov_mobile = SceneManager.current.camera_controller.camera.fov;
 
     // this.starting_orientation = SceneManager.current.camera_controller.current_orientation;
     // this.starting_tilt = SceneManager.current.camera_controller.current_tilt;

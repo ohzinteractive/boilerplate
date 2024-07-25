@@ -33,22 +33,17 @@ class TransitionView extends CommonView
     this.progress_bar = document.querySelector('.transition__progress-bar-fill');
   }
 
-  show()
-  {
-    super.show();
-
-    this.transition_controller.show();
-  }
-
   before_enter()
   {
+    super.before_enter();
+
     this.current_progress = 0;
     this.target_progress = 0;
 
     this.scene_controller.before_enter();
     this.transition_controller.before_enter();
 
-    this.load_html_images();
+    // HTMLUtilities.load_images(this.container);
   }
 
   on_enter()
@@ -69,6 +64,8 @@ class TransitionView extends CommonView
 
   on_exit()
   {
+    super.on_exit();
+
     this.scene_controller.on_exit();
     this.transition_controller.on_exit();
   }
