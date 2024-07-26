@@ -1,6 +1,5 @@
 import { Graphics, Initializer, RenderLoop } from 'ohzi-core';
 
-// import { EventManager } from 'ohzi-core';
 // import { Debug } from 'ohzi-core';
 // import { ResourceContainer } from 'ohzi-core';
 
@@ -65,7 +64,7 @@ class Api
 
     window.app = this.application;
     window.ViewApi = this;
-    window.author = 'OHZI INTERACTIVE';
+    window.author = 'OHZI Interactive Studio';
     window.version = package_json.version;
 
     this.loader.init();

@@ -1,6 +1,6 @@
 import { BaseApplication, TransitionManager } from 'ohzi-core';
 // import { HTMLUtilities, Time } from 'ohzi-core';
-import { ResourceContainer, ViewContext, ViewManager } from 'ohzi-core';
+import { ResourceContainer, ViewManager } from 'ohzi-core';
 
 import { HomeView } from './views/home/HomeView';
 import { TransitionView } from './views/transition/TransitionView';
@@ -44,12 +44,10 @@ class MainApplication extends BaseApplication
 
     this.sections = Sections;
 
-    ViewContext.set_app(this);
-
     this.keyboard_input_controller = new KeyboardInputController();
 
     this.view_manager = ViewManager;
-    this.view_manager.set_browser_title_suffix('OHZI Interactive');
+    this.view_manager.set_browser_title_suffix('OHZI Interactive Studio');
 
     // __COMPONENTS__
 

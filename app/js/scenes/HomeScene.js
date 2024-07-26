@@ -64,6 +64,8 @@ export class HomeScene extends CommonScene
 
     super.on_assets_ready();
 
+    this.setup_camera();
+
     // this.add_lights();
   }
 
