@@ -9,7 +9,9 @@ import { LoaderState } from './LoaderState';
 
 // APP
 import { Input } from './components/Input';
-import { GraphicsInitializer } from './GraphicsInitializer';
+// import { BasisInitializer } from './initializers/BasisInitializer';
+// import { DracoInitializer } from './initializers/DracoInitializer';
+import { GraphicsInitializer } from './initializers/GraphicsInitializer';
 import { MainApplication } from './MainApplication';
 import { Settings } from './Settings';
 
@@ -48,6 +50,12 @@ class Api
 
     const graphics_initializer = new GraphicsInitializer();
     graphics_initializer.init(canvas, core_attributes, context_attributes, threejs_attributes);
+
+    // const draco_initializer = new DracoInitializer();
+    // draco_initializer.init();
+
+    // const basis_initializer = new BasisInitializer();
+    // basis_initializer.init();
 
     this.application.init(Graphics);
 

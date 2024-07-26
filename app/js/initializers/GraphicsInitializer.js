@@ -1,5 +1,5 @@
 import { Graphics, NormalRender } from 'ohzi-core';
-import { Settings } from './Settings';
+import { Settings } from '../Settings';
 
 class GraphicsInitializer
 {
