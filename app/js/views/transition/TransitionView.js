@@ -6,6 +6,8 @@ import { Settings } from '../../Settings';
 import { TransitionSceneController } from './TransitionSceneController';
 import { TransitionTransitionController } from './TransitionTransitionController';
 
+import transition_data from '../../../data/transitions/transition.json';
+
 class TransitionView extends CommonView
 {
   constructor()
@@ -13,7 +15,8 @@ class TransitionView extends CommonView
     super({
       name: Sections.TRANSITION,
       url: SectionsURLs.TRANSITION,
-      container: document.querySelector('.transition')
+      container: document.querySelector('.transition'),
+      transition_data: transition_data
     });
 
     this.scene_controller = new TransitionSceneController();

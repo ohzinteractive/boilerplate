@@ -4,6 +4,8 @@ import { Sections, SectionsURLs } from '../Sections';
 import { HomeSceneController } from './HomeSceneController';
 import { HomeTransitionController } from './HomeTransitionController';
 
+import home_data from '../../../data/transitions/home.json';
+
 class HomeView extends CommonView
 {
   constructor()
@@ -11,7 +13,8 @@ class HomeView extends CommonView
     super({
       name: Sections.HOME,
       url: SectionsURLs.HOME,
-      container: document.querySelector('.home')
+      container: document.querySelector('.home'),
+      transition_data: home_data
     });
 
     this.scene_controller = new HomeSceneController();

@@ -1,4 +1,4 @@
-import { BaseApplication } from 'ohzi-core';
+import { BaseApplication, TransitionManager } from 'ohzi-core';
 // import { HTMLUtilities, Time } from 'ohzi-core';
 import { ResourceContainer, ViewContext, ViewManager } from 'ohzi-core';
 
@@ -14,12 +14,17 @@ import { Input } from './components/Input';
 import { KeyboardInputController } from './components/KeyboardInputController';
 import { TweakPane } from './components/TweakPane';
 import { Settings } from './Settings';
+
+import { default_state_data } from '../data/default_state_data';
+
 // import { KeyboardInputController } from './components/KeyboardInputController';
 class MainApplication extends BaseApplication
 {
   init()
   {
     this.input = Input;
+
+    TransitionManager.set_default_state_data(default_state_data);
 
     // this.ui_collision_layer = UICollisionLayer;
     // this.ui_collision_layer.init(Input, Time);
@@ -31,7 +36,6 @@ class MainApplication extends BaseApplication
     // {
     //   event.preventDefault();
     // });
-
   }
 
   on_enter()
