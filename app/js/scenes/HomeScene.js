@@ -9,7 +9,7 @@ import { home_sounds } from '../../data/assets/home/home_sounds';
 import { home_textures } from '../../data/assets/home/home_textures';
 
 import { CameraManager, Debug, Grid, OScreen, PerspectiveCamera } from 'ohzi-core';
-import { Color } from 'three/src/Three.js';
+import { Color } from 'three';
 import { CameraController } from '../camera_controller/CameraController';
 import { Settings } from '../Settings';
 import { CommonScene } from './common/CommonScene';

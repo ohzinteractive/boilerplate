@@ -36,7 +36,8 @@ export default {
     alias: {
       'ohzi-components': path.resolve(__dirname, './components/src'),
       'ohzi-core': path.resolve(__dirname, './core/src'),
-      'pit-js': path.resolve(__dirname, './pit/src')
+      'pit-js': path.resolve(__dirname, './pit/src'),
+      'three': path.resolve(__dirname, './node_modules/three')
     }
   },
   server: {
