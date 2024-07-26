@@ -1,15 +1,8 @@
-import { BaseApplication, OMath, ResourceContainer, TransitionManager, ViewManager } from 'ohzi-core';
+import { BaseApplication } from 'ohzi-core';
 
 import { GeneralLoader } from './loaders/GeneralLoader';
 
-import { InitialView } from './views/InitialView';
 import { LoaderView } from './views/loader/LoaderView';
-
-import loader_data from '../data/transitions/loader.json';
-
-import { default_state_data } from '../data/default_state_data';
-import { Settings } from './Settings';
-import { SectionsURLs } from './views/Sections';
 
 class LoaderState extends BaseApplication
 {
@@ -18,59 +11,41 @@ class LoaderState extends BaseApplication
     super();
 
     this.api = api;
-    this.loader_view = undefined;
+    this.loader_view = new LoaderView(api);
 
     this.loaders = [];
     this.current_loader = undefined;
     this.current_loader_index = 0;
 
     this.second_step = false;
+
+    this.finished = false;
+    this.frame_id = -1;
   }
 
   // Do not add any assets here. Use GeneralLoader or a specific loader.
   init()
   {
-    // this.__redirect_invalid_url();
-
-    // Uncomment this if you need initial config in your project
-    // let batch = new ResourceBatch();
+    // Uncomment this if we need initial config in the project
+    // let batch = new ResourceBatch('config_loader', ResourceContainer);
     // batch.add_json('config', 'data/config.json', 2000);
-    // batch.load(ResourceContainer);
+    // batch.load();
     // this.check_resource_loading(batch, this.on_config_ready.bind(this), 10);
 
     this.on_config_ready();
 
-    if (process.env.NODE_ENV === 'development')
-    {
-      this.__setup_debug_mode();
-    }
-    else
-    {
-      localStorage.removeItem('debug_mode');
-      localStorage.removeItem('skip_mode');
-
-      this.__remove_logs();
-    }
+    this.on_enter();
   }
 
   on_enter()
   {
     this.loader_view.start();
+
+    this.frame_id = requestAnimationFrame(this.update.bind(this));
   }
 
   on_config_ready()
   {
-    ResourceContainer.set_resource('loader_data', 'data/loader.json', loader_data);
-
-    this.initial_view = new InitialView();
-    this.loader_view = new LoaderView(this.api);
-
-    TransitionManager.set_default_state_data(default_state_data);
-    ViewManager.set_view(this.initial_view.name);
-
-    // Start render loop
-    this.api.start();
-
     this.on_loader_ready();
   }
 
@@ -80,9 +55,7 @@ class LoaderState extends BaseApplication
 
     // let config = ResourceContainer.get('config');
 
-    ViewManager.go_to_view(this.loader_view.name, false);
-
-    this.loaders.push(new GeneralLoader(ResourceContainer));
+    this.loaders.push(new GeneralLoader());
 
     this.current_loader = this.loaders[this.current_loader_index];
     this.current_loader.load();
@@ -91,8 +64,11 @@ class LoaderState extends BaseApplication
   on_assets_ready()
   {
     this.second_step = false;
-    // this.loader_view.set_progress(1);
-    this.loader_view.on_assets_ready();
+
+    this.finished = true;
+
+    this.loader_view.on_exit();
+    this.api.start();
   }
 
   check_resource_loading(batch, on_resources_loaded, timeout)
@@ -121,16 +97,15 @@ class LoaderState extends BaseApplication
 
   update()
   {
+    if (this.finished)
+    {
+      return;
+    }
+
+    this.loader_view.update();
+
     if (this.second_step)
     {
-      const progress = OMath.linear_map(
-        this.__get_progress(),
-        0, 1,
-        0, 1
-      );
-
-      this.loader_view.set_progress(progress);
-
       if (this.current_loader.batch.loading_finished)
       {
         if (this.current_loader.batch.has_errors)
@@ -143,6 +118,8 @@ class LoaderState extends BaseApplication
         }
       }
     }
+
+    this.frame_id = requestAnimationFrame(this.update.bind(this));
   }
 
   __on_current_loader_finished()
@@ -172,70 +149,6 @@ class LoaderState extends BaseApplication
     }
 
     return progress / this.loaders.length;
-  }
-
-  __remove_logs()
-  {
-    const url_params = new URLSearchParams(window.location.search);
-
-    const logs = url_params.get('logs');
-
-    if (!logs)
-    {
-      window.console.log = () =>
-      {};
-      window.console.warn = () =>
-      {};
-      window.console.error = () =>
-      {};
-    }
-  }
-
-  __redirect_invalid_url()
-  {
-    const sections_urls = Object.values(SectionsURLs);
-
-    if (!sections_urls.includes(window.location.pathname))
-    {
-      window.location.replace('/');
-    }
-  }
-
-  __setup_debug_mode()
-  {
-    let debug_mode = localStorage.getItem('debug_mode');
-    Settings.debug_mode = debug_mode === 'true';
-
-    if (debug_mode === 'true')
-    {
-      const sections_containers = document.querySelectorAll('.section');
-
-      for (let i = 0; i < sections_containers.length; i++)
-      {
-        const section_container = sections_containers[i];
-
-        section_container.classList.add('debug');
-      }
-    }
-
-    document.addEventListener('keydown', event =>
-    {
-      if (event.shiftKey && event.key === 'D')
-      {
-        if (debug_mode === 'true')
-        {
-          debug_mode = 'false';
-          document.querySelector('.lil-gui.autoPlace').style.display = 'flex';
-        }
-        else
-        {
-          debug_mode = 'true';
-        }
-
-        localStorage.setItem('debug_mode', debug_mode);
-        location.reload();
-      }
-    });
   }
 }
 

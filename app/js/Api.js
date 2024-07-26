@@ -11,6 +11,7 @@ import { LoaderState } from './LoaderState';
 import { Input } from './components/Input';
 // import { BasisInitializer } from './initializers/BasisInitializer';
 // import { DracoInitializer } from './initializers/DracoInitializer';
+import { DebugModeController } from './components/DebugModeController';
 import { GraphicsInitializer } from './initializers/GraphicsInitializer';
 import { MainApplication } from './MainApplication';
 import { Settings } from './Settings';
@@ -19,11 +20,14 @@ class Api
 {
   init()
   {
+    this.debug_mode_controller = new DebugModeController();
+    Settings.debug_mode = this.debug_mode_controller.debug_mode;
+
     this.application = new MainApplication();
 
     this.loader = new LoaderState(this);
 
-    this.render_loop = new RenderLoop(this.loader, Graphics, Input);
+    this.render_loop = new RenderLoop(this.application, Graphics, Input);
 
     const app_container = document.querySelector('.container');
     const canvas = document.querySelector('.main-canvas');
@@ -80,11 +84,6 @@ class Api
     this.application.dispose();
     Initializer.dispose(this.render_loop);
     Input.dispose();
-  }
-
-  start_main_app()
-  {
-    this.render_loop.set_state(this.application);
   }
 
   start()

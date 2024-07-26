@@ -75,3 +75,18 @@
                 transform-origin: left;
                 will-change: transform;
             }
+
+            .transition__progress-bar-fill {
+                transform: translate3d(20%, 0, 0);
+            }
+
+            .loader__progress-bar-fill {
+                animation-name: slide;
+                animation-duration: 1s;
+                animation-fill-mode: forwards;
+            }
+
+            @keyframes slide {
+                from {transform: translate3d(0,0,0)}
+                to {transform: translate3d(20%,0,0)}
+              }
