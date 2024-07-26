@@ -2,7 +2,7 @@
   "name": "ohzi-boilerplate",
   "description": "OHZI Boilerplate.",
   "author": "OHZI Interactive Studio",
-  "version": "10.7.0",
+  "version": "12.0.0",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -44,8 +44,8 @@
   },
   "dependencies": {
     "@tweakpane/plugin-essentials": "^0.2.1",
-    "ohzi-components": "3.3.0",
-    "ohzi-core": "10.8.3",
+    "ohzi-components": "3.4.0",
+    "ohzi-core": "12.0.0",
     "pit-js": "3.2.0",
     "tweakpane": "^4.0.4"
   },
