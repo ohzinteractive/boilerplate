@@ -54,6 +54,8 @@ export class HomeScene extends CommonScene
     super.update();
 
     this.camera_controller.update();
+
+    // this.camera.fov = Settings.camera.fov;
   }
 
   on_assets_ready()

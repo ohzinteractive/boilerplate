@@ -5,8 +5,8 @@ class Settings
     this.debug_mode = false;
     this.dpr = 1;
 
-    this.general = {
-      value: 0
+    this.camera = {
+      fov: 60
     };
   }
 }

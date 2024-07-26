@@ -122,8 +122,6 @@ class SectionTransitionController
     this.__update_camera_zoom(action_sequencer);
     this.__update_camera_rotation(action_sequencer);
     this.__update_camera_fov(action_sequencer);
-
-    // DatGUI.galaxy.opacity = Math.pow(global_view_data.galaxy_scale, 5)
   }
 
   update_exit_transition(global_view_data, transition_progress, action_sequencer)

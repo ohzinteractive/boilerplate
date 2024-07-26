@@ -2,7 +2,6 @@ import { BaseApplication } from 'ohzi-core';
 // import { HTMLUtilities, Time } from 'ohzi-core';
 import { ResourceContainer, ViewContext, ViewManager } from 'ohzi-core';
 
-import { DatGUI } from './components/DatGUI';
 import { HomeView } from './views/home/HomeView';
 import { TransitionView } from './views/transition/TransitionView';
 
@@ -13,6 +12,7 @@ import { Sections } from './views/Sections';
 // import { UICollisionLayer } from 'ohzi-components';
 import { Input } from './components/Input';
 import { KeyboardInputController } from './components/KeyboardInputController';
+import { TweakPane } from './components/TweakPane';
 import { Settings } from './Settings';
 // import { KeyboardInputController } from './components/KeyboardInputController';
 class MainApplication extends BaseApplication
@@ -32,7 +32,6 @@ class MainApplication extends BaseApplication
     //   event.preventDefault();
     // });
 
-    DatGUI.init();
   }
 
   on_enter()
@@ -60,7 +59,7 @@ class MainApplication extends BaseApplication
     this.home_view.start();
     this.transition_view.start();
 
-    DatGUI.start();
+    this.tweak_pane = new TweakPane();
 
     window.onpopstate = this.go_to_url_section.bind(this);
 
