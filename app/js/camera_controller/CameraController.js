@@ -108,7 +108,6 @@ class CameraController
     const zoom = this.camera.position.distanceTo(this.reference_position);
     this.normalized_zoom = OMath.linear_map(zoom, min_zoom, max_zoom, 1, 0);
     this.normalized_zoom = OMath.clamp(this.normalized_zoom, 0, 1);
-
   }
 
   update_initial_rotation()
