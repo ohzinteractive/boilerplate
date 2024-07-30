@@ -4,7 +4,6 @@ import { Graphics, Initializer, RenderLoop } from 'ohzi-core';
 // import { ResourceContainer } from 'ohzi-core';
 
 import package_json from '../../package.json';
-import { LoaderState } from './LoaderState';
 
 // APP
 import { Input } from './components/Input';
@@ -13,6 +12,7 @@ import { Input } from './components/Input';
 import { DebugModeController } from './components/DebugModeController';
 import { GraphicsInitializer } from './initializers/GraphicsInitializer';
 import { MainApplication } from './MainApplication';
+import { Preloader } from './Preloader';
 import { Settings } from './Settings';
 
 class Api
@@ -24,7 +24,7 @@ class Api
 
     this.application = new MainApplication();
 
-    this.loader = new LoaderState(this);
+    this.preloader = new Preloader(this);
 
     this.render_loop = new RenderLoop(this.application, Graphics, Input);
 
@@ -67,7 +67,7 @@ class Api
     window.author = 'OHZI Interactive Studio';
     window.version = package_json.version;
 
-    this.loader.init();
+    this.preloader.init();
 
     this.resize_observer = new ResizeObserver(this.on_canvas_resize.bind(this));
     this.resize_observer.observe(canvas);
