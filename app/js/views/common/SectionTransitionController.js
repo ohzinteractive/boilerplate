@@ -1,6 +1,5 @@
-import { OScreen, SceneManager, TransitionManager, ViewManager } from 'ohzi-core';
+import { OScreen, SceneManager, TransitionManager } from 'ohzi-core';
 import { Vector3 } from 'three';
-import { Sections } from '../Sections';
 
 class SectionTransitionController
 {
@@ -22,7 +21,6 @@ class SectionTransitionController
 
   start()
   {
-    this.loader_view = ViewManager.get(Sections.LOADER);
   }
 
   before_enter()

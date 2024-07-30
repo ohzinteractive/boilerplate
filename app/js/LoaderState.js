@@ -2,8 +2,6 @@ import { BaseApplication } from 'ohzi-core';
 
 import { GeneralLoader } from './loaders/GeneralLoader';
 
-import { LoaderView } from './views/loader/LoaderView';
-
 class LoaderState extends BaseApplication
 {
   constructor(api)
@@ -11,7 +9,6 @@ class LoaderState extends BaseApplication
     super();
 
     this.api = api;
-    this.loader_view = new LoaderView(api);
 
     this.loaders = [];
     this.current_loader = undefined;
@@ -39,8 +36,6 @@ class LoaderState extends BaseApplication
 
   on_enter()
   {
-    this.loader_view.start();
-
     this.frame_id = requestAnimationFrame(this.update.bind(this));
   }
 
@@ -67,7 +62,6 @@ class LoaderState extends BaseApplication
 
     this.finished = true;
 
-    this.loader_view.on_exit();
     this.api.start();
   }
 
@@ -101,8 +95,6 @@ class LoaderState extends BaseApplication
     {
       return;
     }
-
-    this.loader_view.update();
 
     if (this.second_step)
     {
