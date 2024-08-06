@@ -2,7 +2,7 @@
   "name": "ohzi-boilerplate",
   "description": "OHZI Boilerplate.",
   "author": "OHZI Interactive Studio",
-  "version": "12.0.1",
+  "version": "12.0.3",
   "license": "MIT",
   "type": "module",
   "scripts": {
