@@ -6,7 +6,7 @@ export class DebugModeController
   {
     this.debug_mode = false;
 
-    if (process.env.NODE_ENV === 'development')
+    if (import.meta.env.DEV)
     {
       this.__setup_debug_mode();
     }

@@ -17,7 +17,7 @@ class GraphicsInitializer
 
     Graphics.set_state(this.normal_render_mode);
     // Graphics._renderer.outputColorSpace = LinearSRGBColorSpace;
-    Graphics._renderer.debug.checkShaderErrors = process.env.NODE_ENV === 'development';
+    Graphics._renderer.debug.checkShaderErrors = import.meta.env.DEV;
 
     // Graphics._renderer.physicallyCorrectLights = true;
     // Graphics._renderer.toneMapping = ACESFilmicToneMapping;
