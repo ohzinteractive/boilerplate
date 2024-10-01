@@ -1,6 +1,4 @@
-import { BaseApplication, TransitionManager } from 'ohzi-core';
-// import { HTMLUtilities, Time } from 'ohzi-core';
-import { ResourceContainer, ViewManager } from 'ohzi-core';
+import { BaseApplication, ResourceContainer, TransitionManager, ViewManager } from 'ohzi-core';
 
 import { HomeView } from './views/home/HomeView';
 import { TransitionView } from './views/transition/TransitionView';
@@ -30,7 +28,7 @@ class MainApplication extends BaseApplication
     // this.ui_collision_layer.init(Input, Time);
 
     // this.modal_component = ModalComponent;
-    // this.modal_component.init(UICollisionLayer, HTMLUtilities, Time);
+    // this.modal_component.init(UICollisionLayer, Time);
 
     // addEventListener('contextmenu', (event) =>
     // {
@@ -40,6 +38,11 @@ class MainApplication extends BaseApplication
 
   on_enter()
   {
+    if (import.meta.env.DEV)
+    {
+      this.tweak_pane = new TweakPane();
+    }
+
     this.config = ResourceContainer.get_resource('config');
 
     this.sections = Sections;
@@ -60,8 +63,6 @@ class MainApplication extends BaseApplication
 
     this.home_view.start();
     this.transition_view.start();
-
-    this.tweak_pane = new TweakPane();
 
     window.onpopstate = this.go_to_url_section.bind(this);
 

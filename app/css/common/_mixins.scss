@@ -1,3 +1,10 @@
+
+@mixin orientation($orientation) {
+    @media (orientation: $orientation), print {
+        @content;
+    }
+}
+
 @mixin respond-to($breakpoint) {
     @media screen and (min-width: $breakpoint), print {
         @content;
