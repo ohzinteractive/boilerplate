@@ -38,6 +38,7 @@ class HomeSceneController
 
   update_enter_transition(global_view_data, transition_progress, action_sequencer)
   {
+    this.scene.update();
   }
 
   update_exit_transition(global_view_data, transition_progress, action_sequencer)
