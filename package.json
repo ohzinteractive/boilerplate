@@ -47,7 +47,9 @@
     "ohzi-components": "3.4.0",
     "ohzi-core": "12.0.3",
     "pit-js": "4.0.1",
-    "tweakpane": "^4.0.4"
+    "tweakpane": "^4.0.4",
+    "@recast-navigation/three": "^0.33.0",
+    "recast-navigation": "^0.33.0"
   },
   "devDependencies": {
     "@vituum/vite-plugin-pug": "^1.1.0",

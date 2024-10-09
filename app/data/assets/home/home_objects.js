@@ -5,6 +5,12 @@ const home_objects = [
   //   size: import.meta.env['models-scene.glb'],
   //   draco: false
   // }
+  {
+    name: 'navmesh',
+    url: 'models/ohziverse_navmesh.glb',
+    size: 200000,
+    draco: false
+  }
 ];
 
 export { home_objects };

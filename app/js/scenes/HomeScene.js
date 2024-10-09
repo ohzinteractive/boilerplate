@@ -13,6 +13,11 @@ import { Color } from 'three';
 import { CameraController } from '../camera_controller/CameraController';
 import { Settings } from '../Settings';
 import { CommonScene } from './common/CommonScene';
+import { NavmeshContainer } from '../components/NavmeshContainer';
+
+import {
+  init as recastInit
+} from '@recast-navigation/core';
 
 // import { AmbientLight, DirectionalLight } from 'three';
 export class HomeScene extends CommonScene
@@ -55,6 +60,11 @@ export class HomeScene extends CommonScene
 
     this.camera_controller.update();
 
+    // this.camera_controller.update();
+    if (this.navmesh_container)
+    {
+      this.navmesh_container.update();
+    }
     // this.camera.fov = Settings.camera.fov;
   }
 
@@ -65,6 +75,11 @@ export class HomeScene extends CommonScene
     super.on_assets_ready();
 
     this.setup_camera();
+    recastInit().then(() =>
+    {
+      this.navmesh_container = new NavmeshContainer();
+      this.add(this.navmesh_container);
+    });
 
     // this.add_lights();
   }

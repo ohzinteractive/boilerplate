@@ -263,6 +263,34 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@recast-navigation/core@0.33.0":
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/@recast-navigation/core/-/core-0.33.0.tgz#61573796fb8fe48339e6dfa7924d4061e4d3f284"
+  integrity sha512-xr/OPcAYg+fbeLj7ox3oDcTRNvuiOE9pXmZdvJ8UCbUFAc/nwD4C1V35ygYq8jLbHE6sE+cBp/Wu5LYAIh/7bQ==
+  dependencies:
+    "@recast-navigation/wasm" "0.33.0"
+
+"@recast-navigation/generators@0.33.0":
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/@recast-navigation/generators/-/generators-0.33.0.tgz#0bf7705c29b0ebb3624e13bc2a86c8df88d371d9"
+  integrity sha512-eVoBssKf0Xkf3PWvICCdg0NX62f2KHCkqGqoS4lPM/j+Fq3ORXseBuIt0ksadg0qBiNrIrHf5NHtzsvCWbnSHA==
+  dependencies:
+    "@recast-navigation/core" "0.33.0"
+    "@recast-navigation/wasm" "0.33.0"
+
+"@recast-navigation/three@0.33.0", "@recast-navigation/three@^0.33.0":
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/@recast-navigation/three/-/three-0.33.0.tgz#eb036990323040355b9c6ae850c24c626abc507c"
+  integrity sha512-vdfuUG6KDL+xDhH//2jUia+UABdM5FFfRKACPW7B7pKK+DH75f2Aae7B0QHIC+wPgl7pKy9+O6MzQwktpMJeOQ==
+  dependencies:
+    "@recast-navigation/core" "0.33.0"
+    "@recast-navigation/generators" "0.33.0"
+
+"@recast-navigation/wasm@0.33.0":
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/@recast-navigation/wasm/-/wasm-0.33.0.tgz#361bb5d0a7648f1d1150b597d191e2109f5adfd7"
+  integrity sha512-LZoozJGQDw2nbek3yucyH515tjSBH7zHgnj379MaZi2xyX6seyy35fSgcXTlXVVODx2JXgcDfvudF4NIntyS2A==
+
 "@rollup/plugin-terser@^0.4.4":
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-terser/-/plugin-terser-0.4.4.tgz#15dffdb3f73f121aa4fbb37e7ca6be9aeea91962"
@@ -3155,6 +3183,15 @@ readdirp@~3.6.0:
   integrity sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==
   dependencies:
     picomatch "^2.2.1"
+
+recast-navigation@^0.33.0:
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/recast-navigation/-/recast-navigation-0.33.0.tgz#1f9e01ed3de2094f835093e541abb35d6405122a"
+  integrity sha512-N4EfB23lcb/G5OKSuqUCLQ6sORiKN7IldT71II3hxo6o/+TDDLf5IrptEzZAiN7JJzOFqil5eUwnNsKzMzt5Kg==
+  dependencies:
+    "@recast-navigation/core" "0.33.0"
+    "@recast-navigation/generators" "0.33.0"
+    "@recast-navigation/three" "0.33.0"
 
 redent@^4.0.0:
   version "4.0.0"
