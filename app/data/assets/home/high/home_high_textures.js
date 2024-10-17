@@ -2,7 +2,7 @@ const home_high_textures = [
   // {
   //   name: 'leaf_texture',
   //   url: '/textures/leaf_texture.png',
-  //   size: import.meta.env['textures-leaf_texture.png'],
+  //   size: import.meta.env.OHZI_TEXTURES_LEAF_TEXTURE_PNG,
   //   kind: 'regular', // regular, basis, hdr
   //   flipY: false,
   //   premultiplyAlpha: false,
