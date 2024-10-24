@@ -45,8 +45,8 @@
   "dependencies": {
     "@tweakpane/plugin-essentials": "^0.2.1",
     "ohzi-components": "3.5.0",
-    "ohzi-core": "12.2.1",
-    "pit-js": "4.1.0",
+    "ohzi-core": "12.3.1",
+    "pit-js": "4.1.1",
     "tweakpane": "^4.0.4"
   },
   "devDependencies": {
