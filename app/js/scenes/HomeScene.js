@@ -5,7 +5,6 @@ import { home_high_objects } from '../../data/assets/home/high/home_high_objects
 import { home_high_sounds } from '../../data/assets/home/high/home_high_sounds';
 import { home_high_textures } from '../../data/assets/home/high/home_high_textures';
 import { home_objects } from '../../data/assets/home/home_objects';
-import { home_sounds } from '../../data/assets/home/home_sounds';
 import { home_textures } from '../../data/assets/home/home_textures';
 
 import { CameraManager, Debug, Grid, OScreen, PerspectiveCamera } from 'ohzi-core';
@@ -30,7 +29,9 @@ export class HomeScene extends CommonScene
 
     this.init_camera();
 
-    this.set_assets(home_objects, home_textures, home_sounds);
+    this.set_assets(home_objects, home_textures, []);
+
+    // AudioManager.setup_sounds_names(home_high_sounds);
 
     if (Settings.debug_mode)
     {
@@ -63,8 +64,6 @@ export class HomeScene extends CommonScene
     this.set_high_assets(home_high_objects, home_high_textures, home_high_sounds);
 
     super.on_assets_ready();
-
-    this.setup_camera();
 
     // this.add_lights();
   }

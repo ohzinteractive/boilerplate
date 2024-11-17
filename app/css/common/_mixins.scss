@@ -40,3 +40,28 @@
         #{$vendor}backdrop-filter: #{$value};
     }
 }
+
+@mixin mask($value) {
+    @each $vendor in ('-webkit-', '') {
+        #{$vendor}mask: #{$value};
+    }
+}
+
+@mixin mask-composite($value) {
+    @each $vendor in ('-webkit-', '') {
+        #{$vendor}mask-composite: #{$value};
+    }
+}
+
+@mixin mask-image($value) {
+    @each $vendor in ('-webkit-', '') {
+        #{$vendor}mask-image: #{$value};
+    }
+}
+
+@mixin hide-scrollbar($value) {
+    &::-webkit-scrollbar { display: none; }
+    @each $vendor in ('-webkit-scrollbar', '-ms-overflow-style', 'scrollbar-width') {
+        #{$vendor}: none;
+    }
+}
