@@ -6,13 +6,15 @@ import vitePugPlugin from 'vite-plugin-pug-transformer';
 import sections_meta from './app/data/sections_meta.json';
 import packagejson from './package.json';
 
+const useHttps = process.env.VITE_USE_HTTPS === 'true';
+
 export default defineConfig({
   plugins: [
     glsl(),
     vitePugPlugin({ pugLocals: {
-        sections_meta,
-        package: packagejson,
-      }
+          sections_meta,
+          package: packagejson
+        }
     }),
     {
       name: "ohzi-static-files-dont-exist",
@@ -39,9 +41,9 @@ export default defineConfig({
     //   pattern: "./core/**/*.js",
     //   command: "cd core && yarn build",
     // }),
-    ],
-    build: {
-      target: 'esnext', // browsers can handle the latest ES features
+  ],
+  build: {
+    target: 'esnext', // browsers can handle the latest ES features
     rollupOptions: {
       input: ['index.html'],
       output: {
@@ -62,10 +64,12 @@ export default defineConfig({
     }
   },
   server: {
-    https: {
-      key: fs.readFileSync(path.resolve(__dirname, 'certificates', 'localhost-key.pem')),
-      cert: fs.readFileSync(path.resolve(__dirname, 'certificates', 'localhost.pem'))
-    },
+    https: useHttps
+      ? {
+        key: fs.readFileSync(path.resolve(__dirname, 'certificates', 'localhost-key.pem')),
+        cert: fs.readFileSync(path.resolve(__dirname, 'certificates', 'localhost.pem'))
+      }
+      : false,
     host: true // allows external access
   },
   envPrefix: 'OHZI'

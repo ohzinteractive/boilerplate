@@ -27,7 +27,7 @@
     "start": "node tasks/remove_cache.mjs && node tasks/start_app.mjs false",
     "start-ssl": "node tasks/remove_cache.mjs && node tasks/start_app.mjs true",
     "start-vite": "vite --port 1234",
-    "start-vite-ssl": "vite --port 443",
+    "start-vite-ssl": "VITE_USE_HTTPS=true vite --port 443",
     "build-api": "vite build",
     "build": "node tasks/remove_cache.mjs && node tasks/build_app.mjs && yarn copy-public",
     "build-vite": "vite build",
