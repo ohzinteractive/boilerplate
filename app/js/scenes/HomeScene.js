@@ -25,6 +25,8 @@ export class HomeScene extends CommonScene
 
   init()
   {
+    super.init();
+
     this.camera_controller = new CameraController();
 
     this.init_camera();
