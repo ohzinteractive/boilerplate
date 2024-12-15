@@ -73,7 +73,7 @@ class CommonCameraState extends AbstractCameraState
   {
     if (Input.left_mouse_button_down && Input.pointer_count === 1)
     {
-      const delta = new Vector2(Input.NDC_delta.x * -16, Input.NDC_delta.y * -4);
+      const delta = new Vector2(Input.NDC_delta.x * -24, Input.NDC_delta.y * -8);
       delta.multiplyScalar(Time.delta_time * 60);
 
       this.rotation_velocity.add(delta);
