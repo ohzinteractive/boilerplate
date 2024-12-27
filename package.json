@@ -39,13 +39,13 @@
     "create-component": "cd core && yarn create-component",
     "create-transition": "cd core && yarn create-transition",
     "create-modal": "cd components && yarn create-modal",
-    "calculate-assets-sizes": "cd core && yarn calculate-assets-sizes",
+    "calculate-assets-sizes": "node ./tasks/calculate_sizes.mjs",
     "fix-syntax": "standardx --fix || echo 'Done'"
   },
   "dependencies": {
     "@tweakpane/plugin-essentials": "^0.2.1",
     "ohzi-components": "3.5.0",
-    "ohzi-core": "12.5.0",
+    "ohzi-core": "12.5.1",
     "pit-js": "4.1.1",
     "tweakpane": "^4.0.4"
   },
