@@ -21,7 +21,7 @@ export default defineConfig({
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
           const url = req.url || '';
-          const extensions = ['mp3', 'mp4', 'webm', 'glb', 'jpg', 'png', 'webp', 'hdr', 'json', 'gltf', 'xml']
+          const extensions = ['mp3', 'mp4', 'webm', 'glb', 'jpg', 'png', 'webp', 'hdr', 'json', 'gltf', 'xml', 'json']
           
           // Check if the url contains a dot (.) which means it's probably a static file request
           if (url.includes('.') && extensions.includes(url.split('.').pop())) {
