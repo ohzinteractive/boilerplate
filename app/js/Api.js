@@ -95,6 +95,62 @@ class Api
     this.render_loop.stop();
   }
 
+  record_video(seconds = 5, fps = 60, format = 'video/mp4', callback = (blob) => this.download_video(blob, format))
+  {
+    // Assuming you already have a WebGL canvas
+    const canvas = document.querySelector('canvas');
+    const stream = canvas.captureStream(fps);
+
+    // Create MediaRecorder
+    const mediaRecorder = new MediaRecorder(stream, {
+      mimeType: format // or 'video/webm; codecs=vp9' if supported
+    });
+
+    const chunks = [];
+
+    mediaRecorder.ondataavailable = (event) =>
+    {
+      if (event.data.size > 0)
+      {
+        chunks.push(event.data);
+      }
+    };
+
+    mediaRecorder.onstop = () =>
+    {
+      const blob = new Blob(chunks, { type: format });
+      callback(blob, format);
+    };
+
+    // Start recording
+    mediaRecorder.start();
+
+    // Stop after 5 seconds for example
+    setTimeout(() =>
+    {
+      mediaRecorder.stop();
+    }, seconds * 1000);
+  }
+
+  download_video(blob, format = 'video/mp4')
+  {
+    console.log(format);
+    const url = URL.createObjectURL(blob);
+
+    const extension = format.split('/')[1]; // Get the file extension from the MIME type
+    const hours = String(new Date().getHours()).padStart(2, '0');
+    const minutes = String(new Date().getMinutes()).padStart(2, '0');
+    const seconds = String(new Date().getSeconds()).padStart(2, '0');
+
+    const filename = `recording_${hours}_${minutes}_${seconds}.${extension}`;
+
+    // Download or use the video
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+  }
+
   take_screenshot(callback = (blob) => this.download_blob(blob))
   {
     Graphics.take_screenshot(callback);
