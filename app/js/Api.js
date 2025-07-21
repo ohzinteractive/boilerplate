@@ -9,6 +9,7 @@ import package_json from '../../package.json';
 import { Input } from './components/Input';
 // import { BasisInitializer } from './initializers/BasisInitializer';
 // import { DracoInitializer } from './initializers/DracoInitializer';
+import { AudioManager } from 'ohzi-components';
 import { DebugModeController } from './components/DebugModeController';
 import { GraphicsInitializer } from './initializers/GraphicsInitializer';
 import { MainApplication } from './MainApplication';
@@ -95,15 +96,28 @@ class Api
     this.render_loop.stop();
   }
 
-  record_video(seconds = 5, fps = 60, format = 'video/mp4', callback = (blob) => this.download_video(blob, format))
+  record_video({ duration, fps = 60, bitrate = 7_000_000, format = 'video/mp4; codecs=avc1.42E01E', callback = (blob) => this.download_video(blob, format) })
   {
-    // Assuming you already have a WebGL canvas
     const canvas = document.querySelector('canvas');
-    const stream = canvas.captureStream(fps);
+    const videoStream = canvas.captureStream(fps);
 
-    // Create MediaRecorder
-    const mediaRecorder = new MediaRecorder(stream, {
-      mimeType: format // or 'video/webm; codecs=vp9' if supported
+    // Get the AudioContext (replace with your actual audio context if you have one)
+    const audioCtx = AudioManager.listener.context;
+
+    // Create a destination node from the audio context
+    const dest = audioCtx.createMediaStreamDestination();
+
+    AudioManager.listener.getInput().connect(dest);
+
+    // Combine canvas video stream with audio
+    const combinedStream = new MediaStream([
+      ...videoStream.getVideoTracks(),
+      ...dest.stream.getAudioTracks()
+    ]);
+
+    const mediaRecorder = new MediaRecorder(combinedStream, {
+      mimeType: format,
+      videoBitsPerSecond: bitrate
     });
 
     const chunks = [];
@@ -122,22 +136,25 @@ class Api
       callback(blob, format);
     };
 
-    // Start recording
     mediaRecorder.start();
 
-    // Stop after 5 seconds for example
-    setTimeout(() =>
+    if (duration)
     {
-      mediaRecorder.stop();
-    }, seconds * 1000);
+      setTimeout(() =>
+      {
+        mediaRecorder.stop();
+      }, duration * 1000);
+    }
+
+    return mediaRecorder;
   }
 
-  download_video(blob, format = 'video/mp4')
+  download_video(blob, format = 'video/mp4; codecs=avc1.42E01E')
   {
     console.log(format);
     const url = URL.createObjectURL(blob);
 
-    const extension = format.split('/')[1]; // Get the file extension from the MIME type
+    const extension = format.split('/')[1].split(';')[0]; // Get the file extension from the MIME type
     const hours = String(new Date().getHours()).padStart(2, '0');
     const minutes = String(new Date().getMinutes()).padStart(2, '0');
     const seconds = String(new Date().getSeconds()).padStart(2, '0');
