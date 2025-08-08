@@ -52,7 +52,8 @@ class CalculateSizes
   update_asset_size(file_url, parent_file_path, size)
   {
     const from  = `url: '${file_url}'`;
-    const to = `url: '${file_url}',\n    size: ${size}`;
+    const to = `url: '${file_url}',
+    size: ${size}`;
 
     this.replace_in_file(from, to, parent_file_path);
   }
