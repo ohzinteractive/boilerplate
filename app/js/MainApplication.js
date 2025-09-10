@@ -14,6 +14,7 @@ import { TweakPane } from './components/TweakPane';
 import { Settings } from './Settings';
 
 import { default_state_data } from '../data/default_state_data';
+import { Router } from './components/Router';
 
 // import { KeyboardInputController } from './components/KeyboardInputController';
 class MainApplication extends BaseApplication
@@ -64,17 +65,8 @@ class MainApplication extends BaseApplication
     this.home_view.start();
     this.transition_view.start();
 
-    window.onpopstate = this.go_to_url_section.bind(this);
-
-    this.go_to_url_section();
-  }
-
-  go_to_url_section()
-  {
-    const next_view = ViewManager.get_by_url(window.location.pathname) || this.home_view;
-
-    this.transition_view.set_next_view(next_view);
-    this.go_to(Sections.TRANSITION, false, false);
+    this.router = new Router();
+    this.router.start();
   }
 
   go_to(section, change_url = true, skip = false)
