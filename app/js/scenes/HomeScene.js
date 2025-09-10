@@ -73,6 +73,8 @@ export class HomeScene extends CommonScene
   on_high_quality_assets_ready()
   {
     super.on_high_quality_assets_ready();
+
+    // AudioManager.init_sounds(home_high_sounds);
   }
 
   init_camera()
