@@ -25,42 +25,6 @@ class SectionTransitionController
 
   before_enter()
   {
-    this.__set_keyframes_offset('camera_x', this.camera_position.x);
-    this.__set_keyframes_offset('camera_y', this.camera_position.y);
-    this.__set_keyframes_offset('camera_z', this.camera_position.z);
-
-    this.__set_keyframes_offset('camera_x_mobile', this.camera_position.x);
-    this.__set_keyframes_offset('camera_y_mobile', this.camera_position.y);
-    this.__set_keyframes_offset('camera_z_mobile', this.camera_position.z);
-
-    this.__set_keyframes_offset('camera_orientation', this.camera_orientation);
-    this.__set_keyframes_offset('camera_tilt', this.camera_tilt);
-
-    this.__set_keyframes_offset('camera_orientation_mobile', this.camera_orientation);
-    this.__set_keyframes_offset('camera_tilt_mobile', this.camera_tilt);
-  }
-
-  __set_keyframes_offset(channel_name, offset)
-  {
-    const action_sequencer = TransitionManager.action_sequencer;
-
-    const keyframes = action_sequencer.get_keyframes(channel_name);
-
-    for (let i = 0; i < keyframes.length; i++)
-    {
-      const keyframe = keyframes[i];
-
-      if (i > 0)
-      {
-        keyframe.interpolator.from += offset;
-      }
-
-      keyframe.interpolator.to += offset;
-    }
-  }
-
-  show()
-  {
     TransitionManager.current_state_data.camera_x = SceneManager.current.camera_controller.reference_position.x;
     TransitionManager.current_state_data.camera_y = SceneManager.current.camera_controller.reference_position.y;
     TransitionManager.current_state_data.camera_z = SceneManager.current.camera_controller.reference_position.z;
@@ -87,6 +51,20 @@ class SectionTransitionController
     // this.starting_orientation = SceneManager.current.camera_controller.current_orientation;
     // this.starting_tilt = SceneManager.current.camera_controller.current_tilt;
     // this.starting_azimuth = SceneManager.current.camera_controller.current_azimuth;
+
+    this.__set_keyframes_offset('camera_x', this.camera_position.x);
+    this.__set_keyframes_offset('camera_y', this.camera_position.y);
+    this.__set_keyframes_offset('camera_z', this.camera_position.z);
+
+    this.__set_keyframes_offset('camera_x_mobile', this.camera_position.x);
+    this.__set_keyframes_offset('camera_y_mobile', this.camera_position.y);
+    this.__set_keyframes_offset('camera_z_mobile', this.camera_position.z);
+
+    this.__set_keyframes_offset('camera_orientation', this.camera_orientation);
+    this.__set_keyframes_offset('camera_tilt', this.camera_tilt);
+
+    this.__set_keyframes_offset('camera_orientation_mobile', this.camera_orientation);
+    this.__set_keyframes_offset('camera_tilt_mobile', this.camera_tilt);
   }
 
   on_enter()
@@ -139,6 +117,25 @@ class SectionTransitionController
   set_camera_tilt(tilt)
   {
     this.camera_tilt = tilt;
+  }
+
+  __set_keyframes_offset(channel_name, offset)
+  {
+    const action_sequencer = TransitionManager.action_sequencer;
+
+    const keyframes = action_sequencer.get_keyframes(channel_name);
+
+    for (let i = 0; i < keyframes.length; i++)
+    {
+      const keyframe = keyframes[i];
+
+      if (i > 0)
+      {
+        keyframe.interpolator.from += offset;
+      }
+
+      keyframe.interpolator.to += offset;
+    }
   }
 
   __update_camera_rotation(action_sequencer)
