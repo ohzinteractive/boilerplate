@@ -7,7 +7,7 @@ export class TweakPane
   constructor()
   {
     const pane = new Pane({
-      title: 'Camera settings',
+      title: 'Settings',
       expanded: false
     });
     pane.registerPlugin(EssentialsPlugin);

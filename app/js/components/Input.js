@@ -79,13 +79,16 @@ class Input extends InputController
           this.swiped_down = true;
         }
       }
-
-      this.current_NDC_delta = { x: 0, y: 0 };
     }
   }
 
   clear()
   {
+    if (this.left_mouse_button_released)
+    {
+      this.current_NDC_delta = { x: 0, y: 0 };
+    }
+
     super.clear();
 
     this.clicked = false;
