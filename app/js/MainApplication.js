@@ -16,7 +16,6 @@ import { Settings } from './Settings';
 import { default_state_data } from '../data/default_state_data';
 import { Router } from './components/Router';
 
-// import { KeyboardInputController } from './components/KeyboardInputController';
 class MainApplication extends BaseApplication
 {
   init()

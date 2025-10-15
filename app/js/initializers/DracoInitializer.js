@@ -6,7 +6,7 @@ export class DracoInitializer
   init()
   {
     const draco_loader = new DRACOLoader();
-    draco_loader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.4.3/');
+    draco_loader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
     draco_loader.setDecoderConfig({ type: 'js' });
     draco_loader.setWorkerLimit(1);
 
