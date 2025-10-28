@@ -30,6 +30,7 @@ export class HomeScene extends CommonScene
     this.camera_controller = new CameraController();
 
     this.init_camera();
+    this.setup_camera();
 
     this.set_assets(home_objects, home_textures, []);
 
