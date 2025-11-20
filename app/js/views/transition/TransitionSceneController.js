@@ -1,7 +1,7 @@
 import { ViewManager } from 'ohzi-core';
 import { Sections } from '../Sections';
 
-class TransitionSceneController
+export class TransitionSceneController
 {
   constructor()
   {
@@ -69,5 +69,3 @@ class TransitionSceneController
     return this.next_scene.loading_progress;
   }
 }
-
-export { TransitionSceneController };

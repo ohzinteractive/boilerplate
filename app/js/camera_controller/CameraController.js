@@ -15,7 +15,7 @@ import { Box3, Ray } from 'three';
 import { SimpleCameraState } from './states/SimpleCameraState';
 import { AbstractCameraState } from './states/common/AbstractCameraState';
 
-class CameraController
+export class CameraController
 {
   constructor()
   {
@@ -493,5 +493,3 @@ class CameraController
     return Math.max(Math.abs(distH), Math.abs(distV));
   }
 }
-
-export { CameraController };

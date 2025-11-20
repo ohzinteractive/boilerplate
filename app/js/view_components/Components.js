@@ -1,5 +1,3 @@
-const Components =  {
+export const Components =  {
   // __COMPONENTS__
 };
-
-export { Components };

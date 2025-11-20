@@ -8,7 +8,7 @@ import { TransitionTransitionController } from './TransitionTransitionController
 
 import transition_data from '../../../data/transitions/transition.json';
 
-class TransitionView extends CommonView
+export class TransitionView extends CommonView
 {
   constructor()
   {
@@ -30,6 +30,8 @@ class TransitionView extends CommonView
 
   start()
   {
+    super.start();
+
     this.scene_controller.start();
     this.transition_controller.start();
 
@@ -147,5 +149,3 @@ class TransitionView extends CommonView
     return Math.round(value * multiplier) / multiplier;
   }
 }
-
-export { TransitionView };

@@ -6,7 +6,7 @@ import { Vector2 } from 'three';
 import { Input } from '../../../components/Input';
 import { AbstractCameraState } from './AbstractCameraState';
 
-class CommonCameraState extends AbstractCameraState
+export class CommonCameraState extends AbstractCameraState
 {
   constructor()
   {
@@ -193,5 +193,3 @@ class CommonCameraState extends AbstractCameraState
     }
   }
 }
-
-export { CommonCameraState };

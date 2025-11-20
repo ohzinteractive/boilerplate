@@ -1,4 +1,4 @@
-const home_high_sounds = [
+export const home_high_sounds = [
   // {
   //   name: 'background',
   //   url: '/sounds/background.mp4',
@@ -13,5 +13,3 @@ const home_high_sounds = [
   //   volume: 1
   // }
 ];
-
-export { home_high_sounds };

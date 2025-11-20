@@ -1,4 +1,4 @@
-class TransitionTransitionController
+export class TransitionTransitionController
 {
   start()
   {
@@ -36,5 +36,3 @@ class TransitionTransitionController
   {
   }
 }
-
-export { TransitionTransitionController };

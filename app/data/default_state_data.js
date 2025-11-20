@@ -1,4 +1,4 @@
-const default_state_data = {
+export const default_state_data = {
   loader_opacity: 0,
   transition_opacity: 0,
   home_opacity: 0,
@@ -19,5 +19,3 @@ const default_state_data = {
   camera_tilt_mobile: 45,
   camera_azimuth_mobile: 0
 };
-
-export { default_state_data };

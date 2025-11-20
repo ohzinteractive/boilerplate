@@ -2,7 +2,7 @@
 // import { Sections } from '../Sections';
 import { SectionTransitionController } from '../common/SectionTransitionController';
 
-class HomeTransitionController extends SectionTransitionController
+export class HomeTransitionController extends SectionTransitionController
 {
   start()
   {
@@ -34,5 +34,3 @@ class HomeTransitionController extends SectionTransitionController
     super.update_exit_transition(global_view_data, transition_progress, action_sequencer);
   }
 }
-
-export { HomeTransitionController };

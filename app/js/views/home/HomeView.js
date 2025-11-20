@@ -6,7 +6,7 @@ import { HomeTransitionController } from './HomeTransitionController';
 
 import home_data from '../../../data/transitions/home.json';
 
-class HomeView extends CommonView
+export class HomeView extends CommonView
 {
   constructor()
   {
@@ -28,6 +28,8 @@ class HomeView extends CommonView
 
   start()
   {
+    super.start();
+
     this.scene_controller.start();
     this.transition_controller.start();
   }
@@ -82,5 +84,3 @@ class HomeView extends CommonView
     this.transition_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
   }
 }
-
-export { HomeView };

@@ -1,6 +1,6 @@
 import { Input } from './Input';
 
-class KeyboardInputController
+export class KeyboardInputController
 {
   constructor()
   {
@@ -22,5 +22,3 @@ class KeyboardInputController
     Input.keyboard.register_key('Space');
   }
 }
-
-export { KeyboardInputController };

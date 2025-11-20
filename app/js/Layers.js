@@ -9,5 +9,4 @@ class Layers
   }
 }
 const layers = new Layers();
-
 export { layers as Layers };

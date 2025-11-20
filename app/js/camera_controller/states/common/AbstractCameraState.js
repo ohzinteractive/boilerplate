@@ -1,4 +1,4 @@
-class AbstractCameraState
+export class AbstractCameraState
 {
   constructor()
   {
@@ -30,5 +30,3 @@ class AbstractCameraState
 
   }
 }
-
-export { AbstractCameraState };

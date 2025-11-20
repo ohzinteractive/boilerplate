@@ -2,7 +2,7 @@ import { ApplicationView } from 'ohzi-core';
 
 import { Sections, SectionsURLs } from './Sections';
 
-class InitialView extends ApplicationView
+export class InitialView extends ApplicationView
 {
   constructor()
   {
@@ -45,5 +45,3 @@ class InitialView extends ApplicationView
   {
   }
 }
-
-export { InitialView };

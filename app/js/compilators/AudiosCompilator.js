@@ -1,4 +1,4 @@
-class AudiosCompilator
+export class AudiosCompilator
 {
   constructor(textures_names)
   {
@@ -17,5 +17,3 @@ class AudiosCompilator
     this.finished = true;
   }
 }
-
-export { AudiosCompilator };

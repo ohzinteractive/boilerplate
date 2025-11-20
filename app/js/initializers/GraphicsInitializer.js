@@ -1,7 +1,7 @@
 import { Graphics, NormalRender } from 'ohzi-core';
 import { Settings } from '../Settings';
 
-class GraphicsInitializer
+export class GraphicsInitializer
 {
   init(canvas, core_attributes, context_attributes, threejs_attributes)
   {
@@ -24,5 +24,3 @@ class GraphicsInitializer
     // Graphics._renderer.toneMappingExposure = 0.7;
   }
 }
-
-export { GraphicsInitializer };

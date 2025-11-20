@@ -1,4 +1,4 @@
-const home_high_textures = [
+export const home_high_textures = [
   // {
   //   name: 'leaf_texture',
   //   url: '/textures/leaf_texture.png',
@@ -8,5 +8,3 @@ const home_high_textures = [
   //   colorSpaceConversion: true
   // }
 ];
-
-export { home_high_textures };

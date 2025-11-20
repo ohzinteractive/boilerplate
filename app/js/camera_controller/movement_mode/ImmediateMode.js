@@ -1,11 +1,9 @@
 
 import { CameraMovementMode } from './CameraMovementMode';
 
-import { Vector2 } from 'three';
-import { Vector3 } from 'three';
-import { Quaternion } from 'three';
 import { OMath } from 'ohzi-core';
-class ImmediateMode extends CameraMovementMode
+import { Quaternion, Vector2, Vector3 } from 'three';
+export class ImmediateMode extends CameraMovementMode
 {
   constructor()
   {
@@ -53,5 +51,3 @@ class ImmediateMode extends CameraMovementMode
     return this.tmp_camera_target_pos;
   }
 }
-
-export { ImmediateMode };

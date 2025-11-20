@@ -4,6 +4,7 @@ import { HomeView } from './views/home/HomeView';
 import { TransitionView } from './views/transition/TransitionView';
 
 // import { ACESFilmicToneMapping } from 'three';
+// import { AudioContext, AudioListener } from 'three';
 
 import { Sections } from './views/Sections';
 // import { ModalComponent } from './view_components/modal/ModalComponent';
@@ -16,7 +17,7 @@ import { Settings } from './Settings';
 import { default_state_data } from '../data/default_state_data';
 import { Router } from './components/Router';
 
-class MainApplication extends BaseApplication
+export class MainApplication extends BaseApplication
 {
   init()
   {
@@ -48,6 +49,11 @@ class MainApplication extends BaseApplication
     this.sections = Sections;
 
     this.keyboard_input_controller = new KeyboardInputController();
+
+    // this.audio_manager = AudioManager;
+    // this.audio_manager.init(AudioListener, ResourceContainer, Time);
+
+    // this.audio_unlocker = new AudioUnlocker(OS, AudioContext);
 
     this.view_manager = ViewManager;
     this.view_manager.set_browser_title_suffix('OHZI Interactive Studio');
@@ -92,5 +98,3 @@ class MainApplication extends BaseApplication
     // this.modal_component.update();
   }
 }
-
-export { MainApplication };
