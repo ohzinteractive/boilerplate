@@ -49,7 +49,10 @@ export default defineConfig({
       output: {
         manualChunks: {
           'ohzi-core': ['ohzi-core'],
-          three: ['three']
+          // 'three/nodes': ['three/nodes'],
+          // 'three/tsl': ['three/tsl'],
+          'three/webgpu': ['three/webgpu'],
+          // three: ['three']
         }
       },
     },
@@ -60,7 +63,10 @@ export default defineConfig({
       'ohzi-components': path.resolve(__dirname, './components/src'),
       'ohzi-core': path.resolve(__dirname, './core/src'),
       'pit-js': path.resolve(__dirname, './pit/src'),
-      'three': path.resolve(__dirname, './node_modules/three')
+      // 'three/nodes': path.resolve(__dirname, './node_modules/three/src/Three.WebGPU.Nodes.js'),
+      // 'three/tsl': path.resolve(__dirname, './node_modules/three/src/Three.TSL.js'),
+      // 'three/webgpu': path.resolve(__dirname, './node_modules/three/src/Three.WebGPU.js'),
+      // 'three': path.resolve(__dirname, './node_modules/three'),
     }
   },
   server: {
