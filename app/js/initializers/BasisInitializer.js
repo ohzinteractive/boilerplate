@@ -11,7 +11,7 @@ export class BasisInitializer
     const renderer = Graphics._renderer;
 
     ktx2_loader.setWorkerLimit(1);
-    ktx2_loader.setTranscoderPath('libs/basis/');
+    ktx2_loader.setTranscoderPath('lib/basis/');
     ktx2_loader.detectSupport(renderer);
 
     ResourceContainer.set_resource('basis_loader', '/basis_loader', ktx2_loader);
