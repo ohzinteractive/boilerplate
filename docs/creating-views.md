@@ -390,6 +390,10 @@ Transition data is configured in a JSON file that drives the animation between v
 5. **Manage Scene Manager**: Always set `SceneManager.current` in `before_enter()` to enable rendering
 6. **Input Handling**: Use the global `Input` object for keyboard/mouse events
 
+## Example: Complete View
+
+Check [HomeView.js](../app/js/views/home/HomeView.js)
+
 ## Debugging Views
 
 - Use TweakPane (available in dev mode) to debug view parameters
