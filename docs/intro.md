@@ -84,7 +84,7 @@ dist/                   # Production build output
 
 ## Technology Stack
 
-- **Runtime**: Node.js 18.x
+- **Runtime**: Node.js 20.x
 - **Package Manager**: Yarn 1.22.x
 - **Build Tool**: Vite
 - **Graphics**: three.js + OHZI Core
