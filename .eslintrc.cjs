@@ -27,6 +27,7 @@ module.exports = {
       'error',
       'always'
     ],
+    'key-spacing': ['error', { beforeColon: false, afterColon: true, mode: 'minimum', align: 'value' }],
     'brace-style': [
       'error',
       'allman'
