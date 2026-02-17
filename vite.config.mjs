@@ -8,6 +8,8 @@ import packagejson from './package.json';
 
 const useHttps = process.env.VITE_USE_HTTPS === 'true';
 
+const normalizePath = (id) => id.split(path.sep).join('/');
+
 export default defineConfig({
   plugins: [
     glsl(),
@@ -43,24 +45,30 @@ export default defineConfig({
     // }),
   ],
   build: {
+    minify: true,
     target: 'esnext', // browsers can handle the latest ES features
     rollupOptions: {
       input: ['index.html'],
       output: {
-        manualChunks: {
-          'ohzi-core': ['ohzi-core'],
-          three: ['three']
+        manualChunks(id) {
+          const normalized = normalizePath(id);
+
+          if (normalized.includes('/node_modules/three/')) return 'three/webgpu';
+          if (normalized.includes('/core/src/')) return 'ohzi-core';
         }
       },
     },
-    chunkSizeWarningLimit: 700
+    chunkSizeWarningLimit: 900
   },
   resolve: {
     alias: {
       'ohzi-components': path.resolve(__dirname, './components/src'),
       'ohzi-core': path.resolve(__dirname, './core/src'),
       'pit-js': path.resolve(__dirname, './pit/src'),
-      'three': path.resolve(__dirname, './node_modules/three')
+      'three/tsl': path.resolve(__dirname, './node_modules/three/src/Three.TSL.js'),
+      'three/examples': path.resolve(__dirname, './node_modules/three/examples'),
+      'three/webgpu': path.resolve(__dirname, './node_modules/three/src/Three.WebGPU.js'),
+      'three': path.resolve(__dirname, './node_modules/three/src/Three.WebGPU.js')
     }
   },
   server: {

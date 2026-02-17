@@ -1,16 +1,16 @@
 import { Graphics, OS, PerspectiveCamera } from 'ohzi-core';
-import { Mesh, BoxGeometry, MeshBasicMaterial, Scene, WebGLRenderTarget } from 'three';
+import { BoxGeometry, Mesh, MeshBasicMaterial, RenderTarget, Scene } from 'three';
 // import { sRGBEncoding } from 'three';
-import { SkinnedMesh } from 'three';
-import { PointLight } from 'three';
+import { Compilator } from "ohzi-core";
+import { InstancedMesh, PointLight, SkinnedMesh, Layers as THREELayers } from 'three';
 import { Layers } from '../Layers';
-import { InstancedMesh } from 'three';
-import { Layers as THREELayers } from 'three';
 
-export class SceneCompilator
+export class SceneCompilator extends Compilator
 {
   constructor(scene)
   {
+    super();
+    
     this.original_scene = scene;
     this.meshes = [];
 
@@ -47,7 +47,7 @@ export class SceneCompilator
     this.camera.layers.enable(Layers.occluder);
     this.camera.layers.enable(Layers.instanced_occluder);
 
-    this.RT = new WebGLRenderTarget(1, 1);
+    this.RT = new RenderTarget(1, 1);
 
     this.started = false;
 

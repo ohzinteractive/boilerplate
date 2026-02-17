@@ -7,7 +7,7 @@ import { home_high_textures } from '../../data/assets/home/high/home_high_textur
 import { home_objects } from '../../data/assets/home/home_objects';
 import { home_textures } from '../../data/assets/home/home_textures';
 
-import { CameraManager, Debug, Grid, OScreen, PerspectiveCamera } from 'ohzi-core';
+import { CameraManager, Debug, Grid, OScreen, PerspectiveCamera, ResourceContainer } from 'ohzi-core';
 import { Color } from 'three';
 import { CameraController } from '../camera_controller/CameraController';
 import { Settings } from '../Settings';
@@ -69,6 +69,12 @@ export class HomeScene extends CommonScene
     super.on_assets_ready();
 
     // this.add_lights();
+    const cube = ResourceContainer.get('cube').scene;
+
+    const cube_2 = Debug.draw_cube();
+    cube_2.position.set(0.5, 0.5, 0.5);
+
+    this.add(cube);
   }
 
   on_high_quality_assets_ready()

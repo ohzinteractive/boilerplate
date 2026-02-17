@@ -3,15 +3,13 @@ import { Settings } from '../Settings';
 
 export class GraphicsInitializer
 {
-  init(canvas, core_attributes, context_attributes, threejs_attributes)
+  init(core_attributes, renderer_attributes)
   {
     this.normal_render_mode = new NormalRender();
 
     Graphics.init({
-      canvas,
       core_attributes,
-      context_attributes,
-      threejs_attributes,
+      renderer_attributes,
       dpr: Settings.dpr
     });
 

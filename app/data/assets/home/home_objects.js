@@ -1,7 +1,8 @@
 export const home_objects = [
-  // {
-  //   name: 'scene',
-  //   url: '/models/scene.glb',
-  //   draco: false
-  // }
+  {
+    name: 'cube',
+    url: '/models/cube.glb',
+    size: 12192,
+    draco: false
+  }
 ];

@@ -33,27 +33,26 @@ class Api
     const canvas = document.querySelector('.main-canvas');
 
     const core_attributes = {
-      force_webgl2: true,
       xr_enabled: false
     };
 
-    const context_attributes = {
+    const renderer_attributes = {
+      canvas: canvas,
+      alpha: false,
+      logarithmicDepthBuffer: true,
       antialias: true,
-      preserveDrawingBuffer: true
-    };
-
-    const threejs_attributes = {
-      logarithmicDepthBuffer: false
+      preserveDrawingBuffer: true,
+      forceWebGL: false
     };
 
     Input.init(app_container, document);
     Initializer.init(Input);
 
-    Settings.dpr = 1;
-    // Settings.dpr = window.devicePixelRatio;
+    // Settings.dpr = 1;
+    Settings.dpr = window.devicePixelRatio;
 
     const graphics_initializer = new GraphicsInitializer();
-    graphics_initializer.init(canvas, core_attributes, context_attributes, threejs_attributes);
+    graphics_initializer.init(core_attributes, renderer_attributes);
 
     // const draco_initializer = new DracoInitializer();
     // draco_initializer.init();
