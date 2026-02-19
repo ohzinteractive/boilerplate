@@ -1,4 +1,4 @@
-import type { AbstractScene } from 'ohzi-core';
+import type { AbstractScene, ActionSequencer } from 'ohzi-core';
 import { SceneManager } from 'ohzi-core';
 import { HomeScene } from '../../scenes/HomeScene';
 import { CommonSceneController } from '../common/CommonSceneController';
@@ -41,12 +41,12 @@ export class HomeSceneController extends CommonSceneController
     this.scene.update();
   }
 
-  update_enter_transition(global_view_data: any, transition_progress: any, action_sequencer: any)
+  update_enter_transition(global_view_data: { key: any }, transition_progress: number, action_sequencer: ActionSequencer)
   {
     this.scene.update();
   }
 
-  update_exit_transition(global_view_data: any, transition_progress: any, action_sequencer: any)
+  update_exit_transition(global_view_data: { key: any }, transition_progress: number, action_sequencer: ActionSequencer)
   {
   }
 }

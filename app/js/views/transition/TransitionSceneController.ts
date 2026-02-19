@@ -1,4 +1,4 @@
-import type { AbstractScene } from 'ohzi-core';
+import type { AbstractScene, ActionSequencer } from 'ohzi-core';
 import { ViewManager } from 'ohzi-core';
 import { Sections } from '../Sections';
 import { CommonSceneController } from '../common/CommonSceneController';
@@ -46,12 +46,12 @@ export class TransitionSceneController extends CommonSceneController
     // this.next_scene.update_loading_state();
   }
 
-  update_enter_transition(global_view_data: any, transition_progress: any, action_sequencer: any)
+  update_enter_transition(global_view_data: { key: any }, transition_progress: number, action_sequencer: ActionSequencer)
   {
 
   }
 
-  update_exit_transition(global_view_data: any, transition_progress: any, action_sequencer: any)
+  update_exit_transition(global_view_data: { key: any }, transition_progress: number, action_sequencer: ActionSequencer)
   {
   }
 
