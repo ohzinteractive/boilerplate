@@ -40,7 +40,7 @@
     "create-transition": "cd core && yarn create-transition",
     "create-modal": "cd components && yarn create-modal",
     "calculate-assets-sizes": "node ./tasks/calculate_sizes.mjs",
-    "fix-syntax": "standardx --fix || echo 'Done'"
+    "fix-syntax": "npx eslint src --fix || echo 'Done.'"
   },
   "dependencies": {
     "@tweakpane/plugin-essentials": "^0.2.1",
@@ -50,28 +50,23 @@
     "tweakpane": "^4.0.4"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.18.2",
+    "@typescript-eslint/parser": "^8.18.2",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^10.1.8",
     "archiver": "^6.0.1",
     "pug": "^3.0.3",
     "replace-in-file": "^6.2.0",
     "sass": "1.77.5",
-    "standardx": "^7.0.0",
     "stylelint": "^15.3.0",
     "stylelint-config-standard-scss": "^7.0.1",
     "stylelint-order": "^6.0.3",
     "three": "0.183.0",
     "vite": "^5.2.0",
     "vite-plugin-glsl": "^1.3.0",
-    "vite-plugin-pug-transformer": "^1.0.5"
-  },
-  "standardx": {
-    "ignore": [
-      "/components/",
-      "/core/",
-      "/public/",
-      "vite.config.mjs",
-      "rollup.config.mjs",
-      "three.js"
-    ]
+    "vite-plugin-pug-transformer": "^1.0.5",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.18.2"
   },
   "private": true,
   "workspaces": [
