@@ -1,6 +1,6 @@
 # OHZI Boilerplate
 
-The OHZI Boilerplate is a production-ready template for building high-performance, interactive web experiences using **WebGL**. It serves as a complete starting point for developers who want to create visually stunning and performant web applications with modern 3D graphics capabilities.
+The OHZI Boilerplate is a production-ready template for building high-performance, interactive web experiences using **WebGL** and **WebGPU**. It serves as a complete starting point for developers who want to create visually stunning and performant web applications with modern 3D graphics capabilities.
 
 This boilerplate is built and maintained by **OHZI Interactive Studio**, combining battle-tested libraries and best practices to jumpstart your next web project.
 
