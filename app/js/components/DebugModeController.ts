@@ -2,6 +2,8 @@ import { SectionsURLs } from '../views/Sections';
 
 export class DebugModeController
 {
+  debug_mode: boolean;
+  
   constructor()
   {
     this.debug_mode = false;

@@ -1,5 +1,9 @@
 class Settings
 {
+  camera: { fov: number };
+  debug_mode: boolean;
+  dpr: number;
+
   constructor()
   {
     this.debug_mode = false;

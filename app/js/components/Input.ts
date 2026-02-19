@@ -3,6 +3,17 @@ import { InputController } from 'pit-js';
 
 class Input extends InputController
 {
+  captured_NDC: { x: number; y: number };
+  clicked: boolean;
+  current_NDC_delta: { x: number; y: number };
+  keyboard: KeyboardInput;
+  last_delta: { x: number; y: number };
+  sensitivity: number;
+  swiped_down: boolean;
+  swiped_left: boolean;
+  swiped_right: boolean;
+  swiped_up: boolean;
+  
   constructor()
   {
     super();
@@ -21,7 +32,7 @@ class Input extends InputController
     this.keyboard = new KeyboardInput();
   }
 
-  init(container, keyboard_input_container)
+  init(container: Element, keyboard_input_container: Element | Document)
   {
     super.init(container);
 

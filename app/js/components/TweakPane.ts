@@ -4,6 +4,8 @@ import { Settings } from '../Settings';
 
 export class TweakPane
 {
+  pane: Pane;
+
   constructor()
   {
     this.pane = new Pane({

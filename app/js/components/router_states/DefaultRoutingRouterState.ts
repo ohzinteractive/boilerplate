@@ -1,10 +1,11 @@
 import { ViewManager } from 'ohzi-core';
 import { Sections } from '../../views/Sections';
+import type { Router } from '../Router';
 import { RouterState } from './RouterState';
 
 export class DefaultRoutingRouterState extends RouterState
 {
-  constructor(router)
+  constructor(router: Router)
   {
     super(router);
   }

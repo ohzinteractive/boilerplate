@@ -1,10 +1,14 @@
+import type { ApplicationView } from 'ohzi-core';
 import { ViewManager } from 'ohzi-core';
 import { Sections } from '../../views/Sections';
+import type { Router } from '../Router';
 import { RouterState } from './RouterState';
 
 export class RoutingByUrlRouterState extends RouterState
 {
-  constructor(router)
+  home_view: ApplicationView;
+  
+  constructor(router: Router)
   {
     super(router);
 

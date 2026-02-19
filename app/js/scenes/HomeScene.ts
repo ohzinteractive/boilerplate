@@ -1,4 +1,3 @@
-
 import { Sections } from '../views/Sections';
 
 import { home_high_objects } from '../../data/assets/home/high/home_high_objects';
@@ -7,15 +6,20 @@ import { home_high_textures } from '../../data/assets/home/high/home_high_textur
 import { home_objects } from '../../data/assets/home/home_objects';
 import { home_textures } from '../../data/assets/home/home_textures';
 
-import { CameraManager, Debug, Grid, OScreen, PerspectiveCamera, ResourceContainer } from 'ohzi-core';
+import { CameraController, CameraManager, Debug, Grid, OScreen, PerspectiveCamera, ResourceContainer } from 'ohzi-core';
 import { Color } from 'three';
-import { CameraController } from '../camera_controller/CameraController';
+import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
+import { SimpleCameraState } from '../camera_controller/states/SimpleCameraState';
+import { Input } from '../components/Input';
 import { Settings } from '../Settings';
 import { CommonScene } from './common/CommonScene';
 
 // import { AmbientLight, DirectionalLight } from 'three';
 export class HomeScene extends CommonScene
 {
+  camera: PerspectiveCamera;
+  camera_controller: CameraController;
+
   constructor()
   {
     super({
@@ -27,7 +31,7 @@ export class HomeScene extends CommonScene
   {
     super.init();
 
-    this.camera_controller = new CameraController();
+    this.camera_controller = new CameraController(Input);
 
     this.init_camera();
     this.setup_camera();
@@ -69,7 +73,7 @@ export class HomeScene extends CommonScene
     super.on_assets_ready();
 
     // this.add_lights();
-    const cube = ResourceContainer.get('cube').scene;
+    const cube = (ResourceContainer.get('cube') as GLTF).scene;
 
     const cube_2 = Debug.draw_cube();
     cube_2.position.set(0.5, 0.5, 0.5);
@@ -100,7 +104,7 @@ export class HomeScene extends CommonScene
 
     this.camera_controller.set_camera(this.camera);
     // this.camera_controller.set_idle();
-    this.camera_controller.set_simple_mode();
+    this.camera_controller.set_state(new SimpleCameraState(Input));
 
     this.camera_controller.min_zoom = 1;
     this.camera_controller.max_zoom = 40;

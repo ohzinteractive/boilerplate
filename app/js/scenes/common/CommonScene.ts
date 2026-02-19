@@ -6,7 +6,9 @@ import { TexturesCompilator } from '../../compilators/TexturesCompilator';
 
 export class CommonScene extends AbstractScene
 {
-  constructor({ name })
+  constructor({
+    name
+  }: { name: string })
   {
     super({
       name: name,

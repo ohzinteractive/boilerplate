@@ -1,5 +1,10 @@
 class Layers
 {
+  bloom: number;
+  instanced_occluder: number;
+  occluder: number;
+  reflectable: number;
+  
   constructor()
   {
     this.reflectable = 1;

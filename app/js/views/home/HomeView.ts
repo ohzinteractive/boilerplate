@@ -4,6 +4,7 @@ import { Sections, SectionsURLs } from '../Sections';
 import { HomeSceneController } from './HomeSceneController';
 import { HomeTransitionController } from './HomeTransitionController';
 
+import type { ActionSequencer } from 'ohzi-core';
 import home_data from '../../../data/transitions/home.json';
 
 export class HomeView extends CommonView
@@ -72,13 +73,13 @@ export class HomeView extends CommonView
     this.transition_controller.update();
   }
 
-  update_enter_transition(global_view_data, transition_progress, action_sequencer)
+  update_enter_transition(global_view_data: { key: any }, transition_progress: number, action_sequencer: ActionSequencer)
   {
     this.scene_controller.update_enter_transition(global_view_data, transition_progress, action_sequencer);
     this.transition_controller.update_enter_transition(global_view_data, transition_progress, action_sequencer);
   }
 
-  update_exit_transition(global_view_data, transition_progress, action_sequencer)
+  update_exit_transition(global_view_data: { key: any }, transition_progress: number, action_sequencer: ActionSequencer)
   {
     this.scene_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
     this.transition_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);

@@ -1,9 +1,18 @@
-
+import type { ResourceBatch } from 'ohzi-core';
+import type { Api } from './Api';
 import { GeneralLoader } from './loaders/GeneralLoader';
 
 export class Preloader
 {
-  constructor(api)
+  api: typeof Api;
+  current_loader: GeneralLoader | undefined;
+  current_loader_index: number;
+  finished: boolean;
+  frame_id: number;
+  loaders: GeneralLoader[];
+  second_step: boolean;
+  
+  constructor(api: typeof Api)
   {
     this.api = api;
 
@@ -33,7 +42,7 @@ export class Preloader
 
   on_enter()
   {
-    this.frame_id = requestAnimationFrame(this.update.bind(this));
+    this.frame_id = requestAnimationFrame(this.update);
   }
 
   on_config_ready()
@@ -62,7 +71,7 @@ export class Preloader
     this.api.start();
   }
 
-  check_resource_loading(batch, on_resources_loaded, timeout)
+  check_resource_loading = (batch: ResourceBatch, on_resources_loaded: () => void, timeout: number) =>
   {
     // console.log(batch.get_progress(), batch.get_loaded_bytes(), batch.get_total_bytes());
 
@@ -79,14 +88,13 @@ export class Preloader
     }
     else
     {
-      setTimeout(function()
-      {
-        this.check_resource_loading(batch, on_resources_loaded);
-      }.bind(this), timeout);
+      setTimeout(
+        () => this.check_resource_loading(batch, on_resources_loaded, timeout), 
+      timeout);
     }
   }
 
-  update()
+  update = () =>
   {
     if (this.finished)
     {
@@ -108,7 +116,7 @@ export class Preloader
       }
     }
 
-    this.frame_id = requestAnimationFrame(this.update.bind(this));
+    this.frame_id = requestAnimationFrame(this.update);
   }
 
   __on_current_loader_finished()

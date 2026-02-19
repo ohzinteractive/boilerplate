@@ -37,6 +37,7 @@ export default [
       ],
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-non-null-assertion': 'warn',
+      "@typescript-eslint/no-unsafe-assignment": "off",
 
       // Code style rules (migrated from .eslintrc.cjs)
       'indent': ['error', 2],

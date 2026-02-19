@@ -1,7 +1,10 @@
 import { Compilator } from "ohzi-core";
 export class TexturesCompilator extends Compilator
 {
-  constructor(textures_names)
+  finished: boolean;
+  textures_names: string[];
+
+  constructor(textures_names: string[])
   {
     super();
     

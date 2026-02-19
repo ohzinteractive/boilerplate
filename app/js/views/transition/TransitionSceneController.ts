@@ -1,16 +1,24 @@
+import type { AbstractScene } from 'ohzi-core';
 import { ViewManager } from 'ohzi-core';
 import { Sections } from '../Sections';
+import { CommonSceneController } from '../common/CommonSceneController';
+import type { HomeView } from '../home/HomeView';
 
-export class TransitionSceneController
+export class TransitionSceneController extends CommonSceneController
 {
+  next_scene: AbstractScene;
+  scene: AbstractScene;
+
   constructor()
   {
+    super();
+    
     this.next_scene = undefined;
   }
 
   start()
   {
-    this.scene = ViewManager.get(Sections.HOME).scene;
+    this.scene = (ViewManager.get(Sections.HOME) as HomeView).scene;
   }
 
   before_enter()
@@ -38,16 +46,16 @@ export class TransitionSceneController
     // this.next_scene.update_loading_state();
   }
 
-  update_enter_transition(global_view_data, transition_progress, action_sequencer)
+  update_enter_transition(global_view_data: any, transition_progress: any, action_sequencer: any)
   {
 
   }
 
-  update_exit_transition(global_view_data, transition_progress, action_sequencer)
+  update_exit_transition(global_view_data: any, transition_progress: any, action_sequencer: any)
   {
   }
 
-  set_next_scene(next_scene)
+  set_next_scene(next_scene: any)
   {
     this.next_scene = next_scene;
   }

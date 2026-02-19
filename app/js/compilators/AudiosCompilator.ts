@@ -2,7 +2,10 @@ import { Compilator } from "ohzi-core";
 
 export class AudiosCompilator extends Compilator
 {
-  constructor(textures_names)
+  finished: boolean;
+  textures_names: string[];
+
+  constructor(textures_names: string[])
   {
     super();
     

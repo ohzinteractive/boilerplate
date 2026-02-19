@@ -18,6 +18,12 @@ import { Settings } from './Settings';
 
 class Api
 {
+  application: MainApplication;
+  debug_mode_controller: DebugModeController;
+  preloader: Preloader;
+  render_loop: RenderLoop;
+  resize_observer: ResizeObserver;
+  
   init()
   {
     this.debug_mode_controller = new DebugModeController();
@@ -60,20 +66,24 @@ class Api
     // const basis_initializer = new BasisInitializer();
     // basis_initializer.init();
 
-    this.application.init(Graphics);
+    this.application.init();
 
+    // @ts-expect-error Populate window with ready only properties. 
     window.app = this.application;
+    // @ts-expect-error Populate window with ready only properties. 
     window.ViewApi = this;
+    // @ts-expect-error Populate window with ready only properties. 
     window.author = 'OHZI Interactive Studio';
+    // @ts-expect-error Populate window with ready only properties. 
     window.version = package_json.version;
 
     this.preloader.init();
 
-    this.resize_observer = new ResizeObserver(this.on_canvas_resize.bind(this));
+    this.resize_observer = new ResizeObserver(this.on_canvas_resize);
     this.resize_observer.observe(canvas);
   }
 
-  on_canvas_resize(entries)
+  on_canvas_resize = (entries: ResizeObserverEntry[]) =>
   {
     Graphics.on_resize(entries, Settings.dpr);
   }
@@ -95,7 +105,19 @@ class Api
     this.render_loop.stop();
   }
 
-  record_video({ duration, fps = 60, bitrate = 7_000_000, format = 'video/mp4; codecs=avc1.42E01E', callback = (blob) => this.download_video(blob, format) })
+  record_video({
+    duration,
+    fps = 60,
+    bitrate = 7_000_000,
+    format = 'video/mp4; codecs=avc1.42E01E',
+    callback = (blob: Blob, format: string) => this.download_video(blob, format)
+  }: {
+    duration: number;
+    fps?: number;
+    bitrate?: number;
+    format?: string;
+    callback?: (blob: Blob, format: string) => void;
+  })
   {
     const canvas = document.querySelector('canvas');
     const videoStream = canvas.captureStream(fps);
@@ -119,8 +141,7 @@ class Api
       videoBitsPerSecond: bitrate
     });
 
-    const chunks = [];
-
+    const chunks: Blob[] = [];
     mediaRecorder.ondataavailable = (event) =>
     {
       if (event.data.size > 0)
@@ -148,7 +169,7 @@ class Api
     return mediaRecorder;
   }
 
-  download_video(blob, format = 'video/mp4; codecs=avc1.42E01E')
+  download_video(blob: Blob, format = 'video/mp4; codecs=avc1.42E01E')
   {
     console.log(format);
     const url = URL.createObjectURL(blob);
@@ -167,12 +188,12 @@ class Api
     a.click();
   }
 
-  take_screenshot(callback = (blob) => this.download_blob(blob))
+  take_screenshot(callback = (blob: Blob) => this.download_blob(blob))
   {
     Graphics.take_screenshot(callback);
   }
 
-  download_blob(blob)
+  download_blob(blob: Blob)
   {
     Graphics.download_screenshot(blob);
   }

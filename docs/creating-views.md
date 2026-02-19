@@ -215,9 +215,9 @@ export class MyViewSceneController
 Manages view transitions, animations, and state changes:
 
 ```javascript
-import { SectionTransitionController } from '../common/SectionTransitionController';
+import { CommonTransitionController } from '../common/CommonTransitionController';
 
-export class MyViewTransitionController extends SectionTransitionController
+export class MyViewTransitionController extends CommonTransitionController
 {
   start()
   {

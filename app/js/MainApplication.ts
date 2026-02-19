@@ -16,9 +16,20 @@ import { Settings } from './Settings';
 
 import { default_state_data } from '../data/default_state_data';
 import { Router } from './components/Router';
+import type { CommonView } from './views/common/CommonView';
 
 export class MainApplication extends BaseApplication
 {
+  config: any;
+  home_view: HomeView;
+  input: typeof Input;
+  keyboard_input_controller: KeyboardInputController;
+  router: Router;
+  sections: typeof Sections;
+  transition_view: TransitionView;
+  tweak_pane: TweakPane;
+  view_manager: typeof ViewManager;
+  
   init()
   {
     this.input = Input;
@@ -74,7 +85,7 @@ export class MainApplication extends BaseApplication
     this.router.start();
   }
 
-  go_to(section, change_url = true, skip = false)
+  go_to(section: string, change_url = true, skip = false)
   {
     if (Settings.debug_mode)
     {
@@ -84,11 +95,11 @@ export class MainApplication extends BaseApplication
     ViewManager.go_to_view(section, change_url, skip);
   }
 
-  go_to_scene(view_name)
+  go_to_scene(view_name: string)
   {
     const next_view = ViewManager.get(view_name);
 
-    this.transition_view.set_next_view(next_view);
+    this.transition_view.set_next_view((next_view as CommonView));
     this.go_to(Sections.TRANSITION, false, false);
   }
 
@@ -96,5 +107,6 @@ export class MainApplication extends BaseApplication
   {
     // this.ui_collision_layer.update();
     // this.modal_component.update();
+
   }
 }

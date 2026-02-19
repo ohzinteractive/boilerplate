@@ -1,10 +1,16 @@
-
 import { CameraMovementMode } from './CameraMovementMode';
 
 import { OMath } from 'ohzi-core';
 import { Quaternion, Vector2, Vector3 } from 'three';
+import type { CameraController } from '../CameraController';
 export class ImmediateMode extends CameraMovementMode
 {
+  rotation_speed: Vector2;
+  tmp_camera_target_pos: Vector3;
+  tmp_forward: Vector3;
+  tmp_quat: Quaternion;
+  vector_forward_axis: Vector3;
+
   constructor()
   {
     super();
@@ -17,12 +23,12 @@ export class ImmediateMode extends CameraMovementMode
     this.tmp_camera_target_pos = new Vector3();
   }
 
-  on_enter(camera_controller)
+  on_enter(camera_controller: CameraController)
   {
     camera_controller.reference_rotation.copy(camera_controller.camera.quaternion);
   }
 
-  update(camera_controller)
+  update(camera_controller: CameraController)
   {
     camera_controller.camera.quaternion.copy(camera_controller.reference_rotation);
 
@@ -37,7 +43,7 @@ export class ImmediateMode extends CameraMovementMode
     camera_controller.__last_reference_position.copy(camera_controller.reference_position);
   }
 
-  get_target_camera_pos(camera_controller)
+  get_target_camera_pos(camera_controller: CameraController)
   {
     this.tmp_quat.copy(camera_controller.reference_rotation);
     this.tmp_forward.copy(this.vector_forward_axis);

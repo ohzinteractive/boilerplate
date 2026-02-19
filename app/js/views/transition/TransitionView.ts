@@ -1,3 +1,4 @@
+import type { ActionSequencer } from 'ohzi-core';
 import { OMath, ViewManager } from 'ohzi-core';
 import { Sections, SectionsURLs } from '../Sections';
 import { CommonView } from '../common/CommonView';
@@ -10,6 +11,12 @@ import transition_data from '../../../data/transitions/transition.json';
 
 export class TransitionView extends CommonView
 {
+  current_progress: number;
+  next_view_name: string;
+  progress_bar: HTMLElement;
+  scene_controller: TransitionSceneController;
+  target_progress: number;
+
   constructor()
   {
     super({
@@ -84,7 +91,7 @@ export class TransitionView extends CommonView
     this.__update_progress();
   }
 
-  update_enter_transition(global_view_data, transition_progress, action_sequencer)
+  update_enter_transition(global_view_data: { key: any }, transition_progress: number, action_sequencer: ActionSequencer)
   {
     this.scene_controller.update_enter_transition(global_view_data, transition_progress, action_sequencer);
     this.transition_controller.update_enter_transition(global_view_data, transition_progress, action_sequencer);
@@ -93,14 +100,14 @@ export class TransitionView extends CommonView
     this.__update_progress();
   }
 
-  update_exit_transition(global_view_data, transition_progress, action_sequencer)
+  update_exit_transition(global_view_data: { key: any }, transition_progress: number, action_sequencer: ActionSequencer)
   {
     this.scene_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
     this.transition_controller.update_exit_transition(global_view_data, transition_progress, action_sequencer);
     this.__update_progress();
   }
 
-  set_next_view(view, reload = false)
+  set_next_view(view: CommonView, reload = false)
   {
     if (reload)
     {
@@ -143,7 +150,7 @@ export class TransitionView extends CommonView
     this.progress_bar.style.transform = `translate3d(${this.current_progress * 100}%,0,0)`;
   }
 
-  __round(value, precision)
+  __round(value: number, precision: number)
   {
     const multiplier = Math.pow(10, precision || 0);
     return Math.round(value * multiplier) / multiplier;

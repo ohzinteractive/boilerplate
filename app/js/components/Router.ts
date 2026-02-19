@@ -1,8 +1,15 @@
 import { DefaultRoutingRouterState } from './router_states/DefaultRoutingRouterState';
+import type { RouterState } from './router_states/RouterState';
 import { RoutingByUrlRouterState } from './router_states/RoutingByUrlRouterState';
 
 export class Router
 {
+  current_state: RouterState;
+  states: {
+    default: DefaultRoutingRouterState;
+    routing_by_url: RoutingByUrlRouterState;
+  };
+
   start()
   {
     this.states = {
@@ -24,7 +31,7 @@ export class Router
     this.set_current_state();
   }
 
-  set_state(state)
+  set_state(state: RouterState)
   {
     this.current_state.on_exit();
     this.current_state = state;

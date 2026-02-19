@@ -1,8 +1,9 @@
-import { CommonCameraState } from './common/CommonCameraState';
+import type { CameraController } from 'ohzi-core';
+import { CommonCameraState } from 'ohzi-core';
 
 export class SimpleCameraState extends CommonCameraState
 {
-  update(camera_controller)
+  update(camera_controller: CameraController)
   {
     super.update(camera_controller);
 
