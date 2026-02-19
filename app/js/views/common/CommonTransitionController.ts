@@ -1,8 +1,19 @@
+import type { ActionSequencer } from 'ohzi-core';
 import { OScreen, SceneManager, TransitionManager } from 'ohzi-core';
 import { Vector3 } from 'three';
 
-export class SectionTransitionController
+export class CommonTransitionController
 {
+  camera_orientation: number;
+  camera_position: Vector3;
+  camera_tilt: number;
+  current_camera_fov: number;
+  current_camera_fov_mobile: number;
+  current_camera_pos: Vector3;
+  current_camera_pos_mobile: Vector3;
+  current_camera_zoom: number;
+  current_camera_zoom_mobile: number;
+
   constructor()
   {
     this.camera_position = new Vector3();
@@ -83,7 +94,7 @@ export class SectionTransitionController
   {
   }
 
-  update_enter_transition(global_view_data, transition_progress, action_sequencer)
+  update_enter_transition(global_view_data: { [key: string]: any }, transition_progress: number, action_sequencer: ActionSequencer)
   {
     this.current_camera_pos.set(global_view_data.camera_x, global_view_data.camera_y, global_view_data.camera_z);
     this.current_camera_pos_mobile.set(global_view_data.camera_x_mobile, global_view_data.camera_y_mobile, global_view_data.camera_z_mobile);
@@ -100,26 +111,26 @@ export class SectionTransitionController
     this.__update_camera_fov(action_sequencer);
   }
 
-  update_exit_transition(global_view_data, transition_progress, action_sequencer)
+  update_exit_transition(global_view_data: { [key: string]: any }, transition_progress: number, action_sequencer: ActionSequencer)
   {
   }
 
-  set_camera_position(position)
+  set_camera_position(position: Vector3)
   {
     this.camera_position = position; // .clone();
   }
 
-  set_camera_orientation(orientation)
+  set_camera_orientation(orientation: number)
   {
     this.camera_orientation = orientation;
   }
 
-  set_camera_tilt(tilt)
+  set_camera_tilt(tilt: number)
   {
     this.camera_tilt = tilt;
   }
 
-  __set_keyframes_offset(channel_name, offset)
+  __set_keyframes_offset(channel_name: string, offset: number)
   {
     const action_sequencer = TransitionManager.action_sequencer;
 
@@ -138,7 +149,7 @@ export class SectionTransitionController
     }
   }
 
-  __update_camera_rotation(action_sequencer)
+  __update_camera_rotation(action_sequencer: ActionSequencer)
   {
     const camera_tilt_suffix = OScreen.portrait && action_sequencer.is_channel_redefined('camera_tilt_mobile') ? '_mobile' : '';
     const camera_orientation_suffix = OScreen.portrait && action_sequencer.is_channel_redefined('camera_orientation_mobile') ? '_mobile' : '';
@@ -163,7 +174,7 @@ export class SectionTransitionController
     );
   }
 
-  __update_camera_zoom(action_sequencer)
+  __update_camera_zoom(action_sequencer: any)
   {
     const mobile = action_sequencer.is_channel_redefined('camera_zoom_mobile');
 
@@ -177,7 +188,7 @@ export class SectionTransitionController
     }
   }
 
-  __update_camera_pos(action_sequencer)
+  __update_camera_pos(action_sequencer: any)
   {
     const mobile = action_sequencer.is_channel_redefined('camera_x_mobile') ||
       action_sequencer.is_channel_redefined('camera_y_mobile') ||
@@ -193,7 +204,7 @@ export class SectionTransitionController
     }
   }
 
-  __update_camera_fov(action_sequencer)
+  __update_camera_fov(action_sequencer: any)
   {
     const mobile = action_sequencer.is_channel_redefined('camera_fov_mobile');
 
