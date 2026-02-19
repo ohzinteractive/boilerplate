@@ -13,6 +13,7 @@ class Input extends InputController
   swiped_left: boolean;
   swiped_right: boolean;
   swiped_up: boolean;
+  over_ui: boolean;
   
   constructor()
   {

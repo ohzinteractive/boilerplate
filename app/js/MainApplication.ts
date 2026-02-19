@@ -1,4 +1,4 @@
-import { BaseApplication, ResourceContainer, TransitionManager, ViewManager } from 'ohzi-core';
+import { BaseApplication, ResourceContainer, Time, TransitionManager, ViewManager } from 'ohzi-core';
 
 import { HomeView } from './views/home/HomeView';
 import { TransitionView } from './views/transition/TransitionView';
@@ -6,14 +6,14 @@ import { TransitionView } from './views/transition/TransitionView';
 // import { ACESFilmicToneMapping } from 'three';
 // import { AudioContext, AudioListener } from 'three';
 
-import { Sections } from './views/Sections';
-// import { ModalComponent } from './view_components/modal/ModalComponent';
-// import { UICollisionLayer } from 'ohzi-components';
 import { Input } from './components/Input';
 import { KeyboardInputController } from './components/KeyboardInputController';
 import { TweakPane } from './components/TweakPane';
 import { Settings } from './Settings';
+import { ModalComponent } from './view_components/modal/ModalComponent';
+import { Sections } from './views/Sections';
 
+import { UICollisionLayer } from 'ohzi-components';
 import { default_state_data } from '../data/default_state_data';
 import { Router } from './components/Router';
 import type { CommonView } from './views/common/CommonView';
@@ -28,6 +28,8 @@ export class MainApplication extends BaseApplication
   sections: typeof Sections;
   transition_view: TransitionView;
   tweak_pane: TweakPane;
+  ui_collision_layer: typeof UICollisionLayer;
+  modal_component: typeof ModalComponent;
   view_manager: typeof ViewManager;
   
   init()
@@ -36,11 +38,11 @@ export class MainApplication extends BaseApplication
 
     TransitionManager.set_default_state_data(default_state_data);
 
-    // this.ui_collision_layer = UICollisionLayer;
-    // this.ui_collision_layer.init(Input, Time);
+    this.ui_collision_layer = UICollisionLayer;
+    this.ui_collision_layer.init(Input, Time);
 
-    // this.modal_component = ModalComponent;
-    // this.modal_component.init(UICollisionLayer, Time);
+    this.modal_component = ModalComponent;
+    this.modal_component.init(UICollisionLayer, Time);
 
     // addEventListener('contextmenu', (event) =>
     // {
@@ -76,7 +78,7 @@ export class MainApplication extends BaseApplication
     this.home_view = new HomeView();
     this.transition_view = new TransitionView();
 
-    // this.modal_component.start();
+    this.modal_component.start();
 
     this.home_view.start();
     this.transition_view.start();
