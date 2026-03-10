@@ -10,4 +10,4 @@ class Initializer
 }
 
 const initializer = new Initializer();
-initializer.init();
+void initializer.init();

@@ -51,7 +51,7 @@ class Api
     };
 
     const renderer_attributes = {
-      canvas: canvas,
+      canvas: canvas as HTMLCanvasElement,
       alpha: false,
       logarithmicDepthBuffer: true,
       antialias: true,

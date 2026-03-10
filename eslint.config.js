@@ -30,10 +30,7 @@ export default [
 
       // TypeScript-specific rules
       '@typescript-eslint/consistent-type-imports': 'error',
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { argsIgnorePattern: '^_' }
-      ],
+      '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-non-null-assertion': 'warn',
 

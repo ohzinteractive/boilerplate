@@ -94,7 +94,7 @@ export class CommonTransitionController
   {
   }
 
-  update_enter_transition(global_view_data: { [key: string]: any }, transition_progress: number, action_sequencer: ActionSequencer)
+  update_enter_transition(global_view_data: { [key: string]: number }, transition_progress: number, action_sequencer: ActionSequencer)
   {
     this.current_camera_pos.set(global_view_data.camera_x, global_view_data.camera_y, global_view_data.camera_z);
     this.current_camera_pos_mobile.set(global_view_data.camera_x_mobile, global_view_data.camera_y_mobile, global_view_data.camera_z_mobile);

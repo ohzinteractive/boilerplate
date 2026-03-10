@@ -8,7 +8,7 @@ import { home_textures } from '../../data/assets/home/home_textures';
 
 import { CameraController, CameraManager, Debug, Grid, OScreen, PerspectiveCamera, ResourceContainer } from 'ohzi-core';
 import { Color } from 'three';
-import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
+import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { SimpleCameraState } from '../camera_controller/states/SimpleCameraState';
 import { Input } from '../components/Input';
 import { Settings } from '../Settings';
