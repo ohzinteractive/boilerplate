@@ -1,8 +1,6 @@
-import { CameraMovementMode } from './CameraMovementMode';
-
-import { OMath } from 'ohzi-core';
+import type { CameraController } from 'ohzi-core';
+import { CameraMovementMode, OMath } from 'ohzi-core';
 import { Quaternion, Vector2, Vector3 } from 'three';
-import type { CameraController } from '../CameraController';
 export class ImmediateMode extends CameraMovementMode
 {
   rotation_speed: Vector2;

@@ -1,18 +1,19 @@
 import { Graphics, NormalRender } from 'ohzi-core';
-import type { CoreAttributes, RendererAttributes } from 'ohzi-core/src/Graphics';
+import type { CoreAttributes } from 'ohzi-core/src/Graphics';
+import type { Renderer } from 'three/webgpu';
 import { Settings } from '../Settings';
 
 export class GraphicsInitializer
 {
   normal_render_mode: NormalRender;
 
-  init(core_attributes: CoreAttributes, renderer_attributes: RendererAttributes)
+  init(renderer: Renderer, core_attributes: CoreAttributes)
   {
     this.normal_render_mode = new NormalRender();
 
     Graphics.init({
+      renderer,
       core_attributes,
-      renderer_attributes,
       dpr: Settings.dpr
     });
 

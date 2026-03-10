@@ -10,6 +10,7 @@ import { Input } from './components/Input';
 // import { BasisInitializer } from './initializers/BasisInitializer';
 // import { DracoInitializer } from './initializers/DracoInitializer';
 import { AudioManager } from 'ohzi-components';
+import { WebGPURenderer } from 'three/webgpu';
 import { DebugModeController } from './components/DebugModeController';
 import { GraphicsInitializer } from './initializers/GraphicsInitializer';
 import { MainApplication } from './MainApplication';
@@ -23,7 +24,7 @@ class Api
   preloader: Preloader;
   render_loop: RenderLoop;
   resize_observer: ResizeObserver;
-  
+
   init()
   {
     this.debug_mode_controller = new DebugModeController();
@@ -38,8 +39,15 @@ class Api
     const app_container = document.querySelector('.container');
     const canvas = document.querySelector('.main-canvas');
 
+    Input.init(app_container, document);
+    Initializer.init(Input);
+
+    // Settings.dpr = 1;
+    Settings.dpr = window.devicePixelRatio;
+
     const core_attributes = {
-      xr_enabled: false
+      xr_enabled: false,
+      renderer: WebGPURenderer
     };
 
     const renderer_attributes = {
@@ -51,14 +59,10 @@ class Api
       forceWebGL: false
     };
 
-    Input.init(app_container, document);
-    Initializer.init(Input);
-
-    // Settings.dpr = 1;
-    Settings.dpr = window.devicePixelRatio;
+    const renderer = new WebGPURenderer(renderer_attributes);
 
     const graphics_initializer = new GraphicsInitializer();
-    graphics_initializer.init(core_attributes, renderer_attributes);
+    graphics_initializer.init(renderer, core_attributes);
 
     // const draco_initializer = new DracoInitializer();
     // draco_initializer.init();
@@ -68,13 +72,13 @@ class Api
 
     this.application.init();
 
-    // @ts-expect-error Populate window with ready only properties. 
+    // @ts-expect-error Populate window with ready only properties.
     window.app = this.application;
-    // @ts-expect-error Populate window with ready only properties. 
+    // @ts-expect-error Populate window with ready only properties.
     window.ViewApi = this;
-    // @ts-expect-error Populate window with ready only properties. 
+    // @ts-expect-error Populate window with ready only properties.
     window.author = 'OHZI Interactive Studio';
-    // @ts-expect-error Populate window with ready only properties. 
+    // @ts-expect-error Populate window with ready only properties.
     window.version = package_json.version;
 
     this.preloader.init();
@@ -86,7 +90,7 @@ class Api
   on_canvas_resize = (entries: ResizeObserverEntry[]) =>
   {
     Graphics.on_resize(entries, Settings.dpr);
-  }
+  };
 
   dispose()
   {
