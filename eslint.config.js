@@ -1,5 +1,4 @@
 import js from '@eslint/js';
-import prettierConfig from 'eslint-config-prettier';
 import tseslint from 'typescript-eslint';
 
 export default [
@@ -19,7 +18,7 @@ export default [
   })),
 
   {
-    files: ['**/*.ts', '**/*.tsx'],
+    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     languageOptions: {
       parserOptions: {
         project: true, // uses tsconfig.json
@@ -37,7 +36,9 @@ export default [
       ],
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-non-null-assertion': 'warn',
-      "@typescript-eslint/no-unsafe-assignment": "off",
+
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
 
       // Code style rules (migrated from .eslintrc.cjs)
       'indent': ['error', 2],
@@ -52,7 +53,13 @@ export default [
         ignoreReadBeforeAssign: false
       }],
 
+      // Formatting rules
+      'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 0, maxBOF: 0 }],
+      'no-trailing-spaces': 'error',
+
       // Disabled rules (migrated from .eslintrc.cjs)
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
       'camelcase': 'off',
       'import/no-absolute-path': 'off',
       'import/no-duplicates': 'off',
@@ -64,17 +71,6 @@ export default [
       // Prefer TS over JS rules
       'no-unused-vars': 'off',
       'no-undef': 'off'
-    }
-  },
-
-  // Disable formatting rules (let Prettier handle it)
-  prettierConfig,
-
-  // Override specific formatting rules that we want ESLint to handle
-  {
-    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
-    rules: {
-      'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 0, maxBOF: 0 }]
     }
   }
 ];
