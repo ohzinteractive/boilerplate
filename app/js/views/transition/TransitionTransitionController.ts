@@ -1,4 +1,4 @@
-import { CommonTransitionController } from "../common/CommonTransitionController";
+import { CommonTransitionController } from '../common/CommonTransitionController';
 
 export class TransitionTransitionController extends CommonTransitionController
 {

@@ -1,4 +1,4 @@
-import { Compilator } from "ohzi-core";
+import { Compilator } from 'ohzi-core';
 export class TexturesCompilator extends Compilator
 {
   finished: boolean;
@@ -7,7 +7,7 @@ export class TexturesCompilator extends Compilator
   constructor(textures_names: string[])
   {
     super();
-    
+
     this.finished = false;
 
     this.textures_names = textures_names;

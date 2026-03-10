@@ -25,7 +25,7 @@ export class SceneCompilator extends Compilator
   constructor(scene: AbstractScene)
   {
     super();
-    
+
     this.original_scene = scene;
     this.meshes = [];
 

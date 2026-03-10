@@ -7,7 +7,7 @@ import { RouterState } from './RouterState';
 export class RoutingByUrlRouterState extends RouterState
 {
   home_view: ApplicationView;
-  
+
   constructor(router: Router)
   {
     super(router);

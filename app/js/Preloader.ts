@@ -11,7 +11,7 @@ export class Preloader
   frame_id: number;
   loaders: GeneralLoader[];
   second_step: boolean;
-  
+
   constructor(api: typeof Api)
   {
     this.api = api;
@@ -89,10 +89,10 @@ export class Preloader
     else
     {
       setTimeout(
-        () => this.check_resource_loading(batch, on_resources_loaded, timeout), 
-      timeout);
+        () => this.check_resource_loading(batch, on_resources_loaded, timeout),
+        timeout);
     }
-  }
+  };
 
   update = () =>
   {
@@ -117,7 +117,7 @@ export class Preloader
     }
 
     this.frame_id = requestAnimationFrame(this.update);
-  }
+  };
 
   __on_current_loader_finished()
   {

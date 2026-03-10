@@ -40,7 +40,7 @@
     "create-transition": "cd core && yarn create-transition",
     "create-modal": "cd components && yarn create-modal",
     "calculate-assets-sizes": "node ./tasks/calculate_sizes.mjs",
-    "fix-syntax": "npx eslint src --fix || echo 'Done.'"
+    "fix-syntax": "npx eslint app --fix || echo 'Done.'"
   },
   "dependencies": {
     "@tweakpane/plugin-essentials": "^0.2.1",

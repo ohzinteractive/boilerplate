@@ -12,7 +12,7 @@ export class TransitionSceneController extends CommonSceneController
   constructor()
   {
     super();
-    
+
     this.next_scene = undefined;
   }
 

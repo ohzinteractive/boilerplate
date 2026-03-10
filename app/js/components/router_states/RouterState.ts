@@ -5,7 +5,7 @@ import type { Router } from '../Router';
 export class RouterState
 {
   router: Router;
-  
+
   constructor(router: Router)
   {
     this.router = router;

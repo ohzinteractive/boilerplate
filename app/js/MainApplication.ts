@@ -31,7 +31,7 @@ export class MainApplication extends BaseApplication
   ui_collision_layer: typeof UICollisionLayer;
   modal_component: typeof ModalComponent;
   view_manager: typeof ViewManager;
-  
+
   init()
   {
     this.input = Input;
