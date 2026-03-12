@@ -3,6 +3,8 @@
     // The following will hide the js and map files in the editor
     "files.exclude": {
         // "**/*.d.ts": true,
-        "**/pit/examples/*": true
-    }
+        "**/pit/examples/**/*": true
+    },
+    // Additional settings to control module suggestions
+    "js/ts.suggest.paths": false
 }
