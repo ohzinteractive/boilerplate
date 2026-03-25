@@ -46,8 +46,7 @@ class Api
     Settings.dpr = window.devicePixelRatio;
 
     const core_attributes = {
-      xr_enabled: false,
-      renderer: WebGPURenderer
+      xr_enabled: false
     };
 
     const renderer_attributes = {
@@ -84,7 +83,7 @@ class Api
     this.preloader.init();
 
     this.resize_observer = new ResizeObserver(this.on_canvas_resize);
-    this.resize_observer.observe(canvas);
+    this.resize_observer.observe(document.querySelector('.canvas-container'));
   }
 
   on_canvas_resize = (entries: ResizeObserverEntry[]) =>
