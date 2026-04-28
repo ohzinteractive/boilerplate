@@ -1,4 +1,5 @@
 User-agent: Googlebot
+User-agent: OAI-SearchBot
 Disallow: /nogooglebot/
 
 User-agent: *
