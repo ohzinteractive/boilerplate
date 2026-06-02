@@ -107,7 +107,7 @@ export class MainApplication extends BaseApplication
 
   update()
   {
-    // this.ui_collision_layer.update();
+    this.ui_collision_layer.update();
     // this.modal_component.update();
 
     // this.audio_manager.update();
