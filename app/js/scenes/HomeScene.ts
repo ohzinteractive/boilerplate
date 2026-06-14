@@ -6,9 +6,8 @@ import { home_high_textures } from '../../data/assets/home/high/home_high_textur
 import { home_objects } from '../../data/assets/home/home_objects';
 import { home_textures } from '../../data/assets/home/home_textures';
 
-import { CameraController, CameraManager, Debug, Grid, OScreen, PerspectiveCamera, ResourceContainer } from 'ohzi-core';
+import { CameraController, CameraManager, Debug, Grid, OScreen, PerspectiveCamera } from 'ohzi-core';
 import { Color } from 'three';
-import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { SimpleCameraState } from '../camera_controller/states/SimpleCameraState';
 import { Input } from '../components/Input';
 import { Settings } from '../Settings';
@@ -73,12 +72,9 @@ export class HomeScene extends CommonScene
     super.on_assets_ready();
 
     // this.add_lights();
-    const cube = (ResourceContainer.get('cube') as GLTF).scene;
 
-    const cube_2 = Debug.draw_cube();
-    cube_2.position.set(0.5, 0.5, 0.5);
-
-    this.add(cube);
+    const cube = Debug.draw_cube(undefined, undefined, '#EEEEEE');
+    cube.position.set(0.5, 0.5, 0.5);
   }
 
   on_high_quality_assets_ready()
