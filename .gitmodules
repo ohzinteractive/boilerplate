@@ -7,3 +7,6 @@
 [submodule "pit"]
 	path = pit
 	url = https://github.com/ohzinteractive/pit
+[submodule "mcp"]
+	path = mcp
+	url = https://github.com/ohzinteractive/mcp
