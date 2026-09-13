@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "ohzi": {
+      "command": "node",
+      "args": ["mcp/build/server.js"],
+      "env": { "OHZI_MCP_PORT": "7317" }
+    }
+  }
+}

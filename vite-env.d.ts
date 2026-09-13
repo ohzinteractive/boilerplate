@@ -6,6 +6,7 @@ interface ImportMetaEnv {
   readonly MODE: string
   readonly BASE_URL: string
   readonly VITE_APP_TITLE?: string
+  readonly OHZI_MCP_PORT?: string
   // Add other custom environment variables here as needed
   // readonly VITE_SOME_KEY: string
 }

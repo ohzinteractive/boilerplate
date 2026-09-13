@@ -1,9 +1,12 @@
+// import { TransitionManager } from 'ohzi-core';
+// import { Sections } from '../Sections';
 import { CommonTransitionController } from '../common/CommonTransitionController';
 
 export class TransitionTransitionController extends CommonTransitionController
 {
   start()
   {
+    // __CUSTOM_TRANSITIONS__
   }
 
   before_enter()

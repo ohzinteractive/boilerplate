@@ -1,4 +1,5 @@
 import { BaseApplication, ResourceContainer, Time, TransitionManager, ViewManager } from 'ohzi-core';
+import type { DevBridge } from 'ohzi-core';
 
 import { HomeView } from './views/home/HomeView';
 import { TransitionView } from './views/transition/TransitionView';
@@ -21,6 +22,7 @@ import type { CommonView } from './views/common/CommonView';
 export class MainApplication extends BaseApplication
 {
   config: any;
+  dev_bridge: DevBridge;
   home_view: HomeView;
   input: typeof Input;
   keyboard_input_controller: KeyboardInputController;
@@ -55,6 +57,11 @@ export class MainApplication extends BaseApplication
     if (import.meta.env.DEV)
     {
       this.tweak_pane = new TweakPane();
+
+      if (Settings.dev_bridge.enabled)
+      {
+        void this.start_dev_bridge();
+      }
     }
 
     this.config = ResourceContainer.get_resource('config');
@@ -112,5 +119,32 @@ export class MainApplication extends BaseApplication
 
     // this.audio_manager.update();
 
+  }
+
+  // Drains commands the dev bridge queued for a safe frame boundary.
+  // Anything that renders or mutates runs here, never part-way through a frame.
+  on_frame_end()
+  {
+    if (this.dev_bridge !== undefined)
+    {
+      this.dev_bridge.on_frame_end();
+    }
+  }
+
+  // Dev only. The guard must live INSIDE this method, not only around the call
+  // site: class methods are never tree-shaken, so without it the dynamic import
+  // below keeps DevBridgeController, and the whole dev bridge behind it, in the
+  // production bundle. This is also why the controller is never imported
+  // statically.
+  async start_dev_bridge()
+  {
+    if (!import.meta.env.DEV)
+    {
+      return;
+    }
+
+    const { DevBridgeController } = await import('./components/DevBridgeController');
+
+    this.dev_bridge = new DevBridgeController().start();
   }
 }

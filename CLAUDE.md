@@ -44,22 +44,22 @@ app/js/init.ts → Api.ts → MainApplication.ts (extends BaseApplication from o
 
 Views are the primary structural unit. Each view has three classes:
 
-- `[Name]View.js` — lifecycle orchestrator, extends `CommonView`
-- `[Name]SceneController.js` — owns the Three.js `Scene`, sets `SceneManager.current` in `before_enter()`
-- `[Name]TransitionController.js` — handles enter/exit animation logic, extends `CommonTransitionController`
+- `[Name]View.ts` — lifecycle orchestrator, extends `CommonView`
+- `[Name]SceneController.ts` — owns the Three.js `Scene`, sets `SceneManager.current` in `before_enter()`
+- `[Name]TransitionController.ts` — handles enter/exit animation logic, extends `CommonTransitionController`
 
 View lifecycle: `start() → before_enter() → on_enter() → update() → before_exit() → on_exit()`
 
 To add a new view:
 1. Run `yarn create-view MyViewName` to scaffold files
-2. Add the route to `app/js/views/Sections.js`
+2. Add the route to `app/js/views/Sections.ts`
 3. Register the view in `MainApplication.ts`
 4. Import the new SCSS partial in `app/css/application.scss`
 
 ### Key Files
 
 - `app/js/MainApplication.ts` — app controller, view registration, render loop
-- `app/js/views/Sections.js` — route definitions (name → URL)
+- `app/js/views/Sections.ts` — route definitions (name → URL)
 - `app/js/Settings.ts` — app-wide configuration
 - `app/js/Preloader.ts` — asset preloading
 - `app/js/Layers.ts` — WebGL layer management

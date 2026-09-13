@@ -2,6 +2,8 @@
 
 Modals are overlay UI components used to display content on top of your application. They're perfect for confirmations, forms, galleries, notifications, and other focused interactions.
 
+> **Modal states are TypeScript.** `yarn create-modal` emits a `.ts` state class and patches `ModalComponent.ts`.
+
 ## What is a Modal?
 
 A **Modal** in the OHZI Boilerplate:
@@ -32,7 +34,7 @@ This creates:
 
 ```
 app/js/view_components/modal/states/
-└── MyModalModalState.js
+└── MyModalModalState.ts
 
 app/views/components/modal/states/
 └── my_modal.pug
@@ -42,7 +44,7 @@ app/css/components/modal/my_modal/
 ```
 
 And automatically updates:
-- `app/js/view_components/modal/ModalComponent.js` - Adds import and state registration
+- `app/js/view_components/modal/ModalComponent.ts` - Adds import and state registration
 - `app/views/components/modal/modal.pug` - Includes the new template
 - `app/css/components/modal/_modal.scss` - Imports the new styles
 
@@ -50,7 +52,7 @@ And automatically updates:
 
 ### JavaScript State Class
 
-**Location**: `app/js/view_components/modal/states/[ModalName]ModalState.js`
+**Location**: `app/js/view_components/modal/states/[ModalName]ModalState.ts`
 
 ```javascript
 import { ModalState } from 'ohzi-components';
@@ -224,7 +226,7 @@ The `+modal()` mixin accepts these options:
 
 ### 1. Initialize the Modal Component
 
-In your `MainApplication.js`:
+In your `MainApplication.ts`:
 
 ```javascript
 import { ModalComponent } from './view_components/modal/ModalComponent';
