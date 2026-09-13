@@ -2,6 +2,8 @@
 
 Scenes are the core of your 3D content in the OHZI Boilerplate. A scene contains all 3D objects, lighting, cameras, and visual elements that make up your interactive experience.
 
+> **Scene classes are TypeScript.** `yarn create-scene` emits a `.ts` scene. The asset manifests under `app/data/assets/` are genuinely `.js`, as shown below.
+
 ## What is a Scene?
 
 A **Scene** in this boilerplate extends three.js `Scene` and includes:
@@ -25,7 +27,7 @@ yarn create-scene MySceneName
 This creates:
 
 ```
-app/js/scenes/MySceneName.js
+app/js/scenes/MySceneName.ts
 app/data/assets/my_scene_name/
 ├── my_scene_name_objects.js      # 3D models configuration
 ├── my_scene_name_textures.js      # Textures configuration
@@ -40,7 +42,7 @@ app/data/assets/my_scene_name/
 
 ### Basic Scene Class
 
-**Location**: `app/js/scenes/[SceneName].js`
+**Location**: `app/js/scenes/[SceneName].ts`
 
 ```javascript
 import { Sections } from '../views/Sections';
@@ -400,7 +402,7 @@ if (import.meta.env.DEV)
 
 ## Example: Complete Scene
 
-Check [HomeScene.js](../app/js/scenes/HomeScene.js)
+Check [HomeScene.ts](../app/js/scenes/HomeScene.ts)
 
 
 ## Related Topics

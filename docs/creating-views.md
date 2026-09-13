@@ -2,6 +2,8 @@
 
 Views are the main structural elements of your application in the OHZI Boilerplate. They represent different sections or pages of your project and manage scenes, transitions, and UI interactions.
 
+> **The application is TypeScript.** `yarn create-view` emits `.ts` files and patches `MainApplication.ts`, `Sections.ts` and `GeneralLoader.ts`. The examples below are shown without type annotations for brevity; the files they describe are `.ts`.
+
 ## What is a View?
 
 A **View** is an organized container that:
@@ -40,9 +42,9 @@ This command will create the necessary folder structure and template files:
 
 ```
 app/js/views/my_view_name/
-├── MyViewView.js
-├── MyViewSceneController.js
-└── MyViewTransitionController.js
+├── MyViewView.ts
+├── MyViewSceneController.ts
+└── MyViewTransitionController.ts
 
 app/views/my_view_name/
 └── my_view_name.pug
@@ -59,7 +61,7 @@ app/data/transitions/
 
 ### 1. Main View Class
 
-**Location**: `app/js/views/[view-name]/[ViewName]View.js`
+**Location**: `app/js/views/[view-name]/[ViewName]View.ts`
 
 ```javascript
 import { CommonView } from '../common/CommonView';
@@ -147,7 +149,7 @@ export class MyView extends CommonView
 
 ### 2. Scene Controller
 
-**Location**: `app/js/views/[view-name]/[ViewName]SceneController.js`
+**Location**: `app/js/views/[view-name]/[ViewName]SceneController.ts`
 
 Manages the 3D scene and all graphics-related logic:
 
@@ -210,7 +212,7 @@ export class MyViewSceneController
 
 ### 3. Transition Controller
 
-**Location**: `app/js/views/[view-name]/[ViewName]TransitionController.js`
+**Location**: `app/js/views/[view-name]/[ViewName]TransitionController.ts`
 
 Manages view transitions, animations, and state changes:
 
@@ -256,7 +258,7 @@ You need to register your view so the application knows about it:
 
 ### 1. Add to Sections
 
-Edit `app/js/views/Sections.js`:
+Edit `app/js/views/Sections.ts`:
 
 ```javascript
 const Sections = {
@@ -280,7 +282,7 @@ export { Sections, SectionsURLs };
 
 ### 2. Import and Register in MainApplication
 
-Edit `app/js/MainApplication.js`:
+Edit `app/js/MainApplication.ts`:
 
 ```javascript
 import { MyView } from './views/my_view/MyView';
@@ -333,7 +335,7 @@ Add your SCSS import to the main stylesheet to ensure it loads:
 
 Scenes are 3D canvas content. Create a scene class:
 
-**Location**: `app/js/scenes/MyViewScene.js`
+**Location**: `app/js/scenes/MyViewScene.ts`
 
 ```javascript
 import { Scene, Group } from 'three';
@@ -392,7 +394,7 @@ Transition data is configured in a JSON file that drives the animation between v
 
 ## Example: Complete View
 
-Check [HomeView.js](../app/js/views/home/HomeView.js)
+Check [HomeView.ts](../app/js/views/home/HomeView.ts)
 
 ## Debugging Views
 
