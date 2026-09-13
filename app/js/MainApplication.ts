@@ -144,7 +144,8 @@ export class MainApplication extends BaseApplication
       return;
     }
 
-    const { CaptureService, ConsoleBuffer, DevBridge, Graphics, SceneEditor, SceneInspector, SceneManager } = await import('ohzi-core');
+    const { CameraBridge, CaptureService, ConsoleBuffer, DevBridge, Graphics, SceneEditor, SceneInspector, SceneManager } = await import('ohzi-core');
+    const { Box3 } = await import('three');
 
     const capture_service = new CaptureService(Graphics, () => CameraManager.current !== undefined);
 
@@ -169,6 +170,32 @@ export class MainApplication extends BaseApplication
     // and tear for a frame. args carries both the selector and the changes;
     // their field names do not overlap.
     this.dev_bridge.register('set_object', 'frame_end', (args) => scene_editor.set(SceneManager.current, args, args));
+
+    const camera_bridge = new CameraBridge();
+
+    // The controller lives on the scene, so it is resolved per call rather than
+    // captured: switching views swaps the scene and therefore the controller.
+    const controller = () =>
+    {
+      const scene = SceneManager.current as { camera_controller?: unknown };
+
+      return scene === undefined || scene === null || scene.camera_controller === undefined
+        ? null
+        : scene.camera_controller;
+    };
+
+    this.dev_bridge.register('get_camera', 'immediate', () => camera_bridge.get(CameraManager.current, controller()));
+
+    // frame_end: both of these change what the next frame renders.
+    this.dev_bridge.register('set_camera', 'frame_end', (args) => camera_bridge.set(CameraManager.current, controller(), args));
+
+    this.dev_bridge.register('frame_object', 'frame_end', (args) => camera_bridge.frame(
+      CameraManager.current,
+      controller(),
+      SceneManager.current,
+      args,
+      (object) => new Box3().setFromObject(object)
+    ));
 
     // frame_end, never immediate: take_screenshot overrides OScreen and the
     // renderer pixel ratio and pans the camera via setViewOffset, so running it
