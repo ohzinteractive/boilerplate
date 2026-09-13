@@ -144,11 +144,25 @@ export class MainApplication extends BaseApplication
       return;
     }
 
-    const { DevBridge } = await import('ohzi-core');
+    const { CaptureService, ConsoleBuffer, DevBridge, Graphics } = await import('ohzi-core');
+
+    const capture_service = new CaptureService(Graphics, () => CameraManager.current !== undefined);
+
+    // Installed here rather than in init() so it stays inside the dev guard.
+    // Consequence: anything logged before on_enter is not captured.
+    const console_buffer = new ConsoleBuffer();
+    console_buffer.install(console, window);
 
     this.dev_bridge = new DevBridge();
 
     this.dev_bridge.register('status', 'immediate', () => this.get_dev_bridge_status());
+
+    this.dev_bridge.register('get_console', 'immediate', (args) => console_buffer.read(args));
+
+    // frame_end, never immediate: take_screenshot overrides OScreen and the
+    // renderer pixel ratio and pans the camera via setViewOffset, so running it
+    // part-way through a frame would corrupt the render.
+    this.dev_bridge.register('capture_viewport', 'frame_end', (args) => capture_service.capture(args));
 
     this.dev_bridge.init({
       port: Settings.dev_bridge.port,
