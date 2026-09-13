@@ -1,5 +1,5 @@
 import { BaseApplication, CameraManager, OScreen, ResourceContainer, Time, TransitionManager, ViewManager } from 'ohzi-core';
-import type { DevBridge } from 'ohzi-core';
+import type { BaseRender, DevBridge } from 'ohzi-core';
 
 import { HomeView } from './views/home/HomeView';
 import { TransitionView } from './views/transition/TransitionView';
@@ -144,7 +144,9 @@ export class MainApplication extends BaseApplication
       return;
     }
 
-    const { CameraBridge, CaptureService, ConsoleBuffer, DevBridge, Graphics, SceneEditor, SceneInspector, SceneManager } = await import('ohzi-core');
+    const { CameraBridge, CaptureService, ConsoleBuffer, DebugNormalsRender, DevBridge, Graphics, NormalAORender, NormalRender,
+      PerformanceProbe, RenderModeRegistry, SceneEditor, SceneInspector, SceneManager, UnrealBloomRender, VRRender,
+      ViewNavigator } = await import('ohzi-core');
     const { Box3 } = await import('three');
 
     const capture_service = new CaptureService(Graphics, () => CameraManager.current !== undefined);
@@ -188,6 +190,77 @@ export class MainApplication extends BaseApplication
 
     // frame_end: both of these change what the next frame renders.
     this.dev_bridge.register('set_camera', 'frame_end', (args) => camera_bridge.set(CameraManager.current, controller(), args));
+
+    // A factory per mode, because the render modes do not share a constructor
+    // signature. Only the modes core exports from its index are listed here;
+    // BloomRender and DeferredRender exist in src but are not exported.
+    const render_modes = new RenderModeRegistry([
+      {
+        name: 'NormalRender',
+        description: 'Standard forward rendering.',
+        factory: () => new NormalRender()
+      },
+      {
+        name: 'NormalAORender',
+        description: 'Forward rendering with SSAO.',
+        options: ['use_ssaa'],
+        factory: (options) => new NormalAORender(options.use_ssaa === true)
+      },
+      {
+        name: 'UnrealBloomRender',
+        description: 'Forward rendering with Unreal-style bloom.',
+        options: ['use_antialiasing', 'use_half_float', 'use_high_luminosity_pass', 'use_rendering_size'],
+        factory: (options) => new UnrealBloomRender(
+          options.use_antialiasing !== false,
+          options.use_half_float !== false,
+          // core spells this parameter 'use_hight_luminosity_pass'; the option
+          // is exposed under the corrected spelling.
+          options.use_high_luminosity_pass !== false,
+          options.use_rendering_size === true
+        )
+      },
+      {
+        name: 'DebugNormalsRender',
+        description: 'Visualises surface normals.',
+        factory: () => new DebugNormalsRender()
+      },
+      {
+        name: 'VRRender',
+        description: 'WebXR stereo rendering. Requires core_attributes.xr_enabled.',
+        factory: () => new VRRender()
+      }
+    ]);
+
+    this.dev_bridge.register('list_render_modes', 'immediate', () => render_modes.list());
+
+    this.dev_bridge.register('set_render_mode', 'frame_end', (args) =>
+    {
+      const options = typeof args.options === 'object' && args.options !== null
+        ? args.options as Record<string, unknown>
+        : {};
+
+      // create() validates the name and throws unknown_render_mode listing the
+      // valid ones, so by this point it is known good.
+      const mode = render_modes.create(args.name, options) as BaseRender;
+
+      Graphics.set_state(mode);
+
+      return { active: typeof args.name === 'string' ? args.name : '' };
+    });
+
+    const performance_probe = new PerformanceProbe();
+
+    this.dev_bridge.register('get_performance', 'immediate', () =>
+    {
+      const renderer = (Graphics as unknown as { _renderer?: { info?: unknown } })._renderer;
+
+      return performance_probe.read(Time, OScreen, renderer === undefined ? undefined : renderer.info);
+    });
+
+    const view_navigator = new ViewNavigator();
+
+    this.dev_bridge.register('list_views', 'immediate', () => view_navigator.list(ViewManager));
+    this.dev_bridge.register('go_to_view', 'frame_end', (args) => view_navigator.go(ViewManager, args));
 
     this.dev_bridge.register('frame_object', 'frame_end', (args) => camera_bridge.frame(
       CameraManager.current,
