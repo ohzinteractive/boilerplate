@@ -144,7 +144,7 @@ export class MainApplication extends BaseApplication
       return;
     }
 
-    const { CaptureService, ConsoleBuffer, DevBridge, Graphics } = await import('ohzi-core');
+    const { CaptureService, ConsoleBuffer, DevBridge, Graphics, SceneEditor, SceneInspector, SceneManager } = await import('ohzi-core');
 
     const capture_service = new CaptureService(Graphics, () => CameraManager.current !== undefined);
 
@@ -158,6 +158,17 @@ export class MainApplication extends BaseApplication
     this.dev_bridge.register('status', 'immediate', () => this.get_dev_bridge_status());
 
     this.dev_bridge.register('get_console', 'immediate', (args) => console_buffer.read(args));
+
+    const scene_inspector = new SceneInspector();
+    const scene_editor = new SceneEditor();
+
+    this.dev_bridge.register('inspect_scene', 'immediate', (args) => scene_inspector.inspect(SceneManager.current, args));
+    this.dev_bridge.register('get_object', 'immediate', (args) => scene_editor.get(SceneManager.current, args));
+
+    // frame_end so a transform change cannot land between update() and render()
+    // and tear for a frame. args carries both the selector and the changes;
+    // their field names do not overlap.
+    this.dev_bridge.register('set_object', 'frame_end', (args) => scene_editor.set(SceneManager.current, args, args));
 
     // frame_end, never immediate: take_screenshot overrides OScreen and the
     // renderer pixel ratio and pans the camera via setViewOffset, so running it
