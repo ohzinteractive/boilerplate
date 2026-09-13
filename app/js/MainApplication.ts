@@ -145,7 +145,7 @@ export class MainApplication extends BaseApplication
     }
 
     const { CameraBridge, CaptureService, ConsoleBuffer, DebugNormalsRender, DevBridge, Graphics, NormalAORender, NormalRender,
-      PerformanceProbe, RenderModeRegistry, SceneEditor, SceneInspector, SceneManager, UnrealBloomRender, VRRender,
+      InputSynthesizer, PerformanceProbe, RenderModeRegistry, SceneEditor, SceneInspector, SceneManager, UnrealBloomRender, VRRender,
       ViewNavigator } = await import('ohzi-core');
     const { Box3 } = await import('three');
 
@@ -230,6 +230,54 @@ export class MainApplication extends BaseApplication
         factory: () => new VRRender()
       }
     ]);
+
+    // Dispatches genuine DOM events at the elements PIT and KeyboardInput are
+    // already listening on, so synthetic input travels the exact same path as a
+    // real user's. Keyboard events go to the keyboard container, everything
+    // else to the input controller's element.
+    const input_synthesizer = new InputSynthesizer(
+      (type, init) =>
+      {
+        const keyboard = type === 'keydown' || type === 'keyup';
+        const target = keyboard ? Input.keyboard.container : Input.dom_element;
+
+        if (keyboard)
+        {
+          target.dispatchEvent(new KeyboardEvent(type, init as KeyboardEventInit));
+          return;
+        }
+
+        if (type === 'wheel')
+        {
+          target.dispatchEvent(new WheelEvent(type, init as WheelEventInit));
+          return;
+        }
+
+        target.dispatchEvent(new MouseEvent(type, init as MouseEventInit));
+      },
+      (ms) => new Promise<void>((resolve) => window.setTimeout(resolve, ms)),
+      (x, y, space) =>
+      {
+        const rect = Graphics.canvas.getBoundingClientRect();
+
+        if (space === 'ndc')
+        {
+          return {
+            x: rect.left + ((x + 1) / 2) * rect.width,
+            y: rect.top + ((1 - y) / 2) * rect.height
+          };
+        }
+
+        return { x: rect.left + x, y: rect.top + y };
+      }
+    );
+
+    // immediate, not frame_end: these drive themselves over real time via their
+    // own waits and never touch render state directly.
+    this.dev_bridge.register('pointer', 'immediate', (args) => input_synthesizer.pointer(args));
+    this.dev_bridge.register('drag', 'immediate', (args) => input_synthesizer.drag(args));
+    this.dev_bridge.register('scroll', 'immediate', (args) => input_synthesizer.scroll(args));
+    this.dev_bridge.register('key', 'immediate', (args) => input_synthesizer.key(args));
 
     this.dev_bridge.register('list_render_modes', 'immediate', () => render_modes.list());
 
