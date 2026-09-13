@@ -1,5 +1,5 @@
-import { BaseApplication, CameraManager, OScreen, ResourceContainer, Time, TransitionManager, ViewManager } from 'ohzi-core';
-import type { BaseRender, DevBridge } from 'ohzi-core';
+import { BaseApplication, ResourceContainer, Time, TransitionManager, ViewManager } from 'ohzi-core';
+import type { DevBridge } from 'ohzi-core';
 
 import { HomeView } from './views/home/HomeView';
 import { TransitionView } from './views/transition/TransitionView';
@@ -15,9 +15,6 @@ import { ModalComponent } from './view_components/modal/ModalComponent';
 import { Sections } from './views/Sections';
 
 import { UICollisionLayer } from 'ohzi-components';
-import components_package from '../../components/package.json';
-import core_package from '../../core/package.json';
-import pit_package from '../../pit/package.json';
 import { default_state_data } from '../data/default_state_data';
 import { Router } from './components/Router';
 import type { CommonView } from './views/common/CommonView';
@@ -134,9 +131,11 @@ export class MainApplication extends BaseApplication
     }
   }
 
-  // Dev only. The guard must live INSIDE this method, not only around the
-  // call site: class methods are never tree-shaken, so without it the
-  // dynamic import below keeps DevBridge in the production bundle.
+  // Dev only. The guard must live INSIDE this method, not only around the call
+  // site: class methods are never tree-shaken, so without it the dynamic import
+  // below keeps DevBridgeController, and the whole dev bridge behind it, in the
+  // production bundle. This is also why the controller is never imported
+  // statically.
   async start_dev_bridge()
   {
     if (!import.meta.env.DEV)
@@ -144,213 +143,8 @@ export class MainApplication extends BaseApplication
       return;
     }
 
-    const { CameraBridge, CaptureService, ConsoleBuffer, DebugNormalsRender, DevBridge, Graphics, NormalAORender, NormalRender,
-      InputSynthesizer, PerformanceProbe, RenderModeRegistry, SceneEditor, SceneInspector, SceneManager, UnrealBloomRender, VRRender,
-      ViewNavigator } = await import('ohzi-core');
-    const { Box3 } = await import('three');
+    const { DevBridgeController } = await import('./components/DevBridgeController');
 
-    const capture_service = new CaptureService(Graphics, () => CameraManager.current !== undefined);
-
-    // Installed here rather than in init() so it stays inside the dev guard.
-    // Consequence: anything logged before on_enter is not captured.
-    const console_buffer = new ConsoleBuffer();
-    console_buffer.install(console, window);
-
-    this.dev_bridge = new DevBridge();
-
-    this.dev_bridge.register('status', 'immediate', () => this.get_dev_bridge_status());
-
-    this.dev_bridge.register('get_console', 'immediate', (args) => console_buffer.read(args));
-
-    const scene_inspector = new SceneInspector();
-    const scene_editor = new SceneEditor();
-
-    this.dev_bridge.register('inspect_scene', 'immediate', (args) => scene_inspector.inspect(SceneManager.current, args));
-    this.dev_bridge.register('get_object', 'immediate', (args) => scene_editor.get(SceneManager.current, args));
-
-    // frame_end so a transform change cannot land between update() and render()
-    // and tear for a frame. args carries both the selector and the changes;
-    // their field names do not overlap.
-    this.dev_bridge.register('set_object', 'frame_end', (args) => scene_editor.set(SceneManager.current, args, args));
-
-    const camera_bridge = new CameraBridge();
-
-    // The controller lives on the scene, so it is resolved per call rather than
-    // captured: switching views swaps the scene and therefore the controller.
-    const controller = () =>
-    {
-      const scene = SceneManager.current as { camera_controller?: unknown };
-
-      return scene === undefined || scene === null || scene.camera_controller === undefined
-        ? null
-        : scene.camera_controller;
-    };
-
-    this.dev_bridge.register('get_camera', 'immediate', () => camera_bridge.get(CameraManager.current, controller()));
-
-    // frame_end: both of these change what the next frame renders.
-    this.dev_bridge.register('set_camera', 'frame_end', (args) => camera_bridge.set(CameraManager.current, controller(), args));
-
-    // A factory per mode, because the render modes do not share a constructor
-    // signature. Only the modes core exports from its index are listed here;
-    // BloomRender and DeferredRender exist in src but are not exported.
-    const render_modes = new RenderModeRegistry([
-      {
-        name: 'NormalRender',
-        description: 'Standard forward rendering.',
-        factory: () => new NormalRender()
-      },
-      {
-        name: 'NormalAORender',
-        description: 'Forward rendering with SSAO.',
-        options: ['use_ssaa'],
-        factory: (options) => new NormalAORender(options.use_ssaa === true)
-      },
-      {
-        name: 'UnrealBloomRender',
-        description: 'Forward rendering with Unreal-style bloom.',
-        options: ['use_antialiasing', 'use_half_float', 'use_high_luminosity_pass', 'use_rendering_size'],
-        factory: (options) => new UnrealBloomRender(
-          options.use_antialiasing !== false,
-          options.use_half_float !== false,
-          // core spells this parameter 'use_hight_luminosity_pass'; the option
-          // is exposed under the corrected spelling.
-          options.use_high_luminosity_pass !== false,
-          options.use_rendering_size === true
-        )
-      },
-      {
-        name: 'DebugNormalsRender',
-        description: 'Visualises surface normals.',
-        factory: () => new DebugNormalsRender()
-      },
-      {
-        name: 'VRRender',
-        description: 'WebXR stereo rendering. Requires core_attributes.xr_enabled.',
-        factory: () => new VRRender()
-      }
-    ]);
-
-    // Dispatches genuine DOM events at the elements PIT and KeyboardInput are
-    // already listening on, so synthetic input travels the exact same path as a
-    // real user's. Keyboard events go to the keyboard container, everything
-    // else to the input controller's element.
-    const input_synthesizer = new InputSynthesizer(
-      (type, init) =>
-      {
-        const keyboard = type === 'keydown' || type === 'keyup';
-        const target = keyboard ? Input.keyboard.container : Input.dom_element;
-
-        if (keyboard)
-        {
-          target.dispatchEvent(new KeyboardEvent(type, init as KeyboardEventInit));
-          return;
-        }
-
-        if (type === 'wheel')
-        {
-          target.dispatchEvent(new WheelEvent(type, init as WheelEventInit));
-          return;
-        }
-
-        target.dispatchEvent(new MouseEvent(type, init as MouseEventInit));
-      },
-      (ms) => new Promise<void>((resolve) => window.setTimeout(resolve, ms)),
-      (x, y, space) =>
-      {
-        const rect = Graphics.canvas.getBoundingClientRect();
-
-        if (space === 'ndc')
-        {
-          return {
-            x: rect.left + ((x + 1) / 2) * rect.width,
-            y: rect.top + ((1 - y) / 2) * rect.height
-          };
-        }
-
-        return { x: rect.left + x, y: rect.top + y };
-      }
-    );
-
-    // immediate, not frame_end: these drive themselves over real time via their
-    // own waits and never touch render state directly.
-    this.dev_bridge.register('pointer', 'immediate', (args) => input_synthesizer.pointer(args));
-    this.dev_bridge.register('drag', 'immediate', (args) => input_synthesizer.drag(args));
-    this.dev_bridge.register('scroll', 'immediate', (args) => input_synthesizer.scroll(args));
-    this.dev_bridge.register('key', 'immediate', (args) => input_synthesizer.key(args));
-
-    this.dev_bridge.register('list_render_modes', 'immediate', () => render_modes.list());
-
-    this.dev_bridge.register('set_render_mode', 'frame_end', (args) =>
-    {
-      const options = typeof args.options === 'object' && args.options !== null
-        ? args.options as Record<string, unknown>
-        : {};
-
-      // create() validates the name and throws unknown_render_mode listing the
-      // valid ones, so by this point it is known good.
-      const mode = render_modes.create(args.name, options) as BaseRender;
-
-      Graphics.set_state(mode);
-
-      return { active: typeof args.name === 'string' ? args.name : '' };
-    });
-
-    const performance_probe = new PerformanceProbe();
-
-    this.dev_bridge.register('get_performance', 'immediate', () =>
-    {
-      const renderer = (Graphics as unknown as { _renderer?: { info?: unknown } })._renderer;
-
-      return performance_probe.read(Time, OScreen, renderer === undefined ? undefined : renderer.info);
-    });
-
-    const view_navigator = new ViewNavigator();
-
-    this.dev_bridge.register('list_views', 'immediate', () => view_navigator.list(ViewManager));
-    this.dev_bridge.register('go_to_view', 'frame_end', (args) => view_navigator.go(ViewManager, args));
-
-    this.dev_bridge.register('frame_object', 'frame_end', (args) => camera_bridge.frame(
-      CameraManager.current,
-      controller(),
-      SceneManager.current,
-      args,
-      (object) => new Box3().setFromObject(object)
-    ));
-
-    // frame_end, never immediate: take_screenshot overrides OScreen and the
-    // renderer pixel ratio and pans the camera via setViewOffset, so running it
-    // part-way through a frame would corrupt the render.
-    this.dev_bridge.register('capture_viewport', 'frame_end', (args) => capture_service.capture(args));
-
-    this.dev_bridge.init({
-      port: Settings.dev_bridge.port,
-      app_info: () => this.get_dev_bridge_app_info()
-    });
-  }
-
-  get_dev_bridge_status()
-  {
-    // get_current_view() returns a ViewState, whose name is 'current_initial'
-    // until the first real view is entered.
-    return {
-      active_view: ViewManager.get_current_view()?.name ?? null,
-      has_camera: CameraManager.current !== undefined,
-      canvas: {
-        width: OScreen.width,
-        height: OScreen.height,
-        dpr: OScreen.dpr
-      }
-    };
-  }
-
-  get_dev_bridge_app_info()
-  {
-    return {
-      core_version: core_package.version,
-      components_version: components_package.version,
-      pit_version: pit_package.version,
-      ...this.get_dev_bridge_status()
-    };
+    this.dev_bridge = new DevBridgeController().start();
   }
 }
