@@ -1,4 +1,4 @@
-import { CameraManager, CameraBridge, CaptureService, ConsoleBuffer, DebugNormalsRender, DevBridge, Graphics, InputSynthesizer,
+import { BloomRender, CameraManager, CameraBridge, CaptureService, ConsoleBuffer, DebugNormalsRender, DevBridge, Graphics, InputSynthesizer,
   NormalAORender, NormalRender, OScreen, PerformanceProbe, RenderModeRegistry, SceneEditor, SceneInspector, SceneManager, Time,
   UnrealBloomRender, VRRender, ViewManager, ViewNavigator } from 'ohzi-core';
 import type { BaseRender } from 'ohzi-core';
@@ -153,7 +153,7 @@ export class DevBridgeController
   {
     // A factory per mode, because the render modes do not share a constructor
     // signature. Only the modes core exports from its index are listed here;
-    // BloomRender and DeferredRender exist in src but are not exported.
+    // DeferredRender exists in src but is not exported.
     const render_modes = new RenderModeRegistry([
       {
         name: 'NormalRender',
@@ -165,6 +165,11 @@ export class DevBridgeController
         description: 'Forward rendering with SSAO.',
         options: ['use_ssaa'],
         factory: (options) => new NormalAORender(options.use_ssaa === true)
+      },
+      {
+        name: 'BloomRender',
+        description: 'Forward rendering with a box blur bloom. Works on WebGPU and WebGL2.',
+        factory: () => new BloomRender()
       },
       {
         name: 'UnrealBloomRender',
