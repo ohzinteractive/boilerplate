@@ -1,4 +1,4 @@
-import { CameraManager, CameraBridge, CaptureService, ConsoleBuffer, DebugNormalsRender, DevBridge, Graphics, InputSynthesizer,
+import { BloomRender, CameraManager, CameraBridge, CaptureService, ConsoleBuffer, Debug, DebugDrawer, DebugNormalsRender, DeferredRender, DevBridge, Graphics, InputSynthesizer,
   NormalAORender, NormalRender, OScreen, PerformanceProbe, RenderModeRegistry, SceneEditor, SceneInspector, SceneManager, Time,
   UnrealBloomRender, VRRender, ViewManager, ViewNavigator } from 'ohzi-core';
 import type { BaseRender } from 'ohzi-core';
@@ -43,6 +43,7 @@ export class DevBridgeController
     this.register_input();
     this.register_render_modes();
     this.register_views();
+    this.register_debug();
 
     // frame_end, never immediate: take_screenshot overrides OScreen and the
     // renderer pixel ratio and pans the camera via setViewOffset, so running it
@@ -152,8 +153,7 @@ export class DevBridgeController
   register_render_modes()
   {
     // A factory per mode, because the render modes do not share a constructor
-    // signature. Only the modes core exports from its index are listed here;
-    // BloomRender and DeferredRender exist in src but are not exported.
+    // signature. Only the modes core exports from its index are listed here.
     const render_modes = new RenderModeRegistry([
       {
         name: 'NormalRender',
@@ -162,13 +162,18 @@ export class DevBridgeController
       },
       {
         name: 'NormalAORender',
-        description: 'Forward rendering with SSAO.',
-        options: ['use_ssaa'],
-        factory: (options) => new NormalAORender(options.use_ssaa === true)
+        description: 'Forward rendering with SSAO. Works on WebGPU and WebGL2. use_exact_depth (default on) avoids banding on flat surfaces; off is about half the SSAO cost.',
+        options: ['use_ssaa', 'use_exact_depth'],
+        factory: (options) => new NormalAORender(options.use_ssaa === true, options.use_exact_depth !== false)
+      },
+      {
+        name: 'BloomRender',
+        description: 'Forward rendering with a box blur bloom. Works on WebGPU and WebGL2.',
+        factory: () => new BloomRender()
       },
       {
         name: 'UnrealBloomRender',
-        description: 'Forward rendering with Unreal-style bloom.',
+        description: 'Forward rendering with Unreal-style bloom. Works on WebGPU and WebGL2.',
         options: ['use_antialiasing', 'use_half_float', 'use_high_luminosity_pass', 'use_rendering_size'],
         factory: (options) => new UnrealBloomRender(
           options.use_antialiasing !== false,
@@ -181,8 +186,13 @@ export class DevBridgeController
       },
       {
         name: 'DebugNormalsRender',
-        description: 'Visualises surface normals.',
+        description: 'Visualises world space surface normals. Works on WebGPU and WebGL2.',
         factory: () => new DebugNormalsRender()
+      },
+      {
+        name: 'DeferredRender',
+        description: 'Deferred point lights over a depth and normals buffer. Works on WebGPU and WebGL2.',
+        factory: () => new DeferredRender()
       },
       {
         name: 'VRRender',
@@ -215,6 +225,18 @@ export class DevBridgeController
 
     this.bridge.register('list_views', 'immediate', () => view_navigator.list(ViewManager));
     this.bridge.register('go_to_view', 'frame_end', (args) => view_navigator.go(ViewManager, args));
+  }
+
+  register_debug()
+  {
+    const debug_drawer = new DebugDrawer();
+
+    // frame_end: both change what the next frame renders. Helpers stay until
+    // debug_clear, which only removes what debug_draw added. Only cube, sphere,
+    // plane and label live in the Debug overlay scene and survive view changes;
+    // math_sphere and bounding_box stay in the scene of the view they were drawn in.
+    this.bridge.register('debug_draw', 'frame_end', (args) => debug_drawer.draw(Debug, SceneManager.current, args));
+    this.bridge.register('debug_clear', 'frame_end', (args) => debug_drawer.clear(args));
   }
 
   // The controller lives on the scene, so it is resolved per call rather than
