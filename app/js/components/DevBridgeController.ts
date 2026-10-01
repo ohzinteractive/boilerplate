@@ -173,7 +173,7 @@ export class DevBridgeController
       },
       {
         name: 'UnrealBloomRender',
-        description: 'Forward rendering with Unreal-style bloom.',
+        description: 'Forward rendering with Unreal-style bloom. Works on WebGPU and WebGL2.',
         options: ['use_antialiasing', 'use_half_float', 'use_high_luminosity_pass', 'use_rendering_size'],
         factory: (options) => new UnrealBloomRender(
           options.use_antialiasing !== false,
