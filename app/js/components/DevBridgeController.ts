@@ -1,4 +1,4 @@
-import { BloomRender, CameraManager, CameraBridge, CaptureService, ConsoleBuffer, DebugNormalsRender, DevBridge, Graphics, InputSynthesizer,
+import { BloomRender, CameraManager, CameraBridge, CaptureService, ConsoleBuffer, DebugNormalsRender, DeferredRender, DevBridge, Graphics, InputSynthesizer,
   NormalAORender, NormalRender, OScreen, PerformanceProbe, RenderModeRegistry, SceneEditor, SceneInspector, SceneManager, Time,
   UnrealBloomRender, VRRender, ViewManager, ViewNavigator } from 'ohzi-core';
 import type { BaseRender } from 'ohzi-core';
@@ -152,8 +152,7 @@ export class DevBridgeController
   register_render_modes()
   {
     // A factory per mode, because the render modes do not share a constructor
-    // signature. Only the modes core exports from its index are listed here;
-    // DeferredRender exists in src but is not exported.
+    // signature. Only the modes core exports from its index are listed here.
     const render_modes = new RenderModeRegistry([
       {
         name: 'NormalRender',
@@ -162,9 +161,9 @@ export class DevBridgeController
       },
       {
         name: 'NormalAORender',
-        description: 'Forward rendering with SSAO.',
-        options: ['use_ssaa'],
-        factory: (options) => new NormalAORender(options.use_ssaa === true)
+        description: 'Forward rendering with SSAO. Works on WebGPU and WebGL2. use_exact_depth (default on) avoids banding on flat surfaces; off is about half the SSAO cost.',
+        options: ['use_ssaa', 'use_exact_depth'],
+        factory: (options) => new NormalAORender(options.use_ssaa === true, options.use_exact_depth !== false)
       },
       {
         name: 'BloomRender',
@@ -186,8 +185,13 @@ export class DevBridgeController
       },
       {
         name: 'DebugNormalsRender',
-        description: 'Visualises surface normals.',
+        description: 'Visualises world space surface normals. Works on WebGPU and WebGL2.',
         factory: () => new DebugNormalsRender()
+      },
+      {
+        name: 'DeferredRender',
+        description: 'Deferred point lights over a depth and normals buffer. Works on WebGPU and WebGL2.',
+        factory: () => new DeferredRender()
       },
       {
         name: 'VRRender',
