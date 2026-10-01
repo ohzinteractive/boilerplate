@@ -232,8 +232,8 @@ export class DevBridgeController
     const debug_drawer = new DebugDrawer();
 
     // frame_end: both change what the next frame renders. Helpers stay until
-    // debug_clear, which only removes what debug_draw added. Only cube, sphere
-    // and plane live in the Debug overlay scene and survive view changes;
+    // debug_clear, which only removes what debug_draw added. Only cube, sphere,
+    // plane and label live in the Debug overlay scene and survive view changes;
     // math_sphere and bounding_box stay in the scene of the view they were drawn in.
     this.bridge.register('debug_draw', 'frame_end', (args) => debug_drawer.draw(Debug, SceneManager.current, args));
     this.bridge.register('debug_clear', 'frame_end', (args) => debug_drawer.clear(args));
