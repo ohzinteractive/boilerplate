@@ -229,12 +229,16 @@ export class DevBridgeController
 
   register_debug()
   {
-    const debug_drawer = new DebugDrawer();
+    // sdf_text draws with this font unless the request names another one. It is Lato
+    // (SIL Open Font License, see Lato-OFL.txt), printable ASCII, generated with
+    // msdf-atlas-gen -chars "[32, 126]" -type msdf -size 32 -pxrange 4 -yorigin bottom.
+    const debug_drawer = new DebugDrawer({ sdf_font: '/fonts/sdf/lato_msdf.json' });
 
     // frame_end: both change what the next frame renders. Helpers stay until
     // debug_clear, which only removes what debug_draw added. Only cube, sphere,
-    // plane and label live in the Debug overlay scene and survive view changes;
-    // math_sphere and bounding_box stay in the scene of the view they were drawn in.
+    // plane, label and sdf_text live in the Debug overlay scene and survive view
+    // changes; math_sphere and bounding_box stay in the scene of the view they were
+    // drawn in.
     this.bridge.register('debug_draw', 'frame_end', (args) => debug_drawer.draw(Debug, SceneManager.current, args));
     this.bridge.register('debug_clear', 'frame_end', (args) => debug_drawer.clear(args));
   }
