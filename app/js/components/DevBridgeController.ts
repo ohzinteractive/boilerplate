@@ -1,4 +1,4 @@
-import { BloomRender, CameraManager, CameraBridge, CaptureService, ConsoleBuffer, DebugNormalsRender, DeferredRender, DevBridge, Graphics, InputSynthesizer,
+import { BloomRender, CameraManager, CameraBridge, CaptureService, ConsoleBuffer, Debug, DebugDrawer, DebugNormalsRender, DeferredRender, DevBridge, Graphics, InputSynthesizer,
   NormalAORender, NormalRender, OScreen, PerformanceProbe, RenderModeRegistry, SceneEditor, SceneInspector, SceneManager, Time,
   UnrealBloomRender, VRRender, ViewManager, ViewNavigator } from 'ohzi-core';
 import type { BaseRender } from 'ohzi-core';
@@ -43,6 +43,7 @@ export class DevBridgeController
     this.register_input();
     this.register_render_modes();
     this.register_views();
+    this.register_debug();
 
     // frame_end, never immediate: take_screenshot overrides OScreen and the
     // renderer pixel ratio and pans the camera via setViewOffset, so running it
@@ -224,6 +225,16 @@ export class DevBridgeController
 
     this.bridge.register('list_views', 'immediate', () => view_navigator.list(ViewManager));
     this.bridge.register('go_to_view', 'frame_end', (args) => view_navigator.go(ViewManager, args));
+  }
+
+  register_debug()
+  {
+    const debug_drawer = new DebugDrawer();
+
+    // frame_end: both change what the next frame renders. Helpers outlive view
+    // changes until debug_clear, which only removes what debug_draw added.
+    this.bridge.register('debug_draw', 'frame_end', (args) => debug_drawer.draw(Debug, SceneManager.current, args));
+    this.bridge.register('debug_clear', 'frame_end', (args) => debug_drawer.clear(args));
   }
 
   // The controller lives on the scene, so it is resolved per call rather than
