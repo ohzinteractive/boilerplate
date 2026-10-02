@@ -168,8 +168,9 @@ export class DevBridgeController
       },
       {
         name: 'BloomRender',
-        description: 'Forward rendering with a box blur bloom. Works on WebGPU and WebGL2.',
-        factory: () => new BloomRender()
+        description: 'Forward rendering with a box blur bloom. Works on WebGPU and WebGL2. use_dual_filtering swaps the box blur for the dual filtering (Kawase) blur, whose glow spreads much wider.',
+        options: ['use_dual_filtering'],
+        factory: (options) => new BloomRender(options.use_dual_filtering === true)
       },
       {
         name: 'UnrealBloomRender',
