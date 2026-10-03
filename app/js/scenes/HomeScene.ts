@@ -73,8 +73,8 @@ export class HomeScene extends CommonScene
 
     // this.add_lights();
 
-    const cube = Debug.draw_cube(undefined, undefined, '#EEEEEE');
-    cube.position.set(0.5, 0.5, 0.5);
+    // const cube = Debug.draw_cube(undefined, undefined, '#EEEEEE');
+    // cube.position.set(0.5, 0.5, 0.5);
   }
 
   on_high_quality_assets_ready()
