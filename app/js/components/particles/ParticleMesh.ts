@@ -1,7 +1,7 @@
 import { CameraUtilities, Graphics, OMath, Time } from 'ohzi-core';
 import type { Camera } from 'three';
 import { Box3, CircleGeometry, MathUtils, Matrix4, Mesh, Quaternion, Ray, Vector2, Vector3 } from 'three';
-import { clamp, dot, float, Fn, instancedArray, instanceIndex, length, max, saturate, uniform, vec4 } from 'three/tsl';
+import { clamp, dot, float, Fn, If, instancedArray, instanceIndex, length, max, saturate, uniform, vec3, vec4 } from 'three/tsl';
 import type { ComputeNode, Node, StorageBufferNode } from 'three/webgpu';
 
 import { curl_noise, snoise_vec3 } from '../../materials/particles/curl_noise.tsl';
@@ -15,6 +15,9 @@ import type { SampledShape } from './MeshSampler';
 // and makes the motion independent of the display refresh rate.
 const SIMULATION_STEP = 0.016;
 const MAX_STEPS_PER_FRAME = 4;
+
+// Below this speed the swirl would move a particle less than 1e-4 per second
+const MIN_SWIRL_SPEED = 1e-3;
 
 // Pointer moves longer than this (in NDC) are treated as jumps, not swipes
 const MAX_POINTER_JUMP = 0.4;
@@ -186,9 +189,19 @@ export class ParticleMesh extends Mesh
 
       const mouse_displacement = u._CameraUpDir.mul(mouse_dir.y).add(u._CameraRightDir.mul(mouse_dir.x)).mul(proximity);
 
+      // The swirl scales with speed, so particles at rest (nearly all of them,
+      // most of the time) skip the curl noise, the most expensive part by far
+      const speed = length(velocity.xyz);
+      const swirl = vec3(0).toVar();
+
+      If(speed.greaterThan(MIN_SWIRL_SPEED), () =>
+      {
+        swirl.assign(curl_noise(position).mul(speed).mul(u._MouseDisplacementNoiseStrength));
+      });
+
       const acceleration = mouse_displacement.mul(u._MouseDisplacementForce)
         .add(initial_position.sub(position).mul(u._ReturnToOriginForce))
-        .add(curl_noise(position).mul(length(velocity.xyz)).mul(u._MouseDisplacementNoiseStrength));
+        .add(swirl);
 
       velocity.assign(unique_output(vec4(velocity.xyz.add(acceleration.mul(u._DeltaTime)).mul(0.9), 0)));
     })().compute(this.particle_count);

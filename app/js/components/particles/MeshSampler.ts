@@ -1,5 +1,5 @@
-import type { BufferGeometry } from 'three';
-import { Triangle, Vector3 } from 'three';
+import { BufferGeometry, EdgesGeometry, Float32BufferAttribute, Triangle, Vector3 } from 'three';
+import { mergeGeometries, mergeVertices } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 
 export interface SampledShape
 {
@@ -114,6 +114,137 @@ class MeshSampler
     return { count, positions, colors };
   }
 
+  // Line segments along the creases (and open borders) of the geometries,
+  // welded first so a border shared by two meshes is only one edge
+  build_edges(geometries: BufferGeometry[], threshold_angle = 30)
+  {
+    const position_only = geometries.map((geometry) =>
+    {
+      const clone = geometry.index ? geometry.toNonIndexed() : geometry.clone();
+
+      for (const name of Object.keys(clone.attributes))
+      {
+        if (name !== 'position')
+        {
+          clone.deleteAttribute(name);
+        }
+      }
+
+      return clone;
+    });
+
+    const welded = mergeVertices(mergeGeometries(position_only));
+    const edges = new EdgesGeometry(welded, threshold_angle);
+
+    position_only.forEach((geometry) => geometry.dispose());
+    welded.dispose();
+
+    return edges;
+  }
+
+  get_length(lines: BufferGeometry)
+  {
+    const position = lines.getAttribute('position');
+    let length = 0;
+
+    for (let i = 0; i < position.count; i += 2)
+    {
+      length += this.tmp_a.fromBufferAttribute(position, i).distanceTo(this.tmp_b.fromBufferAttribute(position, i + 1));
+    }
+
+    return length;
+  }
+
+  // Points spread uniformly along line segments, in white
+  sample_lines(lines: BufferGeometry, count: number): SampledShape
+  {
+    const position = lines.getAttribute('position');
+    const cumulative_lengths: number[] = [];
+    let total_length = 0;
+
+    for (let i = 0; i < position.count; i += 2)
+    {
+      total_length += this.tmp_a.fromBufferAttribute(position, i).distanceTo(this.tmp_b.fromBufferAttribute(position, i + 1));
+      cumulative_lengths.push(total_length);
+    }
+
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3).fill(1);
+
+    for (let i = 0; i < count; i++)
+    {
+      const segment = this.find_face(cumulative_lengths, Math.random() * total_length);
+
+      this.tmp_a.fromBufferAttribute(position, segment * 2);
+      this.tmp_b.fromBufferAttribute(position, segment * 2 + 1);
+      this.tmp_a.lerp(this.tmp_b, Math.random()).toArray(positions, i * 3);
+    }
+
+    return { count, positions, colors };
+  }
+
+  // Splits line segments into pieces no longer than max_length and keeps the
+  // pieces whose midpoint the predicate returns true for
+  filter_lines(lines: BufferGeometry, keep: (point: Vector3) => boolean, max_length: number)
+  {
+    const position = lines.getAttribute('position');
+    const kept: number[] = [];
+    const from = new Vector3();
+    const to = new Vector3();
+    const midpoint = new Vector3();
+
+    for (let i = 0; i < position.count; i += 2)
+    {
+      this.tmp_a.fromBufferAttribute(position, i);
+      this.tmp_b.fromBufferAttribute(position, i + 1);
+
+      const pieces = Math.max(1, Math.ceil(this.tmp_a.distanceTo(this.tmp_b) / max_length));
+
+      for (let p = 0; p < pieces; p++)
+      {
+        from.lerpVectors(this.tmp_a, this.tmp_b, p / pieces);
+        to.lerpVectors(this.tmp_a, this.tmp_b, (p + 1) / pieces);
+
+        if (keep(midpoint.lerpVectors(from, to, 0.5)))
+        {
+          kept.push(from.x, from.y, from.z, to.x, to.y, to.z);
+        }
+      }
+    }
+
+    return new BufferGeometry().setAttribute('position', new Float32BufferAttribute(kept, 3));
+  }
+
+  // Joins shapes in random order, so any prefix still covers all of them evenly
+  merge(shapes: SampledShape[]): SampledShape
+  {
+    const count = shapes.reduce((total, shape) => total + shape.count, 0);
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+
+    const order = Array.from({ length: count }, (_, i) => i);
+
+    for (let i = count - 1; i > 0; i--)
+    {
+      const j = Math.floor(Math.random() * (i + 1));
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+
+    let source = 0;
+
+    for (const shape of shapes)
+    {
+      for (let i = 0; i < shape.count; i++, source++)
+      {
+        positions.set(shape.positions.subarray(i * 3, i * 3 + 3), order[source] * 3);
+        colors.set(shape.colors.subarray(i * 3, i * 3 + 3), order[source] * 3);
+      }
+    }
+
+    return { count, positions, colors };
+  }
+
+  // Index of the first cumulative value that reaches the given one
   find_face(cumulative_areas: number[], value: number)
   {
     let low = 0;

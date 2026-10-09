@@ -56,7 +56,8 @@ class Api
       logarithmicDepthBuffer: true,
       antialias: true,
       preserveDrawingBuffer: true,
-      forceWebGL: false,
+      // ?webgl in the URL forces the WebGL 2 fallback, to test it on browsers with WebGPU
+      forceWebGL: new URLSearchParams(window.location.search).has('webgl'),
       // Half float canvas with extended tone mapping: HDR output on WebGPU, ignored on WebGL
       outputType: Settings.hdr ? HalfFloatType : undefined
     };

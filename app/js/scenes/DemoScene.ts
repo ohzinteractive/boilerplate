@@ -12,8 +12,8 @@ import { demo_sounds } from '../../data/assets/demo/demo_sounds';
 import { demo_textures } from '../../data/assets/demo/demo_textures';
 
 import { CameraController, CameraManager, Debug, Graphics, Grid, OS, OScreen, PerspectiveCamera, ResourceContainer, Time } from 'ohzi-core';
-import type { BufferGeometry, Mesh, Object3D } from 'three';
-import { Box3, Color, HalfFloatType, MathUtils, Quaternion, UnsignedByteType, Vector2, Vector3 } from 'three';
+import type { BufferGeometry, Object3D, Quaternion } from 'three';
+import { Box3, Color, HalfFloatType, MathUtils, Mesh, Raycaster, UnsignedByteType, Vector2, Vector3 } from 'three';
 import { RenderTarget } from 'three/webgpu';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { FontsCompilator } from '../compilators/FontsCompilator';
@@ -28,6 +28,11 @@ const TEXT = 'boilerplate';
 const TEXT_SIZE = 1.4;
 const TEXT_DEPTH = 0.3;
 
+// The text gets its outline from its side walls, seen edge on. The logo gets the
+// same outline from particles along its edges, as many per unit of length as a
+// wall this deep would put there.
+const LOGO_STROKE_DEPTH = TEXT_DEPTH;
+
 // Same particle count as the lab logo. The text gets the same density,
 // so its count follows from its surface area.
 const LOGO_PARTICLE_COUNT = 50000;
@@ -35,6 +40,9 @@ const MAX_TEXT_PARTICLE_COUNT = 150000;
 
 // Isometric view of the logo, as in the lab
 const CAMERA_FOV = 20;
+// Perspective depends on the distance only, so it is the same on every
+// screen and the fov frames the content. Far enough to look nearly flat.
+const CAMERA_DISTANCE = 36;
 const CAMERA_TILT = 45;
 const CAMERA_ORIENTATION = 45;
 
@@ -134,6 +142,12 @@ export class DemoScene extends CommonScene
   // path, so it should output gamma encoded colors too.
   render()
   {
+    // Enter transitions set the camera fov too; the layout wins
+    if (this.logo_particles)
+    {
+      this.update_layout();
+    }
+
     if (!this.gamma_RT)
     {
       this.gamma_RT = this.create_gamma_RT();
@@ -205,7 +219,18 @@ export class DemoScene extends CommonScene
     const text_area = MeshSampler.get_area([text_geometry], is_not_back_face);
     const text_count = Math.min(Math.round(logo_count * text_area / logo_area), MAX_TEXT_PARTICLE_COUNT);
 
-    this.logo_particles = new ParticleMesh(MeshSampler.sample(logo_geometries, logo_count));
+    // Only the edges the camera sees get a stroke, like the text outline
+    const logo_edges = MeshSampler.build_edges(logo_geometries);
+    const visible_edges = MeshSampler.filter_lines(logo_edges, this.build_visibility_test(logo_geometries), 0.05);
+    const stroke_count = Math.round(logo_count / logo_area * LOGO_STROKE_DEPTH * MeshSampler.get_length(visible_edges));
+
+    this.logo_particles = new ParticleMesh(MeshSampler.merge([
+      MeshSampler.sample(logo_geometries, logo_count),
+      MeshSampler.sample_lines(visible_edges, stroke_count)
+    ]));
+
+    logo_edges.dispose();
+    visible_edges.dispose();
     this.text_particles = new ParticleMesh(MeshSampler.sample([text_geometry], text_count, is_not_back_face));
 
     this.logo_bounds = this.logo_particles.shape_bounds;
@@ -215,6 +240,25 @@ export class DemoScene extends CommonScene
 
     this.add(this.logo_particles);
     this.add(this.text_particles);
+  }
+
+  // Whether a point on the logo is in sight from the camera's rest direction
+  build_visibility_test(geometries: BufferGeometry[])
+  {
+    const meshes = geometries.map((geometry) => new Mesh(geometry));
+    const to_camera = new Vector3(0, 0, 1).applyQuaternion(this.rest_rotation);
+    const raycaster = new Raycaster();
+    const origin = new Vector3();
+
+    // Starting a bit off the surface skips the faces the edge belongs to
+    const offset = 0.01;
+
+    return (point: Vector3) =>
+    {
+      raycaster.set(origin.copy(point).addScaledVector(to_camera, offset), to_camera);
+
+      return raycaster.intersectObjects(meshes, false).length === 0;
+    };
   }
 
   build_text_geometry(): BufferGeometry
@@ -274,19 +318,34 @@ export class DemoScene extends CommonScene
 
     const center = content_rect.getCenter(new Vector3());
     const size = content_rect.getSize(new Vector3()).multiplyScalar(LAYOUT_MARGIN / 2);
+    const logo_center = logo_rect.getCenter(new Vector3());
 
-    const tan_half_fov = Math.tan(MathUtils.degToRad(this.camera.fov / 2));
+    const zoom = CAMERA_DISTANCE;
+    const tan_half_fov = Math.max(size.y / zoom, size.x / (zoom * this.camera.aspect));
 
-    this.camera_controller.reference_position.copy(right).multiplyScalar(center.x).addScaledVector(up, center.y);
-    this.camera_controller.reference_zoom = Math.max(size.x / (tan_half_fov * this.camera.aspect), size.y / tan_half_fov);
+    this.camera.fov = MathUtils.radToDeg(2 * Math.atan(tan_half_fov));
 
-    // Seen off center, perspective shows each shape from an angle (the logo
-    // looked tilted on desktop). Turn each one towards the camera so it looks
-    // the same as it would in the middle of the screen.
+    // Off center, perspective shows a shape from an angle, so the camera aims
+    // at the logo and its lens shifts to frame the whole content instead. A
+    // shifted frustum is a crop of a centered one: the logo looks exactly as
+    // it would in the middle of the screen.
+    this.camera_controller.reference_position.copy(right).multiplyScalar(logo_center.x).addScaledVector(up, logo_center.y);
+    this.camera_controller.reference_zoom = zoom;
+
+    const half_height = zoom * tan_half_fov;
+    const half_width = half_height * this.camera.aspect;
+
+    this.camera.setViewOffset(
+      OScreen.width, OScreen.height,
+      (center.x - logo_center.x) / (2 * half_width) * OScreen.width,
+      -(center.y - logo_center.y) / (2 * half_height) * OScreen.height,
+      OScreen.width, OScreen.height
+    );
+
+    // The text is still off center, so it turns to face the camera
     const forward = new Vector3(0, 0, -1).applyQuaternion(this.rest_rotation);
-    const camera_position = this.camera_controller.reference_position.clone().addScaledVector(forward, -this.camera_controller.reference_zoom);
+    const camera_position = this.camera_controller.reference_position.clone().addScaledVector(forward, -zoom);
 
-    this.face_camera(this.logo_particles, this.logo_bounds, new Vector3(), new Quaternion(), 1, camera_position, forward);
     this.face_camera(this.text_particles, this.text_bounds, text_origin, this.rest_rotation, text_scale, camera_position, forward);
   }
 

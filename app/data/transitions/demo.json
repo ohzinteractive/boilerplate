@@ -7,22 +7,6 @@
       "to_value": 1,
       "easing_function": "ease_in_out_cubic",
       "attribute_name": "demo_opacity"
-    },
-    {
-      "type": "segment",
-      "from_time": 0,
-      "to_time": 1,
-      "to_value": 20,
-      "easing_function": "ease_in_out_cubic",
-      "attribute_name": "camera_fov"
-    },
-    {
-      "type": "segment",
-      "from_time": 0,
-      "to_time": 1,
-      "to_value": 20,
-      "easing_function": "ease_in_out_cubic",
-      "attribute_name": "camera_fov_mobile"
     }
   ],
   "triggers": []
