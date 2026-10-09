@@ -115,8 +115,8 @@ export class DemoScene extends CommonScene
       return;
     }
 
-    this.update_layout();
     this.update_camera_rotation();
+    this.update_layout();
 
     this.camera_controller.update();
     this.camera.updateMatrixWorld();
@@ -302,7 +302,7 @@ export class DemoScene extends CommonScene
     // Scaling the text down packs its particles tighter; draw a subset to keep the logo's density.
     // Particles are sampled in random order, so any prefix is spread evenly over the shape.
     this.text_particles.count = Math.round(this.text_particles.particle_count * Math.min(1, text_scale * text_scale));
-    const text_origin = right.clone().multiplyScalar(text_offset.x).addScaledVector(up, text_offset.y);
+    let text_origin = right.clone().multiplyScalar(text_offset.x).addScaledVector(up, text_offset.y);
 
     const content_rect = logo_rect.clone().union(new Box3(
       new Vector3(text_offset.x + this.text_bounds.min.x * text_scale, text_offset.y + this.text_bounds.min.y * text_scale, 0),
@@ -318,11 +318,23 @@ export class DemoScene extends CommonScene
 
     this.camera.fov = MathUtils.radToDeg(2 * Math.atan(tan_half_fov));
 
+    // The content is centered on the origin, the middle of the screen
+    const content_offset = right.clone().multiplyScalar(-center.x).addScaledVector(up, -center.y);
+
+    this.logo_particles.position.copy(content_offset);
+    text_origin = text_origin.add(content_offset);
+
     // Off center, perspective shows a shape from an angle, so the camera aims
     // at the logo and its lens shifts to frame the whole content instead. A
     // shifted frustum is a crop of a centered one: the logo looks exactly as
     // it would in the middle of the screen.
-    this.camera_controller.reference_position.copy(right).multiplyScalar(logo_center.x).addScaledVector(up, logo_center.y);
+    const logo_target = right.clone().multiplyScalar(logo_center.x).addScaledVector(up, logo_center.y).add(content_offset);
+
+    // The pointer tilts the camera around the origin, not around the logo:
+    // the aim point turns with the camera
+    const tilt = this.camera_controller.reference_rotation.clone().multiply(this.rest_rotation.clone().invert());
+
+    this.camera_controller.reference_position.copy(logo_target).applyQuaternion(tilt);
     this.camera_controller.reference_zoom = zoom;
 
     const half_height = zoom * tan_half_fov;
@@ -337,7 +349,7 @@ export class DemoScene extends CommonScene
 
     // The text is still off center, so it turns to face the camera
     const forward = new Vector3(0, 0, -1).applyQuaternion(this.rest_rotation);
-    const camera_position = this.camera_controller.reference_position.clone().addScaledVector(forward, -zoom);
+    const camera_position = logo_target.clone().addScaledVector(forward, -zoom);
 
     this.face_camera(this.text_particles, this.text_bounds, text_origin, this.rest_rotation, text_scale, camera_position, forward);
   }
