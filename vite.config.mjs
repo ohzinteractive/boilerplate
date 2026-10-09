@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import { defineConfig } from 'vite';
-import glsl from 'vite-plugin-glsl';
 import vitePugPlugin from 'vite-plugin-pug-transformer';
 import sections_meta from './app/data/sections_meta.json';
 import packagejson from './package.json';
@@ -12,7 +11,6 @@ const normalizePath = (id) => id.split(path.sep).join('/');
 
 export default defineConfig({
   plugins: [
-    glsl(),
     vitePugPlugin({ pugLocals: {
           sections_meta,
           package: packagejson

@@ -77,7 +77,7 @@ HTML is authored in **Pug** (`.pug` files) and compiled by Vite. View templates 
 
 ### Shaders
 
-GLSL shaders are supported via `vite-plugin-glsl`. Import `.glsl` files directly. Three.js is configured WebGPU-first with WebGL fallback. TSL (Three.js Shading Language) is available.
+Shaders are written in TSL (Three.js Shading Language); there is no GLSL in the app, core, components or pit. Three.js is configured WebGPU-first with WebGL fallback.
 
 ### Build Output
 

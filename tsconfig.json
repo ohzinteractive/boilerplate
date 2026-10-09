@@ -22,7 +22,7 @@
     "outDir": "types",
     "noImplicitAny": true,
     "module": "esnext",
-    "types": ["three", "@webgpu/types"],
+    "types": ["three"],
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "esModuleInterop": true,
