@@ -4,7 +4,7 @@ import { Box3, CircleGeometry, MathUtils, Matrix4, Mesh, Quaternion, Ray, Vector
 import { clamp, dot, float, Fn, instancedArray, instanceIndex, length, max, saturate, uniform, vec4 } from 'three/tsl';
 import type { ComputeNode, Node, StorageBufferNode } from 'three/webgpu';
 
-import { curl_noise } from '../../materials/particles/curl_noise.tsl';
+import { curl_noise, snoise_vec3 } from '../../materials/particles/curl_noise.tsl';
 import { ParticleMeshMaterial } from '../../materials/particles/ParticleMeshMaterial';
 import type { ParticleForces } from '../../Settings';
 import { Settings } from '../../Settings';
@@ -18,6 +18,13 @@ const MAX_STEPS_PER_FRAME = 4;
 
 // Pointer moves longer than this (in NDC) are treated as jumps, not swipes
 const MAX_POINTER_JUMP = 0.4;
+
+export interface ParticleLook
+{
+  use_blur: boolean;
+  size_scale: number; // multiplies Settings.particles.size
+  hdr_boost: number;  // brightness of displaced particles, above 1 only on HDR output
+}
 
 interface PointerState
 {
@@ -49,12 +56,14 @@ export class ParticleMesh extends Mesh
   shape_bounds: Box3;
 
   positions: StorageBufferNode<'vec4'>;
+  render_positions: StorageBufferNode<'vec4'>;
   velocities: StorageBufferNode<'vec4'>;
   initial_positions: StorageBufferNode<'vec4'>;
   colors: StorageBufferNode<'vec4'>;
 
   compute_velocity: ComputeNode;
   compute_position: ComputeNode;
+  compute_render_position: ComputeNode;
 
   simulation_uniforms: {
     _DeltaTime: Node<'float'> & { value: number };
@@ -66,6 +75,8 @@ export class ParticleMesh extends Mesh
     _MouseDisplacementForce: Node<'float'> & { value: number };
     _MouseDisplacementNoiseStrength: Node<'float'> & { value: number };
     _ReturnToOriginForce: Node<'float'> & { value: number };
+    _ElapsedTime: Node<'float'> & { value: number };
+    _ConstantNoiseStrength: Node<'float'> & { value: number };
   };
 
   step_accumulator: number;
@@ -93,17 +104,20 @@ export class ParticleMesh extends Mesh
 
     // xyz: position, w: hue phase
     const positions = instancedArray(position_arr.slice(), 'vec4');
+    // xyz: drawn position (with the constant wobble), w: distance from the rest position
+    const render_positions = instancedArray(count, 'vec4');
     const initial_positions = instancedArray(position_arr, 'vec4');
     const velocities = instancedArray(count, 'vec4');
     const colors = instancedArray(color_arr, 'vec4');
 
-    super(new CircleGeometry(1, 8), new ParticleMeshMaterial(positions, initial_positions, colors));
+    super(new CircleGeometry(1, 8), new ParticleMeshMaterial(render_positions, positions, colors));
 
     this.particle_count = count;
     this.count = count;
     this.frustumCulled = false;
 
     this.positions = positions;
+    this.render_positions = render_positions;
     this.velocities = velocities;
     this.initial_positions = initial_positions;
     this.colors = colors;
@@ -129,11 +143,14 @@ export class ParticleMesh extends Mesh
       _ModelViewProjection: uniform(new Matrix4()),
       _MouseDisplacementForce: uniform(0),
       _MouseDisplacementNoiseStrength: uniform(0),
-      _ReturnToOriginForce: uniform(0)
+      _ReturnToOriginForce: uniform(0),
+      _ElapsedTime: uniform(0),
+      _ConstantNoiseStrength: uniform(0)
     };
 
     this.compute_velocity = this.build_velocity_compute();
     this.compute_position = this.build_position_compute();
+    this.compute_render_position = this.build_render_position_compute();
   }
 
   // three's WebGL backend caches compute programs by their GLSL and keeps the
@@ -191,13 +208,31 @@ export class ParticleMesh extends Mesh
     })().compute(this.particle_count);
   }
 
-  update(camera: Camera, pointer: PointerState, forces: ParticleForces, use_blur: boolean)
+  // Per frame, not per simulation step: the wobble follows the elapsed time.
+  // Evaluated once per particle here instead of once per vertex when drawing.
+  build_render_position_compute()
+  {
+    const u = this.simulation_uniforms;
+    const unique_output = this.build_unique_output();
+
+    return Fn(() =>
+    {
+      const position = this.positions.element(instanceIndex).xyz;
+      const initial_position = this.initial_positions.element(instanceIndex).xyz;
+
+      const constant_noise = snoise_vec3(position.mul(1.35).add(u._ElapsedTime.mul(0.25))).mul(u._ConstantNoiseStrength);
+
+      this.render_positions.element(instanceIndex).assign(unique_output(vec4(position.add(constant_noise), length(position.sub(initial_position)))));
+    })().compute(this.particle_count);
+  }
+
+  update(camera: Camera, pointer: PointerState, forces: ParticleForces, look: ParticleLook)
   {
     this.updateWorldMatrix(true, false);
 
     this.update_simulation_uniforms(camera, forces);
     this.update_mouse_over(camera, pointer);
-    this.update_material(use_blur);
+    this.update_material(look);
 
     this.step_accumulator = Math.min(this.step_accumulator + Time.delta_time, SIMULATION_STEP * MAX_STEPS_PER_FRAME);
 
@@ -210,6 +245,11 @@ export class ParticleMesh extends Mesh
       void Graphics._renderer.compute(this.compute_velocity);
       void Graphics._renderer.compute(this.compute_position);
     }
+
+    this.simulation_uniforms._ElapsedTime.value = Time.elapsed_time;
+    this.simulation_uniforms._ConstantNoiseStrength.value = Settings.particles.constant_noise_strength;
+
+    void Graphics._renderer.compute(this.compute_render_position);
   }
 
   update_pointer(pointer: PointerState)
@@ -280,19 +320,18 @@ export class ParticleMesh extends Mesh
     this.mouse_over_strength_decay_delay = OMath.saturate(this.mouse_over_strength_decay_delay + value * 10);
   }
 
-  update_material(use_blur: boolean)
+  update_material(look: ParticleLook)
   {
     const u = this.material.uniforms;
     const settings = Settings.particles;
 
-    u._Size.value = settings.size;
+    u._Size.value = settings.size * look.size_scale;
     u._BlurSize.value = settings.blur_size;
     u._BlurDistance.value = settings.blur_distance;
     u._BlurOpacity.value = settings.blur_opacity;
     u._BlurExponent.value = settings.blur_exponent;
-    u._UseBlur.value = use_blur ? 1 : 0;
-    u._ElapsedTime.value = Time.elapsed_time;
-    u._ConstantNoiseStrength.value = settings.constant_noise_strength;
+    u._UseBlur.value = look.use_blur ? 1 : 0;
+    u._HDRBoost.value = look.hdr_boost;
     u._BaseBrightness.value = settings.base_brightness;
 
     u._OpacityRange.value.set(
@@ -307,5 +346,6 @@ export class ParticleMesh extends Mesh
     this.material.dispose();
     this.compute_velocity.dispose();
     this.compute_position.dispose();
+    this.compute_render_position.dispose();
   }
 }

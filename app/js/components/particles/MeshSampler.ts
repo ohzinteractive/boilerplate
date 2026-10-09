@@ -8,6 +8,9 @@ export interface SampledShape
   colors: Float32Array;    // count * 3, white when the geometry has no color attribute
 }
 
+// Keeps the faces it returns true for, given the face normal
+export type FaceFilter = (normal: Vector3) => boolean;
+
 // Samples points uniformly over the surface of one or more geometries.
 // Faces are picked with probability proportional to their area (cumulative
 // distribution + binary search), so tiny and huge triangles can coexist.
@@ -17,6 +20,7 @@ class MeshSampler
   tmp_b: Vector3;
   tmp_c: Vector3;
   tmp_triangle: Triangle;
+  tmp_normal: Vector3;
 
   constructor()
   {
@@ -24,9 +28,10 @@ class MeshSampler
     this.tmp_b = new Vector3();
     this.tmp_c = new Vector3();
     this.tmp_triangle = new Triangle(this.tmp_a, this.tmp_b, this.tmp_c);
+    this.tmp_normal = new Vector3();
   }
 
-  get_area(geometries: BufferGeometry[])
+  get_area(geometries: BufferGeometry[], face_filter?: FaceFilter)
   {
     let area = 0;
 
@@ -37,14 +42,17 @@ class MeshSampler
 
       for (let f = 0; f < face_count; f++)
       {
-        area += this.get_face_area(geometry, f);
+        if (this.accepts_face(geometry, f, face_filter))
+        {
+          area += this.get_face_area(geometry, f);
+        }
       }
     }
 
     return area;
   }
 
-  sample(geometries: BufferGeometry[], count: number): SampledShape
+  sample(geometries: BufferGeometry[], count: number, face_filter?: FaceFilter): SampledShape
   {
     const faces: { geometry: BufferGeometry; face: number }[] = [];
     const cumulative_areas: number[] = [];
@@ -57,6 +65,11 @@ class MeshSampler
 
       for (let f = 0; f < face_count; f++)
       {
+        if (!this.accepts_face(geometry, f, face_filter))
+        {
+          continue;
+        }
+
         total_area += this.get_face_area(geometry, f);
 
         faces.push({ geometry, face: f });
@@ -149,7 +162,26 @@ class MeshSampler
     return [face * 3 + 0, face * 3 + 1, face * 3 + 2];
   }
 
+  accepts_face(geometry: BufferGeometry, face: number, face_filter?: FaceFilter)
+  {
+    if (!face_filter)
+    {
+      return true;
+    }
+
+    this.set_triangle(geometry, face);
+
+    return face_filter(this.tmp_triangle.getNormal(this.tmp_normal));
+  }
+
   get_face_area(geometry: BufferGeometry, face: number)
+  {
+    this.set_triangle(geometry, face);
+
+    return this.tmp_triangle.getArea();
+  }
+
+  set_triangle(geometry: BufferGeometry, face: number)
   {
     const position = geometry.getAttribute('position');
     const [i0, i1, i2] = this.get_face_indices(geometry, face);
@@ -157,8 +189,6 @@ class MeshSampler
     this.tmp_a.fromBufferAttribute(position, i0);
     this.tmp_b.fromBufferAttribute(position, i1);
     this.tmp_c.fromBufferAttribute(position, i2);
-
-    return this.tmp_triangle.getArea();
   }
 }
 

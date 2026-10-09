@@ -3,8 +3,6 @@ import { abs, cameraProjectionMatrix, clamp, exp, float, fract, instanceIndex, l
 import type { Node, StorageBufferNode } from 'three/webgpu';
 import { NodeMaterial } from 'three/webgpu';
 
-import { snoise_vec3 } from './curl_noise.tsl';
-
 // Standard HSV to RGB, branchless.
 const hsv_to_rgb = (h: Node<'float'>, s: Node<'float'>, v: Node<'float'>) =>
 {
@@ -15,8 +13,8 @@ const hsv_to_rgb = (h: Node<'float'>, s: Node<'float'>, v: Node<'float'>) =>
 
 const gaussian = (x: Node<'float'>, sigma: Node<'float'>) => exp(x.mul(x).negate().div(sigma.mul(sigma).mul(2)));
 
-// Draws each particle as a camera facing disc whose position comes from the
-// simulation storage buffers. Particles displaced from their rest position
+// Draws each particle as a camera facing disc at the position ParticleMesh
+// prepares every frame (render_positions: xyz position, w distance from rest). Particles displaced from their rest position
 // grow, blur and turn colorful; at rest they show the shape color.
 //
 // The output is gamma encoded and premultiplied (One/One blending), exactly
@@ -32,13 +30,12 @@ export class ParticleMeshMaterial extends NodeMaterial
     _BlurOpacity: Node<'float'> & { value: number };
     _BlurExponent: Node<'float'> & { value: number };
     _UseBlur: Node<'float'> & { value: number };
-    _ElapsedTime: Node<'float'> & { value: number };
-    _ConstantNoiseStrength: Node<'float'> & { value: number };
+    _HDRBoost: Node<'float'> & { value: number };
     _BaseBrightness: Node<'float'> & { value: number };
     _OpacityRange: Node<'vec2'> & { value: Vector2 };
   };
 
-  constructor(positions: StorageBufferNode<'vec4'>, initial_positions: StorageBufferNode<'vec4'>, colors: StorageBufferNode<'vec4'>)
+  constructor(render_positions: StorageBufferNode<'vec4'>, positions: StorageBufferNode<'vec4'>, colors: StorageBufferNode<'vec4'>)
   {
     super();
 
@@ -57,28 +54,24 @@ export class ParticleMeshMaterial extends NodeMaterial
       _BlurOpacity: uniform(1),
       _BlurExponent: uniform(1),
       _UseBlur: uniform(1),
-      _ElapsedTime: uniform(0),
-      _ConstantNoiseStrength: uniform(0),
+      _HDRBoost: uniform(1),
       _BaseBrightness: uniform(1),
       _OpacityRange: uniform(new Vector2(0, 1))
     };
 
-    const particle = positions.element(instanceIndex);
-    const position = particle.xyz;
-    const initial_position = initial_positions.element(instanceIndex).xyz;
+    const render_position = render_positions.element(instanceIndex);
+    const distance_from_start = render_position.w;
 
-    // Vertex: constant curl wobble, then a view space billboard
-    const constant_noise = snoise_vec3(position.mul(1.35).add(u._ElapsedTime.mul(0.25))).mul(u._ConstantNoiseStrength);
-    const view_position = modelViewMatrix.mul(vec4(position.add(constant_noise), 1));
+    // Vertex: view space billboard
+    const view_position = modelViewMatrix.mul(vec4(render_position.xyz, 1));
 
-    const distance_from_start = length(position.sub(initial_position));
     const blur = pow(saturate(distance_from_start.mul(u._BlurDistance)), u._BlurExponent).mul(u._UseBlur);
     const size = u._Size.mul(mix(1, u._BlurSize, blur));
 
     this.vertexNode = cameraProjectionMatrix.mul(vec4(view_position.xy.add(positionGeometry.xy.mul(size)), view_position.zw));
 
     // Fragment
-    const v_hue = varying(particle.w, 'v_hue');
+    const v_hue = varying(positions.element(instanceIndex).w, 'v_hue');
     const v_distance = varying(distance_from_start, 'v_distance');
     const v_blur_opacity = varying(mix(1, u._BlurOpacity, blur), 'v_blur_opacity');
     const v_color = varying(colors.element(instanceIndex).xyz, 'v_color');
@@ -103,6 +96,9 @@ export class ParticleMeshMaterial extends NodeMaterial
 
     const opacity = mix(u._OpacityRange.x, u._OpacityRange.y, velocity).mul(disc).mul(v_blur_opacity);
 
-    this.fragmentNode = vec4(pow(rgb.mul(opacity), vec3(1 / 2.2)).mul(opacity), opacity);
+    // On HDR output, displaced particles can go brighter than SDR white
+    const hdr_gain = mix(1, u._HDRBoost, velocity);
+
+    this.fragmentNode = vec4(pow(rgb.mul(opacity), vec3(1 / 2.2)).mul(opacity).mul(hdr_gain), opacity);
   }
 }

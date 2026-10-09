@@ -12,12 +12,13 @@ import { demo_sounds } from '../../data/assets/demo/demo_sounds';
 import { demo_textures } from '../../data/assets/demo/demo_textures';
 
 import { CameraController, CameraManager, Debug, Graphics, Grid, OS, OScreen, PerspectiveCamera, ResourceContainer, Time } from 'ohzi-core';
-import type { BufferGeometry, Mesh, Quaternion } from 'three';
-import { Box3, Color, MathUtils, Vector2, Vector3 } from 'three';
+import type { BufferGeometry, Mesh, Object3D } from 'three';
+import { Box3, Color, HalfFloatType, MathUtils, Quaternion, UnsignedByteType, Vector2, Vector3 } from 'three';
 import { RenderTarget } from 'three/webgpu';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { FontsCompilator } from '../compilators/FontsCompilator';
 import { MeshSampler } from '../components/particles/MeshSampler';
+import type { ParticleLook } from '../components/particles/ParticleMesh';
 import { ParticleMesh } from '../components/particles/ParticleMesh';
 import { Input } from '../components/Input';
 import { AsyncFontLoader } from '../loaders/AsyncFontLoader';
@@ -48,6 +49,8 @@ export class DemoScene extends CommonScene
 {
   camera: PerspectiveCamera;
   camera_controller: CameraController;
+
+  particle_look: ParticleLook;
 
   logo_particles: ParticleMesh;
   text_particles: ParticleMesh;
@@ -86,8 +89,6 @@ export class DemoScene extends CommonScene
     this.hold_travel = 0;
     this.holding = false;
 
-    // 8 bit like the lab canvas, so the additive sum clamps the same way
-    this.gamma_RT = new RenderTarget(1, 1, { samples: 4 });
     this.srgb_decode_material = new SRGBDecodeBlitMaterial();
 
     this.init_camera();
@@ -120,19 +121,24 @@ export class DemoScene extends CommonScene
     this.update_hold();
 
     const forces = this.is_turbo() ? Settings.particles_turbo : Settings.particles_normal;
-    const use_blur = !OScreen.portrait;
+    this.particle_look.use_blur = !OScreen.portrait;
 
-    this.logo_particles.update(this.camera, Input, forces, use_blur);
-    this.text_particles.update(this.camera, Input, forces, use_blur);
+    this.logo_particles.update(this.camera, Input, forces, this.particle_look);
+    this.text_particles.update(this.camera, Input, forces, this.particle_look);
   }
 
   // The lab drew its particles additively on a gamma encoded WebGL canvas.
   // WebGPURenderer blends in linear space, which dims overlapping particles,
-  // so the scene adds them up in an 8 bit target first and gets decoded on
-  // the way to the screen. Anything else added to this scene goes through the
-  // same path, so it should output gamma encoded colors too.
+  // so the scene adds them up in a target first and gets decoded on the way
+  // to the screen. Anything else added to this scene goes through the same
+  // path, so it should output gamma encoded colors too.
   render()
   {
+    if (!this.gamma_RT)
+    {
+      this.gamma_RT = this.create_gamma_RT();
+    }
+
     if (this.gamma_RT.width !== OScreen.render_width || this.gamma_RT.height !== OScreen.render_height)
     {
       this.gamma_RT.setSize(OScreen.render_width, OScreen.render_height);
@@ -141,6 +147,24 @@ export class DemoScene extends CommonScene
     Graphics.clear(this.gamma_RT, this.camera, true, true);
     Graphics.render(this, this.camera, this.gamma_RT);
     Graphics.blit(this.gamma_RT, undefined, this.srgb_decode_material);
+  }
+
+  // 8 bit like the lab canvas, so the additive sum clamps the same way. Half
+  // float on HDR output, so it can go past 1. No MSAA on WebGL, where the
+  // extra multisampled clears and resolves cost more than the particles.
+  create_gamma_RT()
+  {
+    const is_webgpu = this.is_webgpu();
+
+    return new RenderTarget(1, 1, {
+      samples: is_webgpu ? 4 : 0,
+      type: is_webgpu && Settings.hdr ? HalfFloatType : UnsignedByteType
+    });
+  }
+
+  is_webgpu()
+  {
+    return (Graphics._renderer.backend as { isWebGPUBackend?: boolean }).isWebGPUBackend === true;
   }
 
   on_assets_ready()
@@ -159,25 +183,35 @@ export class DemoScene extends CommonScene
 
   build_particles()
   {
+    // The WebGL fallback draws fewer, bigger particles
+    const density = this.is_webgpu() ? 1 : Settings.particles.webgl_density;
+
+    this.particle_look = {
+      use_blur: true,
+      size_scale: 1 / Math.sqrt(density),
+      hdr_boost: this.is_webgpu() && Settings.hdr ? Settings.particles.hdr_boost : 1
+    };
+
     const logo = ResourceContainer.get('ohzi_cube').scene;
     const logo_geometries = ['white', 'black'].map((name) => (logo.getObjectByName(name) as Mesh).geometry);
 
+    // The text is only seen from the front, so its back faces are left out. Through
+    // the gaps of the front letters they showed up as stray lines (the bars of e and t).
     const text_geometry = this.build_text_geometry();
+    const is_not_back_face = (normal: Vector3) => normal.z > -0.5;
 
+    const logo_count = Math.round(LOGO_PARTICLE_COUNT * density);
     const logo_area = MeshSampler.get_area(logo_geometries);
-    const text_area = MeshSampler.get_area([text_geometry]);
-    const text_count = Math.min(Math.round(LOGO_PARTICLE_COUNT * text_area / logo_area), MAX_TEXT_PARTICLE_COUNT);
+    const text_area = MeshSampler.get_area([text_geometry], is_not_back_face);
+    const text_count = Math.min(Math.round(logo_count * text_area / logo_area), MAX_TEXT_PARTICLE_COUNT);
 
-    this.logo_particles = new ParticleMesh(MeshSampler.sample(logo_geometries, LOGO_PARTICLE_COUNT));
-    this.text_particles = new ParticleMesh(MeshSampler.sample([text_geometry], text_count));
+    this.logo_particles = new ParticleMesh(MeshSampler.sample(logo_geometries, logo_count));
+    this.text_particles = new ParticleMesh(MeshSampler.sample([text_geometry], text_count, is_not_back_face));
 
     this.logo_bounds = this.logo_particles.shape_bounds;
     this.text_bounds = this.text_particles.shape_bounds;
 
     text_geometry.dispose();
-
-    // The text faces the camera at rest
-    this.text_particles.quaternion.copy(this.rest_rotation);
 
     this.add(this.logo_particles);
     this.add(this.text_particles);
@@ -231,7 +265,7 @@ export class DemoScene extends CommonScene
     // Scaling the text down packs its particles tighter; draw a subset to keep the logo's density.
     // Particles are sampled in random order, so any prefix is spread evenly over the shape.
     this.text_particles.count = Math.round(this.text_particles.particle_count * Math.min(1, text_scale * text_scale));
-    this.text_particles.position.copy(right).multiplyScalar(text_offset.x).addScaledVector(up, text_offset.y);
+    const text_origin = right.clone().multiplyScalar(text_offset.x).addScaledVector(up, text_offset.y);
 
     const content_rect = logo_rect.clone().union(new Box3(
       new Vector3(text_offset.x + this.text_bounds.min.x * text_scale, text_offset.y + this.text_bounds.min.y * text_scale, 0),
@@ -245,6 +279,27 @@ export class DemoScene extends CommonScene
 
     this.camera_controller.reference_position.copy(right).multiplyScalar(center.x).addScaledVector(up, center.y);
     this.camera_controller.reference_zoom = Math.max(size.x / (tan_half_fov * this.camera.aspect), size.y / tan_half_fov);
+
+    // Seen off center, perspective shows each shape from an angle (the logo
+    // looked tilted on desktop). Turn each one towards the camera so it looks
+    // the same as it would in the middle of the screen.
+    const forward = new Vector3(0, 0, -1).applyQuaternion(this.rest_rotation);
+    const camera_position = this.camera_controller.reference_position.clone().addScaledVector(forward, -this.camera_controller.reference_zoom);
+
+    this.face_camera(this.logo_particles, this.logo_bounds, new Vector3(), new Quaternion(), 1, camera_position, forward);
+    this.face_camera(this.text_particles, this.text_bounds, text_origin, this.rest_rotation, text_scale, camera_position, forward);
+  }
+
+  // Places a shape so its bounds center sits where it would with the given
+  // origin, rotation and scale, turned so the camera sees it head on.
+  face_camera(object: Object3D, bounds: Box3, origin: Vector3, rotation: Quaternion, scale: number, camera_position: Vector3, forward: Vector3)
+  {
+    const local_center = bounds.getCenter(new Vector3()).multiplyScalar(scale);
+    const center = local_center.clone().applyQuaternion(rotation).add(origin);
+
+    const view_dir = center.clone().sub(camera_position).normalize();
+    object.quaternion.setFromUnitVectors(forward, view_dir).multiply(rotation);
+    object.position.copy(center).sub(local_center.applyQuaternion(object.quaternion));
   }
 
   // Bounds of a box seen along the camera's rest forward axis, as x (right) and y (up)

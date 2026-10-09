@@ -10,6 +10,7 @@ import { Input } from './components/Input';
 // import { BasisInitializer } from './initializers/BasisInitializer';
 // import { DracoInitializer } from './initializers/DracoInitializer';
 import { AudioManager } from 'ohzi-components';
+import { HalfFloatType } from 'three';
 import { WebGPURenderer } from 'three/webgpu';
 import { DebugModeController } from './components/DebugModeController';
 import { GraphicsInitializer } from './initializers/GraphicsInitializer';
@@ -55,7 +56,9 @@ class Api
       logarithmicDepthBuffer: true,
       antialias: true,
       preserveDrawingBuffer: true,
-      forceWebGL: false
+      forceWebGL: false,
+      // Half float canvas with extended tone mapping: HDR output on WebGPU, ignored on WebGL
+      outputType: Settings.hdr ? HalfFloatType : undefined
     };
 
     const renderer = new WebGPURenderer(renderer_attributes);

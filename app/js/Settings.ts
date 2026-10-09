@@ -11,6 +11,7 @@ class Settings
   debug_mode: boolean;
   dev_bridge: { enabled: boolean; port: number };
   dpr: number;
+  hdr: boolean;
   particles: {
     size: number;
     base_brightness: number;
@@ -20,6 +21,8 @@ class Settings
     blur_size: number;
     blur_opacity: number;
     blur_exponent: number;
+    hdr_boost: number;
+    webgl_density: number;
   };
   particles_normal: ParticleForces;
   particles_turbo: ParticleForces;
@@ -28,6 +31,9 @@ class Settings
   {
     this.debug_mode = false;
     this.dpr = 1;
+
+    // Render to an HDR canvas when the display supports it (WebGPU only)
+    this.hdr = window.matchMedia('(dynamic-range: high)').matches;
 
     this.camera = {
       fov: 60
@@ -42,7 +48,11 @@ class Settings
       blur_distance: 0.5,
       blur_size: 3,
       blur_opacity: 1,
-      blur_exponent: 1.6
+      blur_exponent: 1.6,
+      // Brightness of displaced particles on HDR displays (1 = same as SDR)
+      hdr_boost: 3,
+      // Fraction of the particles drawn on the WebGL fallback, which draws them bigger to compensate
+      webgl_density: 0.5
     };
 
     // Forces at rest and while the pointer is held down
