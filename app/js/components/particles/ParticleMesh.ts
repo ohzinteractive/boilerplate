@@ -1,6 +1,6 @@
 import { CameraUtilities, Graphics, OMath, Time } from 'ohzi-core';
 import type { Camera } from 'three';
-import { Box3, CircleGeometry, MathUtils, Matrix4, Mesh, Quaternion, Ray, Vector2, Vector3 } from 'three';
+import { Box3, MathUtils, Matrix4, Mesh, PlaneGeometry, Quaternion, Ray, Vector2, Vector3 } from 'three';
 import { clamp, dot, float, Fn, If, instancedArray, instanceIndex, length, max, saturate, uniform, vec3, vec4 } from 'three/tsl';
 import type { ComputeNode, Node, StorageBufferNode } from 'three/webgpu';
 
@@ -11,10 +11,13 @@ import { Settings } from '../../Settings';
 import type { SampledShape } from './MeshSampler';
 
 // The lab simulation advanced a fixed 0.016 per rendered frame, so its forces
-// and damping are tuned per step. Stepping at a fixed 60 Hz keeps that tuning
-// and makes the motion independent of the display refresh rate.
-const SIMULATION_STEP = 0.016;
-const MAX_STEPS_PER_FRAME = 4;
+// and damping are tuned per step of that length. Each frame runs one step of
+// the elapsed time instead, with the damping scaled to match, so the motion
+// does not depend on the frame rate. Catching up with several fixed steps
+// would make slow devices slower: more steps per frame, longer frames.
+const REFERENCE_STEP = 0.016;
+const REFERENCE_DAMPING = 0.9;
+const MAX_STEP = 0.05;
 
 // Below this speed the swirl would move a particle less than 1e-4 per second
 const MIN_SWIRL_SPEED = 1e-3;
@@ -70,6 +73,7 @@ export class ParticleMesh extends Mesh
 
   simulation_uniforms: {
     _DeltaTime: Node<'float'> & { value: number };
+    _Damping: Node<'float'> & { value: number };
     _MousePos: Node<'vec2'> & { value: Vector2 };
     _PreviousMousePos: Node<'vec2'> & { value: Vector2 };
     _CameraRightDir: Node<'vec3'> & { value: Vector3 };
@@ -82,7 +86,6 @@ export class ParticleMesh extends Mesh
     _ConstantNoiseStrength: Node<'float'> & { value: number };
   };
 
-  step_accumulator: number;
   mouse_over_strength: number;
   mouse_over_strength_decay_delay: number;
 
@@ -113,7 +116,8 @@ export class ParticleMesh extends Mesh
     const velocities = instancedArray(count, 'vec4');
     const colors = instancedArray(color_arr, 'vec4');
 
-    super(new CircleGeometry(1, 8), new ParticleMeshMaterial(render_positions, positions, colors));
+    // A quad: the material cuts a soft disc out of it, with fewer vertices than a circle
+    super(new PlaneGeometry(2, 2), new ParticleMeshMaterial(render_positions, positions, colors));
 
     this.particle_count = count;
     this.count = count;
@@ -127,7 +131,6 @@ export class ParticleMesh extends Mesh
 
     this.shape_bounds = new Box3().setFromArray(shape.positions);
 
-    this.step_accumulator = 0;
     this.mouse_over_strength = 0;
     this.mouse_over_strength_decay_delay = 0;
 
@@ -138,7 +141,8 @@ export class ParticleMesh extends Mesh
     this.tmp_ray = new Ray();
 
     this.simulation_uniforms = {
-      _DeltaTime: uniform(SIMULATION_STEP),
+      _DeltaTime: uniform(REFERENCE_STEP),
+      _Damping: uniform(REFERENCE_DAMPING),
       _MousePos: uniform(new Vector2()),
       _PreviousMousePos: uniform(new Vector2()),
       _CameraRightDir: uniform(new Vector3(1, 0, 0)),
@@ -203,7 +207,7 @@ export class ParticleMesh extends Mesh
         .add(initial_position.sub(position).mul(u._ReturnToOriginForce))
         .add(swirl);
 
-      velocity.assign(unique_output(vec4(velocity.xyz.add(acceleration.mul(u._DeltaTime)).mul(0.9), 0)));
+      velocity.assign(unique_output(vec4(velocity.xyz.add(acceleration.mul(u._DeltaTime)).mul(u._Damping), 0)));
     })().compute(this.particle_count);
   }
 
@@ -247,11 +251,12 @@ export class ParticleMesh extends Mesh
     this.update_mouse_over(camera, pointer);
     this.update_material(look);
 
-    this.step_accumulator = Math.min(this.step_accumulator + Time.delta_time, SIMULATION_STEP * MAX_STEPS_PER_FRAME);
+    const step = Math.min(Time.delta_time, MAX_STEP);
 
-    while (this.step_accumulator >= SIMULATION_STEP)
+    if (step > 0)
     {
-      this.step_accumulator -= SIMULATION_STEP;
+      this.simulation_uniforms._DeltaTime.value = step;
+      this.simulation_uniforms._Damping.value = Math.pow(REFERENCE_DAMPING, step / REFERENCE_STEP);
 
       this.update_pointer(pointer);
 

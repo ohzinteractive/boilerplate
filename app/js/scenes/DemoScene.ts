@@ -13,8 +13,7 @@ import { demo_textures } from '../../data/assets/demo/demo_textures';
 
 import { CameraController, CameraManager, Debug, Graphics, Grid, OS, OScreen, PerspectiveCamera, ResourceContainer, Time } from 'ohzi-core';
 import type { BufferGeometry, Object3D, Quaternion } from 'three';
-import { Box3, Color, HalfFloatType, MathUtils, Mesh, Raycaster, UnsignedByteType, Vector2, Vector3 } from 'three';
-import { RenderTarget } from 'three/webgpu';
+import { Box3, Color, DoubleSide, LinearSRGBColorSpace, MathUtils, Mesh, MeshBasicMaterial, Raycaster, Vector2, Vector3 } from 'three';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { FontsCompilator } from '../compilators/FontsCompilator';
 import { MeshSampler } from '../components/particles/MeshSampler';
@@ -22,7 +21,6 @@ import type { ParticleLook } from '../components/particles/ParticleMesh';
 import { ParticleMesh } from '../components/particles/ParticleMesh';
 import { Input } from '../components/Input';
 import { AsyncFontLoader } from '../loaders/AsyncFontLoader';
-import { SRGBDecodeBlitMaterial } from '../materials/particles/SRGBDecodeBlitMaterial';
 
 const TEXT = 'boilerplate';
 const TEXT_SIZE = 1.4;
@@ -63,8 +61,7 @@ export class DemoScene extends CommonScene
   logo_particles: ParticleMesh;
   text_particles: ParticleMesh;
 
-  gamma_RT: RenderTarget;
-  srgb_decode_material: SRGBDecodeBlitMaterial;
+  previous_output_color_space: string;
 
   rest_rotation: Quaternion;
   logo_bounds: Box3;
@@ -96,8 +93,6 @@ export class DemoScene extends CommonScene
     this.hold_time = 0;
     this.hold_travel = 0;
     this.holding = false;
-
-    this.srgb_decode_material = new SRGBDecodeBlitMaterial();
 
     this.init_camera();
     this.setup_camera();
@@ -135,11 +130,6 @@ export class DemoScene extends CommonScene
     this.text_particles.update(this.camera, Input, forces, this.particle_look);
   }
 
-  // The lab drew its particles additively on a gamma encoded WebGL canvas.
-  // WebGPURenderer blends in linear space, which dims overlapping particles,
-  // so the scene adds them up in a target first and gets decoded on the way
-  // to the screen. Anything else added to this scene goes through the same
-  // path, so it should output gamma encoded colors too.
   render()
   {
     // Enter transitions set the camera fov too; the layout wins
@@ -148,32 +138,28 @@ export class DemoScene extends CommonScene
       this.update_layout();
     }
 
-    if (!this.gamma_RT)
-    {
-      this.gamma_RT = this.create_gamma_RT();
-    }
-
-    if (this.gamma_RT.width !== OScreen.render_width || this.gamma_RT.height !== OScreen.render_height)
-    {
-      this.gamma_RT.setSize(OScreen.render_width, OScreen.render_height);
-    }
-
-    Graphics.clear(this.gamma_RT, this.camera, true, true);
-    Graphics.render(this, this.camera, this.gamma_RT);
-    Graphics.blit(this.gamma_RT, undefined, this.srgb_decode_material);
+    super.render();
   }
 
-  // 8 bit like the lab canvas, so the additive sum clamps the same way. Half
-  // float on HDR output, so it can go past 1. No MSAA on WebGL, where the
-  // extra multisampled clears and resolves cost more than the particles.
-  create_gamma_RT()
+  // The lab drew its particles additively, straight on a gamma encoded canvas,
+  // and the particle material outputs those same display ready values. With
+  // a linear output color space the renderer draws to the canvas as it is:
+  // no internal framebuffer, no output pass, and particles add up in gamma
+  // space like in the lab. Anything else in this scene should output display
+  // ready colors too. Other views expect sRGB output, so it is restored on exit.
+  use_display_output(enabled: boolean)
   {
-    const is_webgpu = this.is_webgpu();
+    const renderer = Graphics._renderer;
 
-    return new RenderTarget(1, 1, {
-      samples: is_webgpu ? 4 : 0,
-      type: is_webgpu && Settings.hdr ? HalfFloatType : UnsignedByteType
-    });
+    if (enabled)
+    {
+      this.previous_output_color_space = renderer.outputColorSpace;
+      renderer.outputColorSpace = LinearSRGBColorSpace;
+    }
+    else if (this.previous_output_color_space)
+    {
+      renderer.outputColorSpace = this.previous_output_color_space;
+    }
   }
 
   is_webgpu()
@@ -197,12 +183,16 @@ export class DemoScene extends CommonScene
 
   build_particles()
   {
-    // The WebGL fallback draws fewer, bigger particles
-    const density = this.is_webgpu() ? 1 : Settings.particles.webgl_density;
+    // The WebGL fallback and mobile devices draw fewer, bigger particles
+    const backend_density = this.is_webgpu() ? 1 : Settings.particles.webgl_density;
+    const device_density = OS.is_mobile || OS.is_ipad ? Settings.particles.mobile_density : 1;
+    const density = backend_density * device_density;
 
     this.particle_look = {
       use_blur: true,
-      size_scale: 1 / Math.sqrt(density),
+      // Bigger particles make up for part of the missing ones. Making up for
+      // all of them (1 / sqrt) looked blurry on phones.
+      size_scale: Math.pow(density, -0.25),
       hdr_boost: this.is_webgpu() && Settings.hdr ? Settings.particles.hdr_boost : 1
     };
 
@@ -245,7 +235,10 @@ export class DemoScene extends CommonScene
   // Whether a point on the logo is in sight from the camera's rest direction
   build_visibility_test(geometries: BufferGeometry[])
   {
-    const meshes = geometries.map((geometry) => new Mesh(geometry));
+    // Double sided: the model only has the faces meant to be seen, so a ray
+    // from a hidden edge often reaches the face in front of it from behind
+    const material = new MeshBasicMaterial({ side: DoubleSide });
+    const meshes = geometries.map((geometry) => new Mesh(geometry, material));
     const to_camera = new Vector3(0, 0, 1).applyQuaternion(this.rest_rotation);
     const raycaster = new Raycaster();
     const origin = new Vector3();

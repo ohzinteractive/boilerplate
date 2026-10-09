@@ -20,6 +20,7 @@ export class DemoSceneController extends CommonSceneController
   before_enter()
   {
     this.scene.setup_camera();
+    this.scene.use_display_output(true);
 
     SceneManager.current = this.scene;
   }
@@ -30,6 +31,7 @@ export class DemoSceneController extends CommonSceneController
 
   before_exit()
   {
+    this.scene.use_display_output(false);
   }
 
   on_exit()

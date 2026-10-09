@@ -23,6 +23,7 @@ class Settings
     blur_exponent: number;
     hdr_boost: number;
     webgl_density: number;
+    mobile_density: number;
   };
   particles_normal: ParticleForces;
   particles_turbo: ParticleForces;
@@ -52,7 +53,9 @@ class Settings
       // Brightness of displaced particles on HDR displays (1 = same as SDR)
       hdr_boost: 3,
       // Fraction of the particles drawn on the WebGL fallback, which draws them bigger to compensate
-      webgl_density: 0.5
+      webgl_density: 0.5,
+      // Fraction of the particles drawn on phones and tablets, on top of webgl_density
+      mobile_density: 0.5
     };
 
     // Forces at rest and while the pointer is held down

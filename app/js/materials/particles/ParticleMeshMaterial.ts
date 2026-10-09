@@ -18,9 +18,9 @@ const gaussian = (x: Node<'float'>, sigma: Node<'float'>) => exp(x.mul(x).negate
 // grow, blur and turn colorful; at rest they show the shape color.
 //
 // The output is gamma encoded and premultiplied (One/One blending), exactly
-// what the lab shader wrote to its WebGL canvas. Render it into a target that
-// keeps those values and decode it to linear when blitting to the screen (see
-// DemoScene.render), so overlapping particles add up in gamma space like the lab.
+// what the lab shader wrote to its WebGL canvas. DemoScene renders it straight
+// to the canvas (see use_display_output), so overlapping particles add up in
+// gamma space like in the lab.
 export class ParticleMeshMaterial extends NodeMaterial
 {
   uniforms: {
