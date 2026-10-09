@@ -3,6 +3,7 @@ import { CommonScene } from './common/CommonScene';
 import { Settings } from '../Settings';
 import { Sections } from '../views/Sections';
 
+import { demo_fonts } from '../../data/assets/demo/demo_fonts';
 import { demo_high_objects } from '../../data/assets/demo/high/demo_high_objects';
 import { demo_high_sounds } from '../../data/assets/demo/high/demo_high_sounds';
 import { demo_high_textures } from '../../data/assets/demo/high/demo_high_textures';
@@ -10,15 +11,60 @@ import { demo_objects } from '../../data/assets/demo/demo_objects';
 import { demo_sounds } from '../../data/assets/demo/demo_sounds';
 import { demo_textures } from '../../data/assets/demo/demo_textures';
 
-import { CameraController, CameraManager, Debug, Grid, OScreen, PerspectiveCamera } from 'ohzi-core';
-import { Color } from 'three';
-import { SimpleCameraState } from '../camera_controller/states/SimpleCameraState';
+import { CameraController, CameraManager, Debug, Graphics, Grid, OS, OScreen, PerspectiveCamera, ResourceContainer, Time } from 'ohzi-core';
+import type { BufferGeometry, Mesh, Quaternion } from 'three';
+import { Box3, Color, MathUtils, Vector2, Vector3 } from 'three';
+import { RenderTarget } from 'three/webgpu';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+import { FontsCompilator } from '../compilators/FontsCompilator';
+import { MeshSampler } from '../components/particles/MeshSampler';
+import { ParticleMesh } from '../components/particles/ParticleMesh';
 import { Input } from '../components/Input';
+import { AsyncFontLoader } from '../loaders/AsyncFontLoader';
+import { SRGBDecodeBlitMaterial } from '../materials/particles/SRGBDecodeBlitMaterial';
 
+const TEXT = 'boilerplate';
+const TEXT_SIZE = 1.4;
+const TEXT_DEPTH = 0.3;
+
+// Same particle count as the lab logo. The text gets the same density,
+// so its count follows from its surface area.
+const LOGO_PARTICLE_COUNT = 50000;
+const MAX_TEXT_PARTICLE_COUNT = 150000;
+
+// Isometric view of the logo, as in the lab
+const CAMERA_FOV = 20;
+const CAMERA_TILT = 45;
+const CAMERA_ORIENTATION = 45;
+
+const LAYOUT_GAP = 0.6;
+const LAYOUT_MARGIN = 1.15;
+const PORTRAIT_TEXT_WIDTH = 1.8; // text width relative to the logo width
+
+// Landing page of the boilerplate itself: the OHZI logo and the word
+// "boilerplate" made of interactive particles. Swipe to push them around,
+// hold to make them snap back faster.
 export class DemoScene extends CommonScene
 {
   camera: PerspectiveCamera;
   camera_controller: CameraController;
+
+  logo_particles: ParticleMesh;
+  text_particles: ParticleMesh;
+
+  gamma_RT: RenderTarget;
+  srgb_decode_material: SRGBDecodeBlitMaterial;
+
+  rest_rotation: Quaternion;
+  logo_bounds: Box3;
+  text_bounds: Box3;
+
+  target_NDC: Vector2;
+  current_NDC: Vector2;
+
+  hold_time: number;
+  hold_travel: number;
+  holding: boolean;
 
   constructor()
   {
@@ -33,10 +79,21 @@ export class DemoScene extends CommonScene
 
     this.camera_controller = new CameraController(Input);
 
+    this.target_NDC = new Vector2();
+    this.current_NDC = new Vector2();
+
+    this.hold_time = 0;
+    this.hold_travel = 0;
+    this.holding = false;
+
+    // 8 bit like the lab canvas, so the additive sum clamps the same way
+    this.gamma_RT = new RenderTarget(1, 1, { samples: 4 });
+    this.srgb_decode_material = new SRGBDecodeBlitMaterial();
+
     this.init_camera();
     this.setup_camera();
 
-    this.set_assets(demo_objects, demo_textures, demo_sounds);
+    this.set_assets(demo_objects, demo_textures, demo_sounds, [AsyncFontLoader], [FontsCompilator], [demo_fonts]);
 
     if (Settings.debug_mode)
     {
@@ -49,7 +106,41 @@ export class DemoScene extends CommonScene
   {
     super.update();
 
+    if (!this.logo_particles)
+    {
+      return;
+    }
+
+    this.update_layout();
+    this.update_camera_rotation();
+
     this.camera_controller.update();
+    this.camera.updateMatrixWorld();
+
+    this.update_hold();
+
+    const forces = this.is_turbo() ? Settings.particles_turbo : Settings.particles_normal;
+    const use_blur = !OScreen.portrait;
+
+    this.logo_particles.update(this.camera, Input, forces, use_blur);
+    this.text_particles.update(this.camera, Input, forces, use_blur);
+  }
+
+  // The lab drew its particles additively on a gamma encoded WebGL canvas.
+  // WebGPURenderer blends in linear space, which dims overlapping particles,
+  // so the scene adds them up in an 8 bit target first and gets decoded on
+  // the way to the screen. Anything else added to this scene goes through the
+  // same path, so it should output gamma encoded colors too.
+  render()
+  {
+    if (this.gamma_RT.width !== OScreen.render_width || this.gamma_RT.height !== OScreen.render_height)
+    {
+      this.gamma_RT.setSize(OScreen.render_width, OScreen.render_height);
+    }
+
+    Graphics.clear(this.gamma_RT, this.camera, true, true);
+    Graphics.render(this, this.camera, this.gamma_RT);
+    Graphics.blit(this.gamma_RT, undefined, this.srgb_decode_material);
   }
 
   on_assets_ready()
@@ -57,6 +148,8 @@ export class DemoScene extends CommonScene
     this.set_high_assets(demo_high_objects, demo_high_textures, demo_high_sounds);
 
     super.on_assets_ready();
+
+    this.build_particles();
   }
 
   on_high_quality_assets_ready()
@@ -64,13 +157,183 @@ export class DemoScene extends CommonScene
     super.on_high_quality_assets_ready();
   }
 
+  build_particles()
+  {
+    const logo = ResourceContainer.get('ohzi_cube').scene;
+    const logo_geometries = ['white', 'black'].map((name) => (logo.getObjectByName(name) as Mesh).geometry);
+
+    const text_geometry = this.build_text_geometry();
+
+    const logo_area = MeshSampler.get_area(logo_geometries);
+    const text_area = MeshSampler.get_area([text_geometry]);
+    const text_count = Math.min(Math.round(LOGO_PARTICLE_COUNT * text_area / logo_area), MAX_TEXT_PARTICLE_COUNT);
+
+    this.logo_particles = new ParticleMesh(MeshSampler.sample(logo_geometries, LOGO_PARTICLE_COUNT));
+    this.text_particles = new ParticleMesh(MeshSampler.sample([text_geometry], text_count));
+
+    this.logo_bounds = this.logo_particles.shape_bounds;
+    this.text_bounds = this.text_particles.shape_bounds;
+
+    text_geometry.dispose();
+
+    // The text faces the camera at rest
+    this.text_particles.quaternion.copy(this.rest_rotation);
+
+    this.add(this.logo_particles);
+    this.add(this.text_particles);
+  }
+
+  build_text_geometry(): BufferGeometry
+  {
+    const geometry = new TextGeometry(TEXT, {
+      font: ResourceContainer.get('inter_bold'),
+      size: TEXT_SIZE,
+      depth: TEXT_DEPTH,
+      curveSegments: 8,
+      bevelEnabled: false
+    });
+
+    // Left edge at x = 0, baseline to ascender centered on y = 0, depth centered on z = 0
+    geometry.computeBoundingBox();
+    const bounds = geometry.boundingBox;
+    geometry.translate(-bounds.min.x, -bounds.max.y / 2, -TEXT_DEPTH / 2);
+
+    return geometry;
+  }
+
+  // Places the text next to the logo (below it in portrait) and frames both.
+  // Everything is measured on the camera's rest plane, so the layout holds
+  // while the pointer tilts the camera around.
+  update_layout()
+  {
+    const right = new Vector3(1, 0, 0).applyQuaternion(this.rest_rotation);
+    const up = new Vector3(0, 1, 0).applyQuaternion(this.rest_rotation);
+
+    const logo_rect = this.get_projected_rect(this.logo_bounds, right, up);
+    const logo_width = logo_rect.max.x - logo_rect.min.x;
+    const text_width = this.text_bounds.max.x - this.text_bounds.min.x;
+
+    let text_scale = 1;
+    const text_offset = new Vector2();
+
+    if (OScreen.portrait)
+    {
+      text_scale = logo_width * PORTRAIT_TEXT_WIDTH / text_width;
+      text_offset.set(-text_width * text_scale / 2, logo_rect.min.y - LAYOUT_GAP - this.text_bounds.max.y * text_scale);
+    }
+    else
+    {
+      text_offset.set(logo_rect.max.x + LAYOUT_GAP, 0);
+    }
+
+    this.text_particles.scale.setScalar(text_scale);
+
+    // Scaling the text down packs its particles tighter; draw a subset to keep the logo's density.
+    // Particles are sampled in random order, so any prefix is spread evenly over the shape.
+    this.text_particles.count = Math.round(this.text_particles.particle_count * Math.min(1, text_scale * text_scale));
+    this.text_particles.position.copy(right).multiplyScalar(text_offset.x).addScaledVector(up, text_offset.y);
+
+    const content_rect = logo_rect.clone().union(new Box3(
+      new Vector3(text_offset.x + this.text_bounds.min.x * text_scale, text_offset.y + this.text_bounds.min.y * text_scale, 0),
+      new Vector3(text_offset.x + this.text_bounds.max.x * text_scale, text_offset.y + this.text_bounds.max.y * text_scale, 0)
+    ));
+
+    const center = content_rect.getCenter(new Vector3());
+    const size = content_rect.getSize(new Vector3()).multiplyScalar(LAYOUT_MARGIN / 2);
+
+    const tan_half_fov = Math.tan(MathUtils.degToRad(this.camera.fov / 2));
+
+    this.camera_controller.reference_position.copy(right).multiplyScalar(center.x).addScaledVector(up, center.y);
+    this.camera_controller.reference_zoom = Math.max(size.x / (tan_half_fov * this.camera.aspect), size.y / tan_half_fov);
+  }
+
+  // Bounds of a box seen along the camera's rest forward axis, as x (right) and y (up)
+  get_projected_rect(bounds: Box3, right: Vector3, up: Vector3)
+  {
+    const rect = new Box3();
+    const corner = new Vector3();
+
+    for (let i = 0; i < 8; i++)
+    {
+      corner.set(
+        i & 1 ? bounds.max.x : bounds.min.x,
+        i & 2 ? bounds.max.y : bounds.min.y,
+        i & 4 ? bounds.max.z : bounds.min.z
+      );
+
+      rect.expandByPoint(new Vector3(corner.dot(right), corner.dot(up), 0));
+    }
+
+    return rect;
+  }
+
+  // The camera leans slightly towards the pointer
+  update_camera_rotation()
+  {
+    if (OScreen.portrait)
+    {
+      if (Input.left_mouse_button_down)
+      {
+        this.target_NDC.copy(Input.NDC);
+      }
+    }
+    else if (Input.NDC_delta.length() > 0.001)
+    {
+      this.target_NDC.copy(Input.NDC);
+    }
+
+    this.current_NDC.lerp(this.target_NDC, 0.1);
+
+    this.camera_controller.set_rotation(
+      CAMERA_TILT - this.current_NDC.y * 2.5,
+      CAMERA_ORIENTATION - this.current_NDC.x * 4,
+      0
+    );
+  }
+
+  // Holding the pointer still for a moment counts as a hold (used on touch devices)
+  update_hold()
+  {
+    if (Input.left_mouse_button_pressed)
+    {
+      this.hold_time = 0;
+      this.hold_travel = 0;
+    }
+
+    if (Input.left_mouse_button_down)
+    {
+      this.hold_time += Time.delta_time;
+      this.hold_travel += Math.abs(Input.NDC_delta.x) + Math.abs(Input.NDC_delta.y);
+
+      if (this.hold_time > 0.4 && this.hold_travel < 0.001)
+      {
+        this.holding = true;
+      }
+    }
+
+    if (Input.left_mouse_button_released)
+    {
+      this.holding = false;
+    }
+  }
+
+  is_turbo()
+  {
+    if (OS.is_mobile || OS.is_ipad)
+    {
+      return Input.pointer_count > 1 || this.holding;
+    }
+
+    return Input.left_mouse_button_down;
+  }
+
   init_camera()
   {
-    this.camera = new PerspectiveCamera(60, OScreen.aspect_ratio, 0.1, 200);
+    this.camera = new PerspectiveCamera(CAMERA_FOV, OScreen.aspect_ratio, 0.1, 200);
     this.camera.updateProjectionMatrix();
     this.camera.position.z = 10;
 
-    this.camera.clear_color.copy(new Color('#181818'));
+    this.camera.clear_color.copy(new Color('#000000'));
     this.camera.clear_alpha = 1;
   }
 
@@ -78,15 +341,20 @@ export class DemoScene extends CommonScene
   {
     CameraManager.current = this.camera;
 
+    // Transitions write their fov into the current scene camera, restore ours
+    this.camera.fov = CAMERA_FOV;
+    this.camera.updateProjectionMatrix();
+
     this.camera_controller.set_camera(this.camera);
-    // this.camera_controller.set_idle();
-    this.camera_controller.set_state(new SimpleCameraState(Input));
+    this.camera_controller.set_idle();
 
     this.camera_controller.min_zoom = 1;
-    this.camera_controller.max_zoom = 40;
-    this.camera_controller.reference_zoom = 10;
+    this.camera_controller.max_zoom = 100;
+    this.camera_controller.reference_zoom = 15;
 
     this.camera_controller.reference_position.set(0, 0, 0);
-    this.camera_controller.set_rotation(0, 0);
+    this.camera_controller.set_rotation(CAMERA_TILT, CAMERA_ORIENTATION, 0);
+
+    this.rest_rotation = this.camera_controller.reference_rotation.clone();
   }
 }
