@@ -12,7 +12,7 @@ export class DefaultRoutingRouterState extends RouterState
 
   on_enter()
   {
-    const landing_view = ViewManager.get(Sections.HOME);
+    const landing_view = ViewManager.get(Sections.DEMO);
 
     this.go_to_transition_view(landing_view.name);
   }

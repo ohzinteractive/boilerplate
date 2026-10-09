@@ -24,7 +24,7 @@ export class RoutingByUrlRouterState extends RouterState
 
     let next_view = undefined;
 
-    const landing_view = ViewManager.get(Sections.HOME);
+    const landing_view = ViewManager.get(Sections.DEMO);
 
     // Allow going anywhere on development
     if (logs || import.meta.env.DEV)
