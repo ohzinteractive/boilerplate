@@ -2,6 +2,7 @@ import { BaseApplication, ResourceContainer, Time, TransitionManager, ViewManage
 import type { DevBridge } from 'ohzi-core';
 
 import { HomeView } from './views/home/HomeView';
+import { DemoView } from './views/demo/DemoView';
 import { TransitionView } from './views/transition/TransitionView';
 
 // import { ACESFilmicToneMapping } from 'three';
@@ -24,6 +25,7 @@ export class MainApplication extends BaseApplication
   config: any;
   dev_bridge: DevBridge;
   home_view: HomeView;
+  demo_view: DemoView;
   input: typeof Input;
   keyboard_input_controller: KeyboardInputController;
   router: Router;
@@ -83,11 +85,13 @@ export class MainApplication extends BaseApplication
     // __SECTIONS__
 
     this.home_view = new HomeView();
+    this.demo_view = new DemoView();
     this.transition_view = new TransitionView();
 
     this.modal_component.start();
 
     this.home_view.start();
+    this.demo_view.start();
     this.transition_view.start();
 
     this.router = new Router();

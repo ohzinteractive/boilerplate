@@ -1,5 +1,6 @@
 export const default_state_data = {
   loader_opacity: 0,
+  demo_opacity: 0,
   transition_opacity: 0,
   home_opacity: 0,
   camera_x: 0,
