@@ -1,8 +1,10 @@
 import { BloomRender, CameraManager, CameraBridge, CaptureService, ConsoleBuffer, Debug, DebugDrawer, DebugNormalsRender, DeferredRender, DevBridge, Graphics, InputSynthesizer,
-  NormalAORender, NormalRender, OScreen, PerformanceProbe, RenderModeRegistry, SceneEditor, SceneInspector, SceneManager, Time,
+  ModelLoader, NormalAORender, NormalRender, OScreen, PerformanceProbe, RenderModeRegistry, ResourceContainer, SceneEditor, SceneInspector, SceneManager, Time,
   UnrealBloomRender, VRRender, ViewManager, ViewNavigator } from 'ohzi-core';
 import type { BaseRender } from 'ohzi-core';
 import { Box3 } from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import type { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 import components_package from '../../../components/package.json';
 import core_package from '../../../core/package.json';
@@ -44,6 +46,7 @@ export class DevBridgeController
     this.register_render_modes();
     this.register_views();
     this.register_debug();
+    this.register_models();
 
     // frame_end, never immediate: take_screenshot overrides OScreen and the
     // renderer pixel ratio and pans the camera via setViewOffset, so running it
@@ -242,6 +245,28 @@ export class DevBridgeController
     // drawn in.
     this.bridge.register('debug_draw', 'frame_end', (args) => debug_drawer.draw(Debug, SceneManager.current, args));
     this.bridge.register('debug_clear', 'frame_end', (args) => debug_drawer.clear(args));
+  }
+
+  register_models()
+  {
+    // The project's own Draco decoder, set up by DracoInitializer, so a preview
+    // decodes exactly like the scene's asset loading does.
+    const model_loader = new ModelLoader((url, draco) =>
+    {
+      const loader = new GLTFLoader();
+
+      if (draco)
+      {
+        loader.setDRACOLoader(ResourceContainer.get('draco_loader') as DRACOLoader);
+      }
+
+      return loader.loadAsync(url);
+    }, ResourceContainer);
+
+    // frame_end: it changes what the next frame renders. The load itself is
+    // async, but its continuation runs as its own task between frames, never in
+    // the middle of one.
+    this.bridge.register('load_object', 'frame_end', (args) => model_loader.load(SceneManager.current, args));
   }
 
   // The controller lives on the scene, so it is resolved per call rather than
