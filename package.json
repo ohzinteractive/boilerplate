@@ -37,6 +37,7 @@
     "copy-public": "node tasks/copy_folder.mjs public dist",
     "create-view": "cd core && yarn create-view",
     "create-scene": "cd core && yarn create-scene",
+    "import-model": "cd core && yarn import-model",
     "create-component": "cd core && yarn create-component",
     "create-transition": "cd core && yarn create-transition",
     "create-modal": "cd components && yarn create-modal",
