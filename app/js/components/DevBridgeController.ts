@@ -257,7 +257,17 @@ export class DevBridgeController
 
       if (draco)
       {
-        loader.setDRACOLoader(ResourceContainer.get('draco_loader') as DRACOLoader);
+        const draco_loader = ResourceContainer.get('draco_loader') as DRACOLoader | undefined;
+
+        if (draco_loader === undefined)
+        {
+          return Promise.reject(Object.assign(
+            new Error('This model is Draco-compressed, but the app has no Draco decoder. Enable DracoInitializer in app/js/Api.ts.'),
+            { code: 'no_draco_decoder' }
+          ));
+        }
+
+        loader.setDRACOLoader(draco_loader);
       }
 
       return loader.loadAsync(url);
@@ -287,6 +297,8 @@ export class DevBridgeController
     return {
       active_view: ViewManager.get_current_view()?.name ?? null,
       has_camera: CameraManager.current !== undefined,
+      // import_model reads this to refuse a Draco model before writing anything.
+      draco_decoder: ResourceContainer.get('draco_loader') !== undefined,
       canvas: {
         width: OScreen.width,
         height: OScreen.height,
