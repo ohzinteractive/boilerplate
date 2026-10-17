@@ -1,8 +1,10 @@
 import { BloomRender, CameraManager, CameraBridge, CaptureService, ConsoleBuffer, Debug, DebugDrawer, DebugNormalsRender, DeferredRender, DevBridge, Graphics, InputSynthesizer,
-  NormalAORender, NormalRender, OScreen, PerformanceProbe, RenderModeRegistry, SceneEditor, SceneInspector, SceneManager, Time,
+  ModelLoader, NormalAORender, NormalRender, OScreen, PerformanceProbe, RenderModeRegistry, ResourceContainer, SceneEditor, SceneInspector, SceneManager, Time,
   UnrealBloomRender, VRRender, ViewManager, ViewNavigator } from 'ohzi-core';
 import type { BaseRender } from 'ohzi-core';
 import { Box3 } from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import type { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 import components_package from '../../../components/package.json';
 import core_package from '../../../core/package.json';
@@ -44,6 +46,7 @@ export class DevBridgeController
     this.register_render_modes();
     this.register_views();
     this.register_debug();
+    this.register_models();
 
     // frame_end, never immediate: take_screenshot overrides OScreen and the
     // renderer pixel ratio and pans the camera via setViewOffset, so running it
@@ -244,6 +247,38 @@ export class DevBridgeController
     this.bridge.register('debug_clear', 'frame_end', (args) => debug_drawer.clear(args));
   }
 
+  register_models()
+  {
+    // The project's own Draco decoder, set up by DracoInitializer, so a preview
+    // decodes exactly like the scene's asset loading does.
+    const model_loader = new ModelLoader((url, draco) =>
+    {
+      const loader = new GLTFLoader();
+
+      if (draco)
+      {
+        const draco_loader = ResourceContainer.get('draco_loader') as DRACOLoader | undefined;
+
+        if (draco_loader === undefined)
+        {
+          return Promise.reject(Object.assign(
+            new Error('This model is Draco-compressed, but the app has no Draco decoder. Enable DracoInitializer in app/js/Api.ts.'),
+            { code: 'no_draco_decoder' }
+          ));
+        }
+
+        loader.setDRACOLoader(draco_loader);
+      }
+
+      return loader.loadAsync(url);
+    }, ResourceContainer);
+
+    // frame_end: it changes what the next frame renders. The load itself is
+    // async, but its continuation runs as its own task between frames, never in
+    // the middle of one.
+    this.bridge.register('load_object', 'frame_end', (args) => model_loader.load(SceneManager.current, args));
+  }
+
   // The controller lives on the scene, so it is resolved per call rather than
   // captured: switching views swaps the scene and therefore the controller.
   camera_controller()
@@ -262,6 +297,8 @@ export class DevBridgeController
     return {
       active_view: ViewManager.get_current_view()?.name ?? null,
       has_camera: CameraManager.current !== undefined,
+      // import_model reads this to refuse a Draco model before writing anything.
+      draco_decoder: ResourceContainer.get('draco_loader') !== undefined,
       canvas: {
         width: OScreen.width,
         height: OScreen.height,

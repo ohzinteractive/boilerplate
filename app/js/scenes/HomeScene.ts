@@ -12,12 +12,14 @@ import { SimpleCameraState } from '../camera_controller/states/SimpleCameraState
 import { Input } from '../components/Input';
 import { Settings } from '../Settings';
 import { CommonScene } from './common/CommonScene';
+// __OBJECT_IMPORTS__
 
 // import { AmbientLight, DirectionalLight } from 'three';
 export class HomeScene extends CommonScene
 {
   camera: PerspectiveCamera;
   camera_controller: CameraController;
+  // __OBJECT_FIELDS__
 
   constructor()
   {
@@ -75,6 +77,8 @@ export class HomeScene extends CommonScene
 
     // const cube = Debug.draw_cube(undefined, undefined, '#EEEEEE');
     // cube.position.set(0.5, 0.5, 0.5);
+
+    // __OBJECTS__
   }
 
   on_high_quality_assets_ready()
@@ -82,6 +86,8 @@ export class HomeScene extends CommonScene
     super.on_high_quality_assets_ready();
 
     // AudioManager.init_sounds(home_high_sounds);
+
+    // __HIGH_OBJECTS__
   }
 
   init_camera()

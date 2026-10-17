@@ -161,6 +161,23 @@ export const my_scene_objects = [
 ];
 ```
 
+### Importing models
+
+`yarn import-model path/to/chair.glb` copies a `.glb` into `public/models/` and lists it in the scene's object manifest. Options: `--scene home`, `--name chair`, `--tier regular|high`, `--replace` (overwrite a changed file), `--dry-run`. Draco models are detected; models that require meshopt or KTX2 are refused. A Draco model needs the decoder: enable `DracoInitializer` in `app/js/Api.ts` (it is commented out in the stock boilerplate), or the model will not load.
+
+With the OHZI MCP server, ask Claude to import the model instead: `import_model` also loads it into the running app, you place it with `set_object`, and `commit_object` saves the placement as a class in `app/js/objects/` plus scene wiring at these markers, which every scene created by `yarn create-scene` has:
+
+```ts
+// __OBJECT_IMPORTS__    after the imports
+// __OBJECT_FIELDS__     in the class field list
+// __OBJECTS__           at the end of on_assets_ready()
+// __HIGH_OBJECTS__      at the end of on_high_quality_assets_ready()
+```
+
+Committing again rewrites only the `position`, `rotation` and `scale` lines of the class, so anything you add to it is kept.
+
+Previews of PBR models look dark until the scene has lights: HomeScene's `add_lights` is commented out.
+
 ### Textures
 
 **Location**: `app/data/assets/[scene-name]/[scene-name]_textures.js`
