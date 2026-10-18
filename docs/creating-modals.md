@@ -48,6 +48,8 @@ And automatically updates:
 - `app/views/components/modal/modal.pug` - Includes the new template
 - `app/css/application.scss` - Imports the new styles at `// __MODAL_STATES__`
 
+The modal class, and the name its state is registered under, is the modal name dashed and suffixed with `-modal` (`my-modal-modal` here). The suffix keeps it apart from a view of the same name, which owns `.my-modal`: sharing the class would hand the modal the view's styles, such as a `pointer-events: none` that makes its buttons unclickable.
+
 The whole plan is validated before anything is written: a name that is taken, or a `__MODAL_STATES__` anchor that was edited away, aborts the run with nothing changed. Add `--dry-run` to see the plan without writing it.
 
 With the OHZI MCP server, `create_modal { name: 'my_modal' }` runs the same scaffolder; open the new state with `ModalComponent.show_state('my_modal', true)`.
@@ -68,7 +70,7 @@ class MyModalModalState extends ModalState
     super(name);
     
     // Reference to DOM elements
-    this.container = document.querySelector('.modal__container.my-modal');
+    this.container = document.querySelector('.modal__container.my-modal-modal');
   }
 
   on_enter(component)
@@ -131,7 +133,7 @@ export { MyModalModalState };
 **Location**: `app/views/components/modal/states/[modal_name].pug`
 
 ```pug
-+modal({ classes: 'my-modal' })
++modal({ classes: 'my-modal-modal' })
 
   +modal_header
     .modal__title My Modal Title
@@ -166,7 +168,7 @@ The `+modal()` mixin accepts these options:
 **Location**: `app/css/components/modal/[modal_name]/_[modal_name].scss`
 
 ```scss
-.my-modal {
+.my-modal-modal {
   // Target the modal container
   
   .modal__content {
