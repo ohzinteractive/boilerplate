@@ -2,7 +2,7 @@
 
 Modals are overlay UI components used to display content on top of your application. They're perfect for confirmations, forms, galleries, notifications, and other focused interactions.
 
-> **Modal states are TypeScript.** `yarn create-modal` emits a `.ts` state class and patches `ModalComponent.ts`.
+> **Modal states are TypeScript.** `yarn create-modal` emits a `.ts` state class and patches `ModalComponent.ts`. The scaffolder lives in `core/tasks/create_modal/`.
 
 ## What is a Modal?
 
@@ -46,7 +46,11 @@ app/css/components/modal/my_modal/
 And automatically updates:
 - `app/js/view_components/modal/ModalComponent.ts` - Adds import and state registration
 - `app/views/components/modal/modal.pug` - Includes the new template
-- `app/css/components/modal/_modal.scss` - Imports the new styles
+- `app/css/application.scss` - Imports the new styles at `// __MODAL_STATES__`
+
+The whole plan is validated before anything is written: a name that is taken, or a `__MODAL_STATES__` anchor that was edited away, aborts the run with nothing changed. Add `--dry-run` to see the plan without writing it.
+
+With the OHZI MCP server, `create_modal { name: 'my_modal' }` runs the same scaffolder; open the new state with `ModalComponent.show_state('my_modal', true)`.
 
 ## Modal State Structure
 

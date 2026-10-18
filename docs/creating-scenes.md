@@ -21,13 +21,15 @@ Scenes are managed through a **SceneController** (defined in your view) which ha
 The boilerplate provides a script to generate scene templates:
 
 ```bash
-yarn create-scene MySceneName
+yarn create-scene my_scene_name
 ```
+
+Names are snake_case: the script lowercases what you pass and strips anything that is not a letter, digit or underscore.
 
 This creates:
 
 ```
-app/js/scenes/MySceneName.ts
+app/js/scenes/MySceneNameScene.ts
 app/data/assets/my_scene_name/
 ├── my_scene_name_objects.js      # 3D models configuration
 ├── my_scene_name_textures.js      # Textures configuration
@@ -37,6 +39,10 @@ app/data/assets/my_scene_name/
     ├── my_scene_name_high_textures.js
     └── my_scene_name_high_sounds.js
 ```
+
+A scene registers nothing: use it from a view's SceneController with `new MySceneNameScene()`. Its constructor names it `Sections.MY_SCENE_NAME`, so it expects a view of the same name; create the view first or change that line.
+
+With the OHZI MCP server, `create_scene { name: 'my_scene_name' }` runs the same scaffolder, and `import_model { scene: 'my_scene_name' }` adds models to it.
 
 ## Scene Structure
 
