@@ -13,11 +13,14 @@ yarn start          # Dev server at localhost:1234 (HTTP)
 yarn start-ssl      # Dev server with HTTPS (port 443)
 yarn build          # Production build (cleans cache, copies public/)
 yarn fix-syntax     # ESLint auto-fix on app/ folder
-yarn create-view MyViewName       # Scaffold a new view
-yarn create-scene MySceneName     # Scaffold a new scene
-yarn create-component MyComponent # Scaffold a new component
-yarn create-modal MyModal         # Scaffold a new modal
+yarn create-view my_view          # Scaffold a new view
+yarn create-scene my_scene        # Scaffold a new scene
+yarn create-component my_widget   # Scaffold a new component
+yarn create-modal my_modal        # Scaffold a new modal state
+yarn mcp                          # Build and run the ohzi-mcp server
 ```
+
+Scaffolder names are snake_case (`MyView` would become `myview`). All four live in `core/tasks/` and validate their whole plan before writing, so a taken name or a missing anchor changes nothing; append `--dry-run` to preview.
 
 No test framework is configured. Testing is manual.
 
@@ -50,11 +53,7 @@ Views are the primary structural unit. Each view has three classes:
 
 View lifecycle: `start() → before_enter() → on_enter() → update() → before_exit() → on_exit()`
 
-To add a new view:
-1. Run `yarn create-view MyViewName` to scaffold files
-2. Add the route to `app/js/views/Sections.ts`
-3. Register the view in `MainApplication.ts`
-4. Import the new SCSS partial in `app/css/application.scss`
+To add a new view, run `yarn create-view my_view` (or the `create_view` MCP tool). It creates the three classes, the transition json, the pug template and the SCSS partial, and wires them into `Sections.ts`, `MainApplication.ts`, `default_state_data.js`, `index.pug` and `application.scss`. It patches literal anchors such as `__SECTIONS__`, `__COMPONENTS__` and `__MODAL_STATES__`; keep them in place.
 
 ### Key Files
 
@@ -78,6 +77,10 @@ HTML is authored in **Pug** (`.pug` files) and compiled by Vite. View templates 
 ### Shaders
 
 Shaders are written in TSL (Three.js Shading Language); there is no GLSL in the app, core, components or pit. Three.js is configured WebGPU-first with WebGL fallback.
+
+### MCP Server
+
+`mcp/` is the ohzi-mcp server (`.mcp.json` runs it), with its own README. It bridges to the running app over a dev-only WebSocket so Claude can capture the viewport, inspect and edit the scene, drive the camera, input and views, and look up the API. It also writes project files: `create_view`, `create_scene`, `create_component` and `create_modal` run the core scaffolders (they work with the app closed), and `import_model` / `commit_object` bring in a GLB and save its placement as code. The scaffolders are loaded from this project's `core/tasks/`, so they match the core version it pins.
 
 ### Build Output
 

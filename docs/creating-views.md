@@ -2,7 +2,7 @@
 
 Views are the main structural elements of your application in the OHZI Boilerplate. They represent different sections or pages of your project and manage scenes, transitions, and UI interactions.
 
-> **The application is TypeScript.** `yarn create-view` emits `.ts` files and patches `MainApplication.ts`, `Sections.ts` and `GeneralLoader.ts`. The examples below are shown without type annotations for brevity; the files they describe are `.ts`.
+> **The application is TypeScript.** `yarn create-view` emits `.ts` files and patches `MainApplication.ts`, `Sections.ts`, `default_state_data.js`, `index.pug` and `application.scss`. The examples below are shown without type annotations for brevity; the files they describe are `.ts`.
 
 ## What is a View?
 
@@ -35,27 +35,32 @@ start() → before_enter() → on_enter() → update() → before_exit() → on_
 The boilerplate includes a script to scaffold a new view:
 
 ```bash
-yarn create-view MyViewName
+yarn create-view my_view_name
 ```
+
+Names are snake_case: the script lowercases what you pass and strips anything that is not a letter, digit or underscore, so `MyViewName` would become `myviewname`.
 
 This command will create the necessary folder structure and template files:
 
 ```
 app/js/views/my_view_name/
-├── MyViewView.ts
-├── MyViewSceneController.ts
-└── MyViewTransitionController.ts
+├── MyViewNameView.ts
+├── MyViewNameSceneController.ts
+└── MyViewNameTransitionController.ts
 
 app/views/my_view_name/
 └── my_view_name.pug
 
 app/css/my_view_name/
-├── _my_view_name.scss
-└── components/
+└── _my_view_name.scss
 
 app/data/transitions/
 └── my_view_name.json
 ```
+
+It also wires the view in: the section name and URL (`/my-view-name`) in `Sections.ts`, the import, field, instantiation and `start()` call in `MainApplication.ts`, a `my_view_name_opacity` transition state in `default_state_data.js`, the pug include in `index.pug` and the SCSS import in `application.scss`. The whole plan is validated before anything is written: a name that is taken, or an anchor that was edited away, aborts the run with nothing changed. Add `--dry-run` to see the plan without writing it.
+
+With the OHZI MCP server, ask Claude to do it instead: `create_view { name: 'my_view_name' }` runs the same scaffolder (`dry_run: true` previews it), and `go_to_view` opens the new view once Vite has reloaded.
 
 ## View Structure
 
