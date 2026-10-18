@@ -73,6 +73,10 @@ export class DevBridgeController
     // and tear for a frame. args carries both the selector and the changes;
     // their field names do not overlap.
     this.bridge.register('set_object', 'frame_end', (args) => scene_editor.set(SceneManager.current, args, args));
+
+    // frame_end for the same reason. A material can be shared, so this edits
+    // every mesh that uses it, and it is never saved to code.
+    this.bridge.register('set_material', 'frame_end', (args) => scene_editor.set_material(SceneManager.current, args, args));
   }
 
   register_camera()

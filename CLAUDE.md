@@ -80,7 +80,7 @@ Shaders are written in TSL (Three.js Shading Language); there is no GLSL in the 
 
 ### MCP Server
 
-`mcp/` is the ohzi-mcp server (`.mcp.json` runs it), with its own README. It bridges to the running app over a dev-only WebSocket so Claude can capture the viewport, inspect and edit the scene, drive the camera, input and views, and look up the API. It also writes project files: `create_view`, `create_scene`, `create_component` and `create_modal` run the core scaffolders (they work with the app closed), and `import_model` / `commit_object` bring in a GLB and save its placement as code. The scaffolders are loaded from this project's `core/tasks/`, so they match the core version it pins.
+`mcp/` is the ohzi-mcp server (`.mcp.json` runs it), with its own README. It bridges to the running app over a dev-only WebSocket so Claude can capture the viewport, inspect and edit the scene, edit materials live (material edits are not saved to code), drive the camera, input and views, and look up the API. It also writes project files: `create_view`, `create_scene`, `create_component` and `create_modal` run the core scaffolders (they work with the app closed), and `import_model` / `commit_object` bring in a GLB and save its placement as code. The scaffolders are loaded from this project's `core/tasks/`, so they match the core version it pins.
 
 ### Build Output
 
