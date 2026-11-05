@@ -32,7 +32,7 @@ The project uses three git submodules as Yarn workspaces. Vite resolves them as 
 
 - `core/` → aliased as `ohzi-core` — WebGL foundation: `BaseApplication`, `SceneManager`, `TransitionManager`, `ViewManager`, `ResourceContainer`, `Time`
 - `components/` → aliased as `ohzi-components` — Pre-built UI components: modals, audio, scroll, Lottie, `UICollisionLayer`
-- `pit/` → aliased as `pit-js` — Pollable input library for mouse/touch/keyboard
+- `pit/` → aliased as `pit-js` — Pollable input library for mouse and touch (keyboard input is ohzi-core's `KeyboardInput`)
 
 ### Application Bootstrap
 

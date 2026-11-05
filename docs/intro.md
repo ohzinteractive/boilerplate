@@ -62,7 +62,6 @@ This boilerplate is built and maintained by **OHZI Interactive Studio**, combini
 - **Multi-format Support**: 
   - Pug templating for HTML
   - SCSS for styling
-  - GLSL shader support
   - Static asset management (3D models, textures, sounds, videos)
 - **SSL Support**: Built-in development server with HTTPS support
 - **Asset Packaging**: Automatic build and distribution packaging
@@ -77,7 +76,7 @@ app/                    # Main application code
 
 core/                   # OHZI Core library (WebGL foundation)
 components/            # OHZI Components library (pre-built UI components)
-pit/                    # PIT.js library (JavaScript utilities)
+pit/                    # PIT library (pollable mouse and touch input)
 public/                 # Static assets (models, textures, sounds, fonts)
 dist/                   # Production build output
 ```
@@ -90,8 +89,8 @@ dist/                   # Production build output
 - **Graphics**: three.js + OHZI Core
 - **Templating**: Pug
 - **Styling**: SCSS
-- **Utilities**: PIT.js
-- **Shader Language**: GLSL
+- **Input**: PIT (pollable mouse and touch input)
+- **Shader Language**: TSL (Three.js Shading Language)
 
 ## Getting Started
 
